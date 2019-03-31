@@ -3,7 +3,7 @@
 This is a tool for lnd developers. It can generate local simnet clusters of requested size and shape. It uses docker-compose
 to manage the cluster and provides a set of helper scripts for your convenience.   
 
-Tested on macOS only (but it should be easy to adapt it to linux environments, PRs welcome).
+Tested on macOS and ubuntu 18.10 only.
 
 ## Prerequisites:
 
