@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+. "$(dirname "${BASH_SOURCE[0]}")/helpers/_config.sh" || true || . helpers/_config.sh
+
+cd "$THIS_DIR"
+
+if [[ ! -d "$VOLUMES_DIR" ]]; then
+  mkdir -p "$VOLUMES_DIR"
+fi
+
+if [[ "$@" =~ "--no-cache" ]]; then
+  echo "forcing rebuild of base containers."
+  FORCE_REBUILD=1
+fi
+if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BASE_DOCKER_IMAGE_NAME"; then
+  "$HELPERS_DIR/docker-build-base.sh"
+fi
+if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BUILDER_DOCKER_IMAGE_NAME"; then
+  "$HELPERS_DIR/docker-build-builder.sh"
+fi
+
+exec docker-compose "$@"

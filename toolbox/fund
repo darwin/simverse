@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+PERSON=${1:-alice}
+AMOUNT_BTC=${2:-100}
+
+ADDRESS=$(${PERSON} newaddress np2wkh | jq ".address" | unquote)
+
+ORIGINAL_BALANCE_BTC=$(${PERSON} walletbalance | jq ".total_balance" | unquote | sat2btc)
+echo "generated new address $ADDRESS for $PERSON (original balance ${ORIGINAL_BALANCE_BTC} BTC)"
+
+AVAILABLE_BALANCE_BTC=$(balance | trim)
+
+if $(is "${AVAILABLE_BALANCE_BTC} < ${AMOUNT_BTC}"); then
+  echo "insufficient balance $AVAILABLE_BALANCE_BTC BTC, earning more..."
+  earn ${AMOUNT_BTC}
+fi
+
+echo "sending $AMOUNT_BTC BTC to $PERSON"
+btcctl --wallet sendfrom imported ${ADDRESS} ${AMOUNT_BTC}
+
+btcctl generate ${TX_CONF_COUNT}
+
+NEW_BALANCE_BTC=$(${PERSON} walletbalance | jq ".total_balance" | unquote | sat2btc)
+echo "$PERSON now has ${NEW_BALANCE_BTC} BTC"

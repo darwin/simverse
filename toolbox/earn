@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+AMOUNT=${1:-100} # minimal amount
+
+BLOCKS_NEEDED=$(compute "floor(${AMOUNT} / 50) + 1")
+echo "mining ${BLOCKS_NEEDED} blocks"
+btcctl generate ${BLOCKS_NEEDED}
+
+# mine blocks to mature coinbase transactions
+btcctl generate ${COINBASE_MATURITY}

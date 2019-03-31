@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+FROM_PERSON=${1:-alice}
+TO_PERSON=${2:-bob}
+
+TO_PERSON_CONNECTION=$(lnd_connect_string ${TO_PERSON})
+
+set -x
+${FROM_PERSON} connect ${TO_PERSON_CONNECTION}
+

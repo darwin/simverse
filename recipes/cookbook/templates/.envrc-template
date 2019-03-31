@@ -1,0 +1,17 @@
+#@IgnoreInspection BashAddShebang
+
+# we recommend using direnv (https://direnv.net)
+# here you can conveniently override run-time defaults from _defaults.sh / uncomment below
+
+#export NETWORK=simnet
+#export DEBUG=trace
+
+#export BTCD_MINING_ADDR=SNkMM96QQE6QLsbtivfePb4ztkPZTMq8L9
+#export BTCD_MINING_ADDR_PK=FwKY4zwscP47RKYWjiDJZxUTbWcyXRXvrAhQ2iLEuJXcRiLa7tYy
+
+# GO specific
+export GCFLAGS="" # compile with no optimizations, for go-delve debugger
+
+# temporary hacks for dev
+#export BTCD_EXTRA_PARAMS="--notls"
+#export BTCWALLET_EXTRA_PARAMS="--noservertls --noclienttls"

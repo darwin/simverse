@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+PERSON=${1:-alice}
+
+${PERSON} getinfo | jq ".identity_pubkey" | unquote

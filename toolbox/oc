@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+FROM_PERSON=${1:-alice}
+TO_PERSON=${2:-bob}
+AMOUNT_BTC=${3:-0.1}
+
+TO_PERSON_PUBKEY=$(pubkey ${TO_PERSON})
+AMOUNT_SAT=$(echo "$AMOUNT_BTC" | btc2sat)
+
+set -x
+${FROM_PERSON} openchannel --node_key=${TO_PERSON_PUBKEY} --local_amt=${AMOUNT_SAT}
+
+btcctl generate ${TX_CONF_COUNT}

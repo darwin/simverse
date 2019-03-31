@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+CONTAINER=${1:-alice}
+PROCESS=${2:-lnd}
+DEFAULT_PORT_VAR=$(echo "DLV_PORT_$(echo "$CONTAINER" | uppercase)")
+PORT=${3:-${!DEFAULT_PORT_VAR}}
+
+if [[ -z "$3" && -z "$PORT" ]]; then
+  echo_err "unable to retrieve port from env variable $DEFAULT_PORT_VAR"
+  exit 1
+fi
+
+cd "$ROOT_DIR"
+
+exec ./dc exec ${CONTAINER} /root/lib/attach_dlv.sh ${PROCESS} ${PORT}

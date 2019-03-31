@@ -1,0 +1,34 @@
+  ${NAME}:
+    <<: *shared
+    <<: *shared-depends-on
+    image: ${SIMVERSE_DOCKER_IMAGE_PREFIX}${SIMNET_NAME}_lnd
+    container_name: ${SIMVERSE_DOCKER_CONTAINER_PREFIX}${SIMNET_NAME}_${NAME}
+    command: ["./start.sh"]
+    build:
+      context: .
+      dockerfile: docker/lnd/Dockerfile
+      args:
+        - LND_REPO_PATH=$LND_REPO_PATH
+        - LND_CONF_PATH=$LND_CONF_PATH
+    ports:
+      - $LND_SERVER_PORT_ON_HOST:9735 # lnd server port
+      - $LND_RPC_PORT_ON_HOST:10009 # lnd rpc port
+      - $LND_GRPC_PORT_ON_HOST:8080 # lnd grpc port
+      - $DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
+    volumes:
+      - ./_volumes/certs:/certs # shared certificates
+      - ./_volumes/lnd-data-${NAME}:/root/.lnd # lnd data dir
+    environment:
+      - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}
+      - SERVICE_COUNTER=${SERVICE_COUNTER}
+      - DEBUG=${DEBUG}
+      - NETWORK=${NETWORK}
+      - RPC_USER=${RPC_USER}
+      - RPC_PASS=${RPC_PASS}
+      - LND_COUNTER=${LND_COUNTER}
+      - LND_EXTRA_PARAMS=${LND_EXTRA_PARAMS}
+      - LND_CHAIN=${LND_CHAIN}
+      - LND_BACKEND=${LND_BACKEND}
+      - LND_RPC_LISTEN=${LND_RPC_LISTEN}
+      - LND_RPC_HOST=${LND_RPC_HOST}
+      - LND_LISTEN=${LND_LISTEN}

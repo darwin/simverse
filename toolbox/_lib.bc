@@ -1,0 +1,9 @@
+# see https://stackoverflow.com/a/53532113/84283
+define floor(x) {
+    auto s;
+    s = scale;
+    scale = 0;
+    x /= 1; /* This will have the effect of truncating x to its integer value */
+    scale = s;
+    return (x);
+}

@@ -1,0 +1,40 @@
+  ${NAME}:
+    <<: *shared
+    <<: *shared-depends-on
+    image: ${SIMVERSE_DOCKER_IMAGE_PREFIX}${SIMNET_NAME}_btcd
+    container_name: ${SIMVERSE_DOCKER_CONTAINER_PREFIX}${SIMNET_NAME}_${NAME}
+    command: ["./start.sh"]
+    build:
+      context: .
+      dockerfile: docker/btcd/Dockerfile
+      args:
+        - BTCD_REPO_PATH=$BTCD_REPO_PATH
+        - BTCD_CONF_PATH=$BTCD_CONF_PATH
+        - BTCWALLET_REPO_PATH=$BTCWALLET_REPO_PATH
+        - BTCWALLET_CONF_PATH=$BTCWALLET_CONF_PATH
+    ports:
+      - $BTCWALLET_RPC_PORT_ON_HOST:18554 # btcwallet rpc port
+      - $BTCD_SERVER_PORT_ON_HOST:18555 # btcd server port
+      - $BTCD_RPC_PORT_ON_HOST:18556 # btcd rpc port
+      - $DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
+    volumes:
+      - ./_volumes/certs:/certs # shared certificates
+      - ./_volumes/btcd-data-${NAME}:/root/.btcd # btcd data dir
+      - ./_volumes/btcwallet-data-${NAME}:/root/.btcwallet # btcwallet data dir
+    environment:
+      - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}
+      - SERVICE_COUNTER=${SERVICE_COUNTER}
+      - DEBUG=${DEBUG}
+      - NETWORK=${NETWORK}
+      - RPC_USER=${RPC_USER}
+      - RPC_PASS=${RPC_PASS}
+      - BTCD_COUNTER=${BTCD_COUNTER}
+      - BTCD_MINING_ADDR=${BTCD_MINING_ADDR}
+      - BTCD_LISTEN=${BTCD_LISTEN}
+      - BTCD_RPC_LISTEN=${BTCD_RPC_LISTEN}
+      - BTCD_EXTRA_PARAMS=${BTCD_EXTRA_PARAMS}
+      - BTCWALLET_EXTRA_PARAMS=${BTCWALLET_EXTRA_PARAMS}
+      - BTCCTL_EXTRA_PARAMS=${BTCCTL_EXTRA_PARAMS}
+      - BTCWALLET_RPC_LISTEN=${BTCWALLET_RPC_LISTEN}
+      - BTCWALLET_USER=${BTCWALLET_USER}
+      - BTCWALLET_PASS=${BTCWALLET_PASS}
