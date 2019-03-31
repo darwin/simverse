@@ -63,6 +63,17 @@ add lnd alice
 add lnd bob
 ```
 
+If you don't want to risk putting your machine on fire, here are some recordings:
+
+##### Terminal #2
+
+[![asciicast](https://asciinema.org/a/237989.svg)](https://asciinema.org/a/237989)
+
+##### Terminal #1
+
+[![asciicast](https://asciinema.org/a/237991.svg)](https://asciinema.org/a/237991)
+
+
 ## Roadmap
 
   * add support for bitcoind and other bitcoin implementations
