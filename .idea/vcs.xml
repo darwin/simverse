@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/_repos/btcd" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/_repos/btcwallet" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/_repos/lnd" vcs="Git" />
   </component>
 </project>
