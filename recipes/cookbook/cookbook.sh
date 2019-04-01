@@ -198,10 +198,6 @@ create_aliases_dir() {
   mkdir "$ALIASES_DIR_NAME"
 }
 
-prepare_readme() {
-  eval_script_template "$TEMPLATES_DIR/readme.md" >> readme.md
-}
-
 prepare_repos() {
   # the problem is that our docker build context is somewhere $SIMVERSE_HOME/_workspace/[simnetname] (we can have multiple)
   # but we need to access files from $SIMVERSE_HOME/_repos
@@ -321,7 +317,6 @@ prelude() {
   scaffold_simnet
   add_toolbox
   create_aliases_dir
-  prepare_readme
   prepare_repos
   init_states
   eval_template "$TEMPLATES_DIR/prelude.yml" > ${COMPOSE_FILE}

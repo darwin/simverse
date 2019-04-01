@@ -187,11 +187,8 @@ Typical simnet folder structure is:
     toolbox/
     dc
     docker-compose.yml
-    readme.md
 
-Feel free to look around. You should refer to generated readme.md for detailed
-description. Below we discuss only state management.
-
+Feel free to look around. Below we discuss state management.
 
 Simnet state
 
