@@ -967,7 +967,7 @@ set -- ${ARGS[*]}
 # ---------------------------------------------------------------
 
 if [[ ! -d "$SIMVERSE_REPOS" ]]; then
-  say "SimVerse repos does not exist at '$SIMVERSE_REPOS', creating it..."
+  say "simverse repos dir does not exist at '$SIMVERSE_REPOS', creating it..."
   present mkdir -p "$SIMVERSE_REPOS"
 fi
 
@@ -978,7 +978,7 @@ popd
 # ---------------------------------------------------------------
 
 if [[ ! -d "$SIMVERSE_WORKSPACE" ]]; then
-  say "SimVerse workspace does not exist at '$SIMVERSE_WORKSPACE', creating it..."
+  say "simverse workspace dir does not exist at '$SIMVERSE_WORKSPACE', creating it..."
   present mkdir -p "$SIMVERSE_WORKSPACE"
 fi
 
