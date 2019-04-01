@@ -9,10 +9,6 @@ x-shared: &shared
   security_opt:
     - seccomp:unconfined # https://github.com/arrisray/secql/commit/19b8e85c270b888cecc3a0364b7956ba9e0f5334
 
-x-shared-depends-on: &shared-depends-on
-  depends_on:
-    - _pre
-
 networks:
   ${SIMVERSE_DOCKER_NETWORK_PREFIX}${SIMNET_NAME}_network:
     driver: bridge
