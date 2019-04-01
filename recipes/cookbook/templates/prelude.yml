@@ -32,6 +32,7 @@ services:
     ports:
       - $SIMVERSE_PRE_SIGNAL_PORT_ON_HOST:$SIMVERSE_PRE_SIGNAL_PORT # pre signal port
     volumes:
+      # !DANGER! when touching this, review cookbook.sh > prepare_pre_volumes
       - ./_volumes/certs:/certs # shared certificates
     environment:
       - PRE_SIGNAL_PORT=${SIMVERSE_PRE_SIGNAL_PORT}

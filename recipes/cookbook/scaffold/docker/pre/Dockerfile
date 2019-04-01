@@ -25,10 +25,12 @@ RUN apk add --no-cache python
 # copy the compiled binaries from the builder image.
 COPY --from=builder_btcd /go/bin/gencerts /bin/
 
-WORKDIR /root
+USER simnet
 
-COPY "docker/pre/home" "/root/"
+WORKDIR /home/simnet
+
+COPY "docker/pre/home" "/home/simnet/"
 
 # replace symlink with actual target lib files
 RUN rm lib
-COPY "docker/_aux/base/lib" "/root/lib"
+COPY "docker/_aux/base/lib" "/home/simnet/lib"

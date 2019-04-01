@@ -4,4 +4,10 @@
 
 cd "$DOCKER_DIR/_aux/base"
 
-docker build -t "$BASE_DOCKER_IMAGE_NAME" .
+SIMVERSE_HOST_UID=${SIMVERSE_HOST_UID:?required}
+SIMVERSE_HOST_GID=${SIMVERSE_HOST_GID:?required}
+
+docker build -t "$BASE_DOCKER_IMAGE_NAME" \
+  --build-arg SIMVERSE_HOST_UID=${SIMVERSE_HOST_UID} \
+  --build-arg SIMVERSE_HOST_GID=${SIMVERSE_HOST_GID} \
+.

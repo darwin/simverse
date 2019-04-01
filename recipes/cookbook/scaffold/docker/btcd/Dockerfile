@@ -56,13 +56,15 @@ COPY --from=builder_btcd /go/bin/gencerts /bin/
 
 COPY --from=builder_btcwallet /go/bin/btcwallet /bin/
 
-WORKDIR /root
+USER simnet
 
-COPY "docker/btcd/home" "/root/"
+WORKDIR /home/simnet
+
+COPY "docker/btcd/home" "/home/simnet/"
 
 # replace symlink with actual target lib files
 RUN rm lib
-COPY "docker/_aux/base/lib" "/root/lib"
+COPY "docker/_aux/base/lib" "/home/simnet/lib"
 
-COPY "$BTCD_CONF_PATH" "/root/seed-btcd.conf"
-COPY "$BTCWALLET_CONF_PATH" "/root/seed-btcwallet.conf"
+COPY "$BTCD_CONF_PATH" "/home/simnet/seed-btcd.conf"
+COPY "$BTCWALLET_CONF_PATH" "/home/simnet/seed-btcwallet.conf"

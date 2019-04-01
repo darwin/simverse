@@ -4,5 +4,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd ".."
 
-exec docker-compose exec "$$NAME" /root/btcctl.sh "$@"
+exec docker-compose exec "$$NAME" btcctl.sh "$@"
 

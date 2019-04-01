@@ -245,6 +245,24 @@ echo_service_separator() {
   echo -e "\n  # -- ${counter}. $kind service -----------------------------------------------------------" >> ${COMPOSE_FILE}
 }
 
+# we have to create stub folders for volumes on host
+# if we let docker container create them instead under some systems we could end up with root permissions on them
+
+prepare_pre_volumes() {
+  mkdir _volumes/certs
+}
+
+prepare_btcd_volumes() {
+  local name=$1
+  mkdir _volumes/btcd-data-${name}
+  mkdir _volumes/btcwallet-data-${name}
+}
+
+prepare_lnd_volumes() {
+  local name=$1
+  mkdir _volumes/lnd-data-${name}
+}
+
 add_lnd() {
   NAME=$1
 
@@ -277,6 +295,8 @@ add_lnd() {
     ln -s "$NAME" ${default_alias_file}
   fi
 
+  prepare_lnd_volumes "$NAME"
+
   advance_common_counters
   advance_lnd_counters
 
@@ -305,6 +325,8 @@ add_btcd() {
     ln -s "$NAME" ${default_alias_file}
   fi
 
+  prepare_btcd_volumes "$NAME"
+
   advance_common_counters
   advance_btcd_counters
 
@@ -319,6 +341,7 @@ prelude() {
   create_aliases_dir
   prepare_repos
   init_states
+  prepare_pre_volumes
   eval_template "$TEMPLATES_DIR/prelude.yml" > ${COMPOSE_FILE}
   touch docker-compose.yml
   PRELUDE_DONE=1

@@ -2,8 +2,7 @@
 
 source lib/init.sh
 
-mkdir -p "/root/.btcd"
-cp "/root/seed-btcd.conf" "/root/.btcd/btcd.conf"
+cp "seed-btcd.conf" ".btcd/btcd.conf"
 
 # we keep one shared rpc cert for all btcd nodes
 PARAMS="--rpccert=/certs/rpc.cert --rpckey=/certs/rpc.key"

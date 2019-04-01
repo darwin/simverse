@@ -2,10 +2,9 @@
 
 source lib/init.sh
 
-mkdir -p "/root/.btcwallet"
-cp "/root/seed-btcwallet.conf" "/root/.btcwallet/btcwallet.conf"
+cp "seed-btcwallet.conf" ".btcwallet/btcwallet.conf"
 
-PARAMS="--appdata=/root/.btcwallet"
+PARAMS="--appdata=$(pwd -P)/.btcwallet"
 
 # we keep one shared rpc cert for all btcd nodes
 PARAMS+=" --cafile=/certs/rpc.cert --rpccert=/certs/rpc.cert --rpckey=/certs/rpc.key"

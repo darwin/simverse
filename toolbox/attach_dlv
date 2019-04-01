@@ -14,4 +14,4 @@ fi
 
 cd "$ROOT_DIR"
 
-exec ./dc exec ${CONTAINER} /root/lib/attach_dlv.sh ${PROCESS} ${PORT}
+exec ./dc exec ${CONTAINER} lib/attach_dlv.sh ${PROCESS} ${PORT}

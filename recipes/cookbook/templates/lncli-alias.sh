@@ -4,5 +4,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd ".."
 
-exec ./dc exec "$$NAME" /root/lncli.sh "$@"
+exec ./dc exec "$$NAME" lncli.sh "$@"
 

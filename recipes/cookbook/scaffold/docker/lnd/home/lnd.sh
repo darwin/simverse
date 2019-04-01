@@ -2,8 +2,7 @@
 
 source lib/init.sh
 
-mkdir -p "/root/.lnd"
-cp "/root/seed-lnd.conf" "/root/.lnd/lnd.conf"
+cp "seed-lnd.conf" ".lnd/lnd.conf"
 
 # optional parameters
 RPC_USER=${RPC_USER}

@@ -16,8 +16,9 @@
       - $LND_GRPC_PORT_ON_HOST:8080 # lnd grpc port
       - $DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
+      # !DANGER! when touching this, review cookbook.sh > prepare_lnd_volumes
       - ./_volumes/certs:/certs # shared certificates
-      - ./_volumes/lnd-data-${NAME}:/root/.lnd # lnd data dir
+      - ./_volumes/lnd-data-${NAME}:/home/simnet/.lnd # lnd data dir
     environment:
       - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}
       - SERVICE_COUNTER=${SERVICE_COUNTER}

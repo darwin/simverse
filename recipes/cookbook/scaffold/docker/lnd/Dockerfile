@@ -34,12 +34,14 @@ ARG LND_CONF_PATH
 COPY --from=builder /go/bin/lncli /bin/
 COPY --from=builder /go/bin/lnd /bin/
 
-WORKDIR "/root"
+USER simnet
 
-COPY "docker/lnd/home" "/root/"
+WORKDIR /home/simnet
+
+COPY "docker/lnd/home" "/home/simnet/"
 
 # replace symlink with actual target lib files
 RUN rm lib
-COPY "docker/_aux/base/lib" "/root/lib"
+COPY "docker/_aux/base/lib" "/home/simnet/lib"
 
-COPY "$LND_CONF_PATH" "/root/seed-lnd.conf"
+COPY "$LND_CONF_PATH" "/home/simnet/seed-lnd.conf"
