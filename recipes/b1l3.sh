@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-RECIPES_DIR="$(dirname "${BASH_SOURCE[0]}")"
-
-. "$RECIPES_DIR/cookbook/cookbook.sh" || true || . cookbook/cookbook.sh
+. cookbook/cookbook.sh
 
 prelude
 

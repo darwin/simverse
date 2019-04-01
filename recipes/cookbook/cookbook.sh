@@ -4,6 +4,11 @@ set -e -o pipefail
 
 # this script defines a simple DSL for incrementally building docker-compose config and related files
 
+# recipes must be invoked from $SIMVERSE_HOME/recipes dir, with <simnet_name> and <simverse_workspace> args:
+
+SIMNET_NAME=${1:?please specify a simnet name as first argument}
+SIMVERSE_WORKSPACE=${2:?please specify the simverse workspace path as second argument}
+
 # example usage:
 #
 #    . cookbook/cookbook.sh
@@ -16,14 +21,13 @@ set -e -o pipefail
 REQUIRED="variable not set or empty, (hint: source _defaults.sh)"
 
 SIMVERSE_HOME=${SIMVERSE_HOME:?$REQUIRED}
-COOKBOOK_DIR="$(dirname "${BASH_SOURCE[0]}")"
+COOKBOOK_DIR="$SIMVERSE_HOME/recipes/cookbook"
 TEMPLATES_DIR="$COOKBOOK_DIR/templates"
 SCAFFOLD_DIR="$COOKBOOK_DIR/scaffold"
 TOOLBOX_DIR="$SIMVERSE_HOME/toolbox"
 
 COMPOSE_FILE="docker-compose.yml"
 ALIASES_DIR_NAME="aliases"
-SIMNET_NAME=${1:-"simnet"}
 
 # configured externally via env (see _defaults.sh)
 
@@ -57,6 +61,8 @@ ERR_NOT_IMPLEMENTED=10
 ERR_MUST_CALL_PRELUDE_FIRST=11
 ERR_NEED_BTCD=12
 
+# -- helpers ----------------------------------------------------------------------------------------------------------------
+
 echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
 }
@@ -72,6 +78,8 @@ echo_err_with_stack_trace() {
   echo_err "$@"
   print_stack_trace | tail -n "+2"
 }
+
+# -- utils ------------------------------------------------------------------------------------------------------------------
 
 init_common_defaults() {
   local
@@ -238,19 +246,6 @@ init_states() {
   ln -s "_states/master" _volumes
 }
 
-prelude() {
-  scaffold_simnet
-  add_toolbox
-  create_aliases_dir
-  prepare_envrc
-  prepare_readme
-  prepare_repos
-  init_states
-  eval_template "$TEMPLATES_DIR/prelude.yml" > ${COMPOSE_FILE}
-  touch docker-compose.yml
-  PRELUDE_DONE=1
-}
-
 echo_service_separator() {
   local kind=$1
   local name=$2
@@ -304,7 +299,7 @@ add_btcd() {
     advance_btcd_auto_name_counter
     NAME=$(gen_btcd_auto_name)
   fi
-  
+
   echo_service_separator btcd ${NAME} ${BTCD_COUNTER}
   eval_template "$TEMPLATES_DIR/btcd.yml" >> ${COMPOSE_FILE}
 
@@ -322,6 +317,21 @@ add_btcd() {
   advance_btcd_counters
 
   LAST_BTCD_SERVICE=${NAME}
+}
+
+# -- public API -------------------------------------------------------------------------------------------------------------
+
+prelude() {
+  scaffold_simnet
+  add_toolbox
+  create_aliases_dir
+  prepare_envrc
+  prepare_readme
+  prepare_repos
+  init_states
+  eval_template "$TEMPLATES_DIR/prelude.yml" > ${COMPOSE_FILE}
+  touch docker-compose.yml
+  PRELUDE_DONE=1
 }
 
 # add [kind] [name] ...
@@ -342,9 +352,12 @@ add() {
   esac
 }
 
+# -- initialization ---------------------------------------------------------------------------------------------------------
+
 init_defaults
 reset_counters
 
+cd "$SIMVERSE_WORKSPACE"
 if [[ ! -d "$SIMNET_NAME" ]]; then
   mkdir "$SIMNET_NAME"
 fi

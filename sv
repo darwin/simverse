@@ -310,7 +310,7 @@ By running \`./sv create mysn example\`, we create a new simnet named \`mysn\`
 which has one btcd node and two lnd nodes, all with default settings.
 
 Recipes are bash scripts executed as the last step in simnet creation.
-That means you can do anything bash can do to tweak a given simnet.
+That means you can do anything bash can do to tweak given simnet.
 To make your life easier, we provide a simple library "cookbook" for building
 simnet on step-by-step basis with sane defaults.
 
@@ -397,7 +397,9 @@ show_help() {
 cook_recipe() {
   local recipe_script=$1
   local simnet_name=$2
-  present ${recipe_script} ${simnet_name}
+  pushd "$RECIPES_DIR"
+  present ${recipe_script} ${simnet_name} "$SIMVERSE_WORKSPACE_ABSOLUTE"
+  popd
 }
 
 validate_simnet_exists() {
@@ -512,8 +514,6 @@ create_simnet() {
   fi
 
   make_sure_repos_are_initialized
-
-  pwd -P
 
   cook_recipe "$recipe_script" "$simnet_name"
   present cd "$simnet_name"
