@@ -11,9 +11,7 @@ On host machine you should have:
 
   * bash, git, jq
   * docker, docker-compose
-  * (optional) direnv
-  * (recommended) when under macOS, keep workspace on APFS-formatted filesystem to benefit from clonefile
-
+  
 ## Quick start
 
 In a terminal session:
@@ -127,6 +125,19 @@ oc charlie bob 0.05
 pay alice bob 0.01
 ```
 
+### Gotchas
+
+  * If in troubles, please make sure you have the latest versions tools above, especially docker and docker-compose.
+  * Simverse tries to enforce host's UID and GID as permissions for simnet user running the services like `lnd` or `btcd`.
+    This is quite important for [comfortable access](https://dille.name/blog/2018/07/16/handling-file-permissions-when-writing-to-volumes-from-docker-containers/) 
+    to simnet state folders from host machine under some systems. This can fail in case when your current UID(GID) on host is 
+    already taken inside Alpine Linux container. In such cases the effective user in the container is disconnected from host 
+    user and permissions on state folder might  be different. You might need root permission to remove them on host.
+  
+### macOS notes  
+  
+  * (recommended)keep workspace on APFS-formatted filesystem to benefit from clonefile
+  
 ## FAQ
 
 ##### 1. How do I customize build/runtime parameters for individual docker containers?
@@ -152,6 +163,10 @@ individual machines
 By default, all simnets use the same port mappings to the host machine, so you would not be able to launch them in parallel. 
 But you can write a simple wrapper scripts which could modify all *_PORT_ON_HOST in _defaults.sh. You can allocate them so 
 that they don't overlap for simnets you need to run in parallel. 
+
+#### 6. How can I enter a running container to inspect it in a shell?
+
+> `./dc exec <name> bash` or `./dc exec <name> fish`
 
 ## Roadmap
 
