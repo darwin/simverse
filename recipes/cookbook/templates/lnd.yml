@@ -17,7 +17,7 @@
       - $DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
       # !DANGER! when touching this, review cookbook.sh > prepare_lnd_volumes
-      - ./_volumes/certs:/certs # shared certificates
+      - ./_volumes/certs:/certs:ro # shared certificates
       - ./_volumes/lnd-data-${NAME}:/home/simnet/.lnd # lnd data dir
     environment:
       - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}

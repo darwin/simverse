@@ -19,7 +19,7 @@
       - $DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
       # !DANGER! when touching this, review cookbook.sh > prepare_btcd_volumes
-      - ./_volumes/certs:/certs # shared certificates
+      - ./_volumes/certs:/certs:ro # shared certificates
       - ./_volumes/btcd-data-${NAME}:/home/simnet/.btcd # btcd data dir
       - ./_volumes/btcwallet-data-${NAME}:/home/simnet/.btcwallet # btcwallet data dir
     environment:
