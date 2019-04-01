@@ -185,7 +185,6 @@ Typical simnet folder structure is:
     helpers/
     repos/
     toolbox/
-    .envrc
     dc
     docker-compose.yml
     readme.md

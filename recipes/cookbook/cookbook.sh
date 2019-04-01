@@ -198,10 +198,6 @@ create_aliases_dir() {
   mkdir "$ALIASES_DIR_NAME"
 }
 
-prepare_envrc() {
-  cp "$TEMPLATES_DIR/.envrc-template" .envrc
-}
-
 prepare_readme() {
   eval_script_template "$TEMPLATES_DIR/readme.md" >> readme.md
 }
@@ -325,7 +321,6 @@ prelude() {
   scaffold_simnet
   add_toolbox
   create_aliases_dir
-  prepare_envrc
   prepare_readme
   prepare_repos
   init_states
