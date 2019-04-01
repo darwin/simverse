@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-PRE_SIGNAL=${PRE_SIGNAL:?required}
+# wait for shared certificate creation
+while [[ ! -f /certs/rpc.cert ]]; do sleep 1; done
 
-exec ./lib/wait-for ${PRE_SIGNAL} -- ./start-all.sh
+exec start-all.sh
