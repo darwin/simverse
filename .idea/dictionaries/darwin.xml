@@ -35,6 +35,7 @@
       <w>gcflags</w>
       <w>gencerts</w>
       <w>genreadme</w>
+      <w>getbalance</w>
       <w>grpc</w>
       <w>lightningnetwork</w>
       <w>litecoin</w>

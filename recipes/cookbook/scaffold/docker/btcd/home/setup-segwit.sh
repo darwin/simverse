@@ -15,6 +15,6 @@ fi
 # source: https://degreesofzero.com/article/shared-private-lightning-network.html
 BLOCKS=$(./btcctl.sh getblockcount)
 if [[ "$BLOCKS" -lt "300" ]]; then
-  echo "Activating segwit.."
+  echo "Activating segwit..."
   ./btcctl.sh generate 300
 fi
