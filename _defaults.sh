@@ -7,7 +7,7 @@ export SIMVERSE_WORKSPACE=${SIMVERSE_WORKSPACE:-_workspace}
 export SIMVERSE_REPOS=${SIMVERSE_REPOS:-_repos}
 
 #############################################################################################################################
-# big-bang-time defaults, effective during ./sv create (or other commands)
+# simnet create-time defaults, effective during ./sv create (or other ./sv commands)
 
 export SIMVERSE_DOCKER_IMAGE_PREFIX="sv_"
 export SIMVERSE_DOCKER_NETWORK_PREFIX="$SIMVERSE_DOCKER_IMAGE_PREFIX"
@@ -53,10 +53,9 @@ export DEFAULT_BTCD_CONF_PATH=${DEFAULT_BTCD_CONF_PATH:-docker/btcd/btcd.conf}
 export DEFAULT_BTCWALLET_CONF_PATH=${DEFAULT_BTCWALLET_CONF_PATH:-docker/btcd/btcwallet.conf}
 export DEFAULT_LND_CONF_PATH=${DEFAULT_LND_CONF_PATH:-docker/lnd/lnd.conf}
 
-#############################################################################################################################
-# build-time/run-time defaults, effective during building or running docker containers via ./dc
-
+# ---------------------------------------------------------------------------------------------------------------------------
 # you can tweak these on per-node basis in your recipes
+
 export RPC_USER=devuser
 export RPC_PASS=devpass
 export DEBUG=info

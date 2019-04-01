@@ -24,8 +24,6 @@ In a terminal session:
 ...
 > ./sv enter
 ...
-_workspace/default > cat readme.md
-...
 _workspace/default > ./dc build
 ...
 _workspace/default > ./dc up                  # this gives you a nice log for whole cluster
@@ -74,6 +72,87 @@ If you don't want to risk putting your machine on fire, here are some recordings
 [![asciicast](https://asciinema.org/a/237991.svg)](https://asciinema.org/a/237991)
 
 
+## Generated simnet folder
+
+A simnet folder contains generated files for your simnet based on a selected recipe.
+
+Typical workflow is to create simnet and then enter it via `./sv enter [simnet_name]`, then you can
+ 
+* use `./dc` command to manage simnet cluster via docker compose (see `docker-compose.yml`).
+* use tools from [toolbox](toolbox) and [aliases](aliases) (they should be on $PATH).
+
+## An example simnet session
+
+___See 'quick start' section above.___ 
+
+Go to simverse root directory. Please open two terminal windows: 
+
+- The first one will be for logs  
+- The second one will be for interaction with running cluster
+
+### In the first terminal session
+
+1. Enter simnet via `./sv enter default`
+2. Build simnet via `./dc build`
+3. Launch simnet via `./dc up`
+
+When you hit CTRL+C, docker will shutdown your simnet and you can rinse, repeat. See tips below in FAQ to learn more.  
+
+### In the second terminal session
+
+1. (assuming running simnet) 
+2. Enter simnet via `./sv enter default`
+3. you can control individual services via their names e.g. `alice getinfo` or 
+   `btcd1 getnetworkinfo` (see `aliases` dir). Also note that first lnd node has alias `lncli` and first btcd node 
+   has alias `btcctl`.
+4. you can also use convenience commands from `toolbox`, for example:
+
+```
+# assuming you have at least one btcd node and lnd nodes alice, bob and charlie (see the recipe 'b1l3.sh')
+#
+# let's follow the tutorial https://dev.lightning.community/tutorial/01-lncli
+
+fund alice 10
+fund bob 10
+fund charlie 10
+
+connect alice charlie
+connect bob charlie
+
+oc alice charlie 0.1
+oc charlie bob 0.05
+
+# wait for channel discovery to kick in (circa 20s)
+
+pay alice bob 0.01
+```
+
+## FAQ
+
+##### 1. How do I customize build/runtime parameters for individual docker containers?
+
+> By customizing your recipe or globally via env variables. See `_defaults.sh`.
+
+#### 2. How do I rebuild everything from scratch?
+
+> `./dc --no-cache build`
+
+#### 3. How do I determine ports mapping to my host machine?
+
+> `./dc ps` (assuming running simnet)
+
+#### 4. I'd like to know IP addresses of individual machines in the simnet cluster. How?
+
+> `list_docker_ips` please note that you should not use hard-coded IPs, instead use service names docker assigned to 
+individual machines
+
+#### 5. Is it possible to launch multiple simnets in parallel?
+
+> It is possible to create multiple simnets. But under normal circumstances you are expected to run only one simnet at a time. 
+By default, all simnets use the same port mappings to the host machine, so you would not be able to launch them in parallel. 
+But you can write a simple wrapper scripts which could modify all *_PORT_ON_HOST in _defaults.sh. You can allocate them so 
+that they don't overlap for simnets you need to run in parallel. 
+
 ## Roadmap
 
   * add support for bitcoind and other bitcoin implementations
@@ -81,8 +160,6 @@ If you don't want to risk putting your machine on fire, here are some recordings
   * support for generating blackbox test cases
   
 ## sv utility reference
-
-
 
 
 `> ./sv help`
@@ -146,14 +223,10 @@ Typical simnet folder structure is:
     helpers/
     repos/
     toolbox/
-    .envrc
     dc
     docker-compose.yml
-    readme.md
 
-Feel free to look around. You should refer to generated readme.md for detailed
-description. Below we discuss only state management.
-
+Feel free to look around. Below we discuss state management.
 
 Simnet state
 
@@ -244,7 +317,7 @@ By running `./sv create mysn example`, we create a new simnet named `mysn`
 which has one btcd node and two lnd nodes, all with default settings.
 
 Recipes are bash scripts executed as the last step in simnet creation.
-That means you can do anything bash can do to tweak a given simnet.
+That means you can do anything bash can do to tweak given simnet.
 To make your life easier, we provide a simple library "cookbook" for building
 simnet on step-by-step basis with sane defaults.
 
