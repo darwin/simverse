@@ -142,7 +142,7 @@ pay alice bob 0.01
 
 ##### 1. How do I customize build/runtime parameters for individual docker containers?
 
-> By customizing your recipe or globally via env variables. See `_defaults.sh`.
+> By customizing your recipe before adding a node or globally via env variables. See `_defaults.sh`.
 
 #### 2. How do I rebuild everything from scratch?
 
@@ -150,7 +150,7 @@ pay alice bob 0.01
 
 #### 3. How do I determine ports mapping to my host machine?
 
-> `./dc ps` (assuming running simnet)
+> `./dc ps` (assuming a running simnet)
 
 #### 4. I'd like to know IP addresses of individual machines in the simnet cluster. How?
 
