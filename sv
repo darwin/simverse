@@ -505,8 +505,8 @@ create_simnet() {
 
   if [[ -d "$simnet_name" ]]; then
     if [[ -n "$FLAG_FORCE" && -n "$simnet_name" ]]; then
-      # we don't want to delete parent directory, this would confuse interactive shells which may be inside
-      present rm -rf "$simnet_name"/*
+      # we don't want to delete simnet directory, this would confuse interactive shells which may be entered inside
+      present find "$simnet_name" -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
     else
       echo_err "simnet '$simnet_name' already exists, delete it first with \`./sv destroy $simnet_name\` or force overwrite with the -f flag"
       exit ${ERR_SIMNET_ALREADY_EXISTS}
