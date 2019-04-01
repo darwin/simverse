@@ -122,7 +122,7 @@ On success, prints a path to generated simnet working folder in your workspace.
 Flags:
   -f,--force    force creation by destroying previous simnet
 
-Recipe is a name of a script in \`recipes\` folder. It specifies requested simnet
+Recipe should be name of a script in \`recipes\` folder. It specifies requested simnet
 parameters and drives the generator.
 
 Read more about recipes via \`./sv help recipes\`
@@ -212,7 +212,7 @@ It can be also used for replays during automated testing.
 
 A note on hybrid simnets
 
-By default simnet is generated in a way that all nodes live inside docker containers
+By default, simnet is generated in a way that all nodes live inside docker containers
 managed by docker-compose. For convenience we map all relevant ports to host machine.
 This allows running another node directly on host machine and interact with nodes in
 the cluster inside docker.
@@ -292,7 +292,7 @@ About recipes
 Simnets can have different sizes and shapes. They can be heavily parametrized.
 Recipe is a script describing how to build a given simnet.
 
-An example recipe:
+An example of a simple recipe:
 
     . cookbook/cookbook.sh
 
@@ -324,14 +324,14 @@ show_workspace_help() {
   cat <<EOF
 About workspace
 
-Workspace is a working folder where are your generated simnets are stored.
+Workspace is a working folder where your generated simnets get stored.
 By default it is under \`_workspace\` but you can control it
 via SIMVERSE_WORKSPACE environmental variable.
 
 Each simnet has a name given to it during \`./sv create [name]\` call.
 Workspace contains a folder for each simnet named after it.
 
-You can enter simnet via \`./sv enter [name]\`.
+You can enter your simnet via \`./sv enter [name]\`.
 EOF
 }
 
