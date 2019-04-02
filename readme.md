@@ -140,31 +140,31 @@ pay alice bob 0.01
   
 ## FAQ
 
-##### 1. How do I customize build/runtime parameters for individual docker containers?
+#### How do I customize build/runtime parameters for individual docker containers?
 
 > By customizing your recipe before adding a node or globally via env variables. See `_defaults.sh`.
 
-#### 2. How do I rebuild everything from scratch?
+#### How do I rebuild everything from scratch?
 
 > `./dc --no-cache build`
 
-#### 3. How do I determine ports mapping to my host machine?
+#### How do I determine ports mapping to my host machine?
 
 > `./dc ps` (assuming a running simnet)
 
-#### 4. I'd like to know IP addresses of individual machines in the simnet cluster. How?
+#### I'd like to know IP addresses of individual machines in the simnet cluster. How?
 
 > `list_docker_ips` please note that you should not use hard-coded IPs, instead use service names docker assigned to 
 individual machines
 
-#### 5. Is it possible to launch multiple simnets in parallel?
+#### Is it possible to launch multiple simnets in parallel?
 
 > It is possible to create multiple simnets. But under normal circumstances you are expected to run only one simnet at a time. 
 By default, all simnets use the same port mappings to the host machine, so you would not be able to launch them in parallel. 
 But you can write a simple wrapper scripts which could modify all *_PORT_ON_HOST in _defaults.sh. You can allocate them so 
 that they don't overlap for simnets you need to run in parallel. 
 
-#### 6. How can I enter a running container to inspect it in a shell?
+#### How can I enter a running container to inspect it in a shell?
 
 > `./dc exec <name> bash` or `./dc exec <name> fish`
 
