@@ -77,7 +77,7 @@ A simnet folder contains generated files for your simnet based on a selected rec
 Typical workflow is to create simnet and then enter it via `./sv enter [simnet_name]`, then you can
  
 * use `./dc` command to manage simnet cluster via docker compose (see generated `docker-compose.yml`).
-* use tools from [toolbox](toolbox) and [aliases](aliases) (they should be on $PATH).
+* use tools from [`toolbox`](toolbox) and (generated) `aliases` folders (they should be on $PATH).
 
 ## An example simnet session
 
