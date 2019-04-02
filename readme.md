@@ -76,7 +76,7 @@ A simnet folder contains generated files for your simnet based on a selected rec
 
 Typical workflow is to create simnet and then enter it via `./sv enter [simnet_name]`, then you can
  
-* use `./dc` command to manage simnet cluster via docker compose (see `docker-compose.yml`).
+* use `./dc` command to manage simnet cluster via docker compose (see generated `docker-compose.yml`).
 * use tools from [toolbox](toolbox) and [aliases](aliases) (they should be on $PATH).
 
 ## An example simnet session
@@ -142,7 +142,7 @@ pay alice bob 0.01
 
 #### How do I customize build/runtime parameters for individual docker containers?
 
-> By customizing your recipe before adding a node or globally via env variables. See `_defaults.sh`.
+> By customizing your recipe before adding a node or globally via env variables. See [`_defaults.sh`](_defaults.sh).
 
 #### How do I rebuild everything from scratch?
 
@@ -172,21 +172,21 @@ that they don't overlap for simnets you need to run in parallel.
 
 #### Is it possible to keep simverse workspace on my own path?
 
-> Yes. Look for `SIMVERSE_WORKSPACE` env var.
+> Yes. Look for [`SIMVERSE_WORKSPACE`](_defaults.sh) env var.
 
 #### Is it possible to keep projects' repos on my own path?
 
-> Yes. Look for `SIMVERSE_REPOS` env var.
+> Yes. Look for [`SIMVERSE_REPOS`](_defaults.sh) env var.
 
 #### Where is a faucet?
 
-> This is not a testnet with faucet so we have to mine coins ourselves. Look for `BTCD_MINING_ADDR` env var which contains
+> This is not a testnet with faucet so we have to mine coins ourselves. Look for [`BTCD_MINING_ADDR`](_defaults.sh) env var which contains
 > pre-generated bitcoin address which will receive all mined coins. During btcd node initialization we import this address into 
-> btcwallet under the 'imported' account (see `setup-wallet.sh`). This way `btcctl --wallet sendfrom imported ...` can be 
-> used to send funds to others in need.
+> btcwallet under the 'imported' account (see [`setup-wallet.sh`](recipes/cookbook/scaffold/docker/btcd/home/setup-wallet.sh)). 
+> This way `btcctl --wallet sendfrom imported ...` can be used to send funds to others in need.
 >
-> Please look at `toolbox/fund` script which can be used for convenient funding of lnd wallets. For example run `fund alice 10`
-> to send 10 BTC to Alice's lnd node wallet. The script might decide to call `toolbox/earn` to mine enough coins and wait 
+> Please look at [`toolbox/fund`](toolbox/fund) script which can be used for convenient funding of lnd wallets. For example run `fund alice 10`
+> to send 10 BTC to Alice's lnd node wallet. The script might decide to call [`toolbox/earn`](toolbox/earn) to mine enough coins and wait 
 > for their maturity.
 
 ## Roadmap
