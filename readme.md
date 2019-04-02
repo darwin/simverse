@@ -164,9 +164,30 @@ By default, all simnets use the same port mappings to the host machine, so you w
 But you can write a simple wrapper scripts which could modify all *_PORT_ON_HOST in _defaults.sh. You can allocate them so 
 that they don't overlap for simnets you need to run in parallel. 
 
-#### How can I enter a running container to inspect it in a shell?
+#### How can I inspect a running container in shell?
 
-> `./dc exec <name> bash` or `./dc exec <name> fish`
+> `./dc exec <container> bash` or `./dc exec <container> fish` or `./dc exec <container> sh`
+> 
+> or `./dc exec <container> <one-off-cmd>` 
+
+#### Is it possible to keep simverse workspace on my own path?
+
+> Yes. Look for `SIMVERSE_WORKSPACE` env var.
+
+#### Is it possible to keep projects' repos on my own path?
+
+> Yes. Look for `SIMVERSE_REPOS` env var.
+
+#### Where is a faucet?
+
+> This is not a testnet with faucet so we have to mine coins ourselves. Look for `BTCD_MINING_ADDR` env var which contains
+> pre-generated bitcoin address which will receive all mined coins. During btcd node initialization we import this address into 
+> btcwallet under the 'imported' account (see `setup-wallet.sh`). This way `btcctl --wallet sendfrom imported ...` can be 
+> used to send funds to others in need.
+>
+> Please look at `toolbox/fund` script which can be used for convenient funding of lnd wallets. For example run `fund alice 10`
+> to send 10 BTC to Alice's lnd node wallet. The script might decide to call `toolbox/earn` to mine enough coins and wait 
+> for their maturity.
 
 ## Roadmap
 
