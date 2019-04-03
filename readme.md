@@ -59,16 +59,12 @@ add lnd alice
 add lnd bob
 ```
 
-If you don't want to risk putting your machine on fire, here are some recordings:
+If you don't want to risk putting your machine on fire, here is a recording:
 
-##### Terminal #2
+* note that we used pre-generated `./tmux` script to launch everything in one terminal window
+* also note that all our docker caches are warm, so there is nothing to do - your first run will much more busy
 
 [![asciicast](https://asciinema.org/a/237989.svg)](https://asciinema.org/a/237989)
-
-##### Terminal #1
-
-[![asciicast](https://asciinema.org/a/237991.svg)](https://asciinema.org/a/237991)
-
 
 ## Generated simnet folder
 
@@ -124,6 +120,8 @@ oc charlie bob 0.05
 
 pay alice bob 0.01
 ```
+
+Alternatively you can use our pre-generated `./tmux` script.
 
 ### Gotchas
 

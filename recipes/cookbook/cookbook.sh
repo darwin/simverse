@@ -238,6 +238,11 @@ init_states() {
   ln -s "_states/master" _volumes
 }
 
+prepare_tmux_script() {
+  eval_script_template "$TEMPLATES_DIR/tmux" > "tmux"
+  chmod +x "tmux"
+}
+
 echo_service_separator() {
   local kind=$1
   local name=$2
@@ -342,6 +347,7 @@ prelude() {
   prepare_repos
   init_states
   prepare_pre_volumes
+  prepare_tmux_script
   eval_template "$TEMPLATES_DIR/prelude.yml" > ${COMPOSE_FILE}
   touch docker-compose.yml
   PRELUDE_DONE=1

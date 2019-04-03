@@ -74,6 +74,8 @@
       <w>subcommand</w>
       <w>testnet</w>
       <w>tlsextraip</w>
+      <w>tmux</w>
+      <w>tmuxinator</w>
       <w>txindex</w>
       <w>workdir</w>
     </words>

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e -o pipefail
+
+# inspired by tmuxinator-generated config
+
+tmux start-server
+
+TMUX= tmux new-session -d -s "$$SIMNET_NAME" -n simnet
+
+tmux set-option history-limit 90000
+tmux set -g mouse on
+
+tmux splitw  -t $$SIMNET_NAME:0
+tmux select-layout -t $$SIMNET_NAME:0 main-horizontal
+tmux send-keys -t $$SIMNET_NAME:0.0 "./dc build && ./dc up" Enter
+tmux select-window -t $$SIMNET_NAME:0
+tmux select-pane -t $$SIMNET_NAME:0.1
+
+if [[ -z "$TMUX" ]]; then
+  tmux -u attach-session -t $$SIMNET_NAME
+else
+  tmux -u switch-client -t $$SIMNET_NAME
+fi

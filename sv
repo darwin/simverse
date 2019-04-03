@@ -187,6 +187,7 @@ Typical simnet folder structure is:
     toolbox/
     dc
     docker-compose.yml
+    tmux
 
 Feel free to look around. Below we discuss state management.
 
