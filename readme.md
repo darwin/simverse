@@ -62,9 +62,8 @@ add lnd bob
 If you don't want to risk putting your machine on fire, here is a recording:
 
 * note that we used pre-generated `./tmux` script to launch everything in one terminal window
-* also note that all our docker caches are warm, so there is nothing to do - your first run will much more busy
 
-[![asciicast](https://asciinema.org/a/237989.svg)](https://asciinema.org/a/237989)
+[![asciicast](https://asciinema.org/a/238727.svg)](https://asciinema.org/a/238727)
 
 ## Generated simnet folder
 
