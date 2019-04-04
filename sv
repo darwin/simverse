@@ -474,7 +474,12 @@ make_sure_repos_are_initialized() {
   fi
 
   if ! are_known_repos_initialized; then
-    read -n 1 -p "Repos seem to be not initialized in '$SIMVERSE_REPOS'. Do you want to init them now?(y/n)" answer; echo ""
+    local answer
+    if [[ -z "$FLAG_YES" ]]; then
+      read -n 1 -p "Repos seem to be not initialized in '$SIMVERSE_REPOS'. Do you want to init them now?(y/n)" answer; echo ""
+    else
+      answer=y
+    fi
     if [[ "$answer" == "y" ]]; then
       pushd "$SIMVERSE_HOME"
       present_cwd
@@ -937,6 +942,7 @@ while test $# -gt 0; do
     -f | --force) FLAG_FORCE=1 ;;
     -s | --switch) FLAG_SWITCH=1 ;;
     -q | --quiet) FLAG_QUIET=1; ;;
+    -y | --yes) FLAG_YES=1; ;;
     # ...
 
     # special cases
