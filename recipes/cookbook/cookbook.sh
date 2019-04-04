@@ -4,10 +4,11 @@ set -e -o pipefail
 
 # this script defines a simple DSL for incrementally building docker-compose config and related files
 
-# recipes must be invoked from $SIMVERSE_HOME/recipes dir, with <simnet_name> and <simverse_workspace> args:
+# recipes must be invoked from $SIMVERSE_HOME/recipes dir, with <simnet_name>
+#
+# also note that SIMVERSE_HOME, SIMVERSE_WORKSPACE and SIMVERSE_REPOS must be set
 
 SIMNET_NAME=${1:?please specify a simnet name as first argument}
-SIMVERSE_WORKSPACE=${2:?please specify the simverse workspace path as second argument}
 
 # example usage:
 #
@@ -21,6 +22,8 @@ SIMVERSE_WORKSPACE=${2:?please specify the simverse workspace path as second arg
 REQUIRED="variable not set or empty, (hint: source _defaults.sh)"
 
 SIMVERSE_HOME=${SIMVERSE_HOME:?$REQUIRED}
+SIMVERSE_REPOS=${SIMVERSE_REPOS:?$REQUIRED}
+SIMVERSE_WORKSPACE=${SIMVERSE_WORKSPACE:?$REQUIRED}
 COOKBOOK_DIR="$SIMVERSE_HOME/recipes/cookbook"
 TEMPLATES_DIR="$COOKBOOK_DIR/templates"
 SCAFFOLD_DIR="$COOKBOOK_DIR/scaffold"
@@ -206,15 +209,15 @@ prepare_repos() {
   case "$OSTYPE" in
     darwin*)
       # -c assumes fast APFS clone
-      cp -c -r "$SIMVERSE_HOME/_repos" repos
+      cp -c -r "$SIMVERSE_REPOS" repos
       ;;
     linux*)
       # TODO: see https://superuser.com/a/842690
       # mkdir -p repos
-      # sudo mount --bind "$SIMVERSE_HOME/_repos" repos
+      # sudo mount --bind "$SIMVERSE_REPOS" repos
 
       # use slower cp for now...
-      cp -r "$SIMVERSE_HOME/_repos" repos
+      cp -r "$SIMVERSE_REPOS" repos
       ;;
     *)
       echo "NOT IMPLEMENTED: add support for mirroring repos inside docker context for $OSTYPE"

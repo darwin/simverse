@@ -395,7 +395,9 @@ cook_recipe() {
   local recipe_script=$1
   local simnet_name=$2
   pushd "$RECIPES_DIR"
-  present ${recipe_script} ${simnet_name} "$SIMVERSE_WORKSPACE_ABSOLUTE"
+  export SIMVERSE_WORKSPACE="$SIMVERSE_WORKSPACE_ABSOLUTE"
+  export SIMVERSE_REPOS="$SIMVERSE_REPOS_ABSOLUTE"
+  present ${recipe_script} ${simnet_name}
   popd
 }
 
