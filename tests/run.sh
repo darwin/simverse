@@ -23,7 +23,7 @@ cd ..
 
 export SIMVERSE_HOME="$(pwd -P)"
 
-TMP_DIR=$(mktemp -d -t simverse_tests)
+TMP_DIR=$(mktemp -d -t simverse_tests.XXXXXXXX)
 if [[ ! "$TMP_DIR" || ! -d "$TMP_DIR" ]]; then
   echo_err "failed to create temp directory"
   exit 1
