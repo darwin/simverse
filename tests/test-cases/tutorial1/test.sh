@@ -8,6 +8,7 @@ SIMVERSE_WORKSPACE=${SIMVERSE_WORKSPACE:?required}
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 source ../../_lib/helpers.sh
+source ../../_lib/travis.sh
 
 SIMNET_NAME=$(basename $(pwd))
 
@@ -15,6 +16,7 @@ SIMNET_NAME=$(basename $(pwd))
 
 cd "${SIMVERSE_HOME}"
 
+travis_fold start "prepare-$SIMNET_NAME"
 announce "preparing $SIMNET_NAME simnet..."
 
 ./sv create ${SIMNET_NAME} b1l2 --yes
@@ -22,6 +24,9 @@ announce "preparing $SIMNET_NAME simnet..."
 enter_simnet ${SIMNET_NAME}
 
 ./dc build
+
+travis_fold end "prepare-$SIMNET_NAME"
+
 ./dc up -d
 
 trap "./dc down" EXIT
