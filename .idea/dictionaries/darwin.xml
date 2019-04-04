@@ -36,6 +36,7 @@
       <w>gencerts</w>
       <w>genreadme</w>
       <w>getbalance</w>
+      <w>getinfo</w>
       <w>grpc</w>
       <w>lightningnetwork</w>
       <w>litecoin</w>
@@ -77,6 +78,7 @@
       <w>tmux</w>
       <w>tmuxinator</w>
       <w>txindex</w>
+      <w>unshallow</w>
       <w>workdir</w>
     </words>
   </dictionary>
