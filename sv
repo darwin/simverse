@@ -742,7 +742,16 @@ init_repo() {
   fi
 
   local repo_url=$(get_repo_url "$repo")
-  present git clone ${SIMVERSE_GIT_CLONE_OPTS} "$repo_url"
+
+  # this might help with repo download during tests
+  # assuming user has full clones already (git fetch --unshallow)
+  local reference_if_able
+  SIMVERSE_GIT_REFERENCE_PREFIX=${SIMVERSE_GIT_REFERENCE_PREFIX}
+  if [[ -n "$SIMVERSE_GIT_REFERENCE_PREFIX" ]]; then
+    reference_if_able=" --reference-if-able $SIMVERSE_GIT_REFERENCE_PREFIX/${repo}/.git"
+  fi
+
+  present git clone ${SIMVERSE_GIT_CLONE_OPTS}${reference_if_able} "$repo_url"
 }
 
 # repos init [repo_name] [...]
