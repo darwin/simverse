@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-VERSION=0.1
+SIMVERSE_VERSION=0.1
 HOMEPAGE=https://github.com/darwin/simverse
 
 LAUNCH_DIR=$(pwd -P)
@@ -87,7 +87,7 @@ present() {
 
 show_main_help() {
   cat <<EOF
-SimVerse v${VERSION}.
+SimVerse v${SIMVERSE_VERSION}.
 
 A generator of simnet clusters for lnd and friends.
 
@@ -102,6 +102,7 @@ Commands:
   state     perform state operations on a simnet
   repos     perform operations on code repositories
   help      this help page
+  version   display version
 
 Run \`./sv help <command>\` for specific usage.
 Run \`./sv help <topic>\` to learn about general concepts.
@@ -371,24 +372,6 @@ not specific to exact node.
 EOF
 }
 
-show_help() {
-  local command=$1
-  case "$command" in
-    "create") show_create_help ;;
-    "destroy") show_destroy_help ;;
-    "enter") show_enter_help ;;
-    "list") show_list_help ;;
-    "state") show_state_help ;;
-    "repo"*) show_repos_help ;;
-    "recipe"*) show_recipes_help ;;
-    "workspace"*) show_workspace_help ;;
-    "simnet"*) show_simnet_help ;;
-    "toolbox") show_toolbox_help ;;
-    "alias"*) show_aliases_help ;;
-    *) show_main_help ;;
-  esac
-}
-
 # -- helpers ----------------------------------------------------------------------------------------------------------------
 
 cook_recipe() {
@@ -492,6 +475,31 @@ make_sure_repos_are_initialized() {
 }
 
 # -- commands ---------------------------------------------------------------------------------------------------------------
+
+# help
+show_help() {
+  local command=$1
+  case "$command" in
+    "create") show_create_help ;;
+    "destroy") show_destroy_help ;;
+    "enter") show_enter_help ;;
+    "list") show_list_help ;;
+    "state") show_state_help ;;
+    "repo"*) show_repos_help ;;
+    "recipe"*) show_recipes_help ;;
+    "workspace"*) show_workspace_help ;;
+    "simnet"*) show_simnet_help ;;
+    "toolbox") show_toolbox_help ;;
+    "alias"*) show_aliases_help ;;
+    *) show_main_help ;;
+  esac
+}
+
+# version
+show_version() {
+  local _args=$@
+  echo "$SIMVERSE_VERSION"
+}
 
 # create [-f] [simnet_name] [recipe_name]
 create_simnet() {
@@ -955,6 +963,7 @@ while test $# -gt 0; do
     -q | --quiet) FLAG_QUIET=1; ;;
     -y | --yes) FLAG_YES=1; ;;
     -h | --help) FLAG_HELP=1; ;;
+    -v | --version) FLAG_VERSION=1; ;;
     # ...
 
     # special cases
@@ -1008,11 +1017,17 @@ if [[ -n "$FLAG_HELP" ]]; then
   exit 0
 fi
 
+if [[ -n "$FLAG_VERSION" ]]; then
+  show_version "$@"
+  exit 0
+fi
+
 COMMAND=${1:-help}
 shift || true
 
 case "$COMMAND" in
   "help") show_help "$@" ;;
+  "version") show_version "$@" ;;
   "create") create_simnet "$@" ;;
   "destroy") destroy_simnet "$@" ;;
   "enter") enter_simnet "$@" ;;
