@@ -137,6 +137,12 @@ Alternatively you can use our pre-generated `./tmux` script.
   
 ## FAQ
 
+#### Is this secure?
+
+> No. This is a developer setup and should be never used on a machine connected to open internet. 
+> It is expected to be used developer machine on a local network behind NAT/firewall and should never contain sensitive info.
+> Anyways whatever you do, you use it at your own risk. 
+
 #### How do I customize build/runtime parameters for individual docker containers?
 
 > By customizing your recipe before adding a node or globally via env variables. See [`_defaults.sh`](_defaults.sh).
