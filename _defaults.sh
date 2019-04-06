@@ -46,18 +46,15 @@ export LND_AUTO_NAME_PREFIX=${LND_AUTO_NAME_PREFIX:-lnd}
 export BTCD_AUTO_NAME_PREFIX=${BTCD_AUTO_NAME_PREFIX:-btcd}
 
 # ---------------------------------------------------------------------------------------------------------------------------
-# note: these are relative to docker build context
+# you can tweak these on per-node basis in your recipes
 
+# note: these are relative to docker build context
 export DEFAULT_BTCD_REPO_PATH=${DEFAULT_BTCD_REPO_PATH:-repos/btcd}
 export DEFAULT_BTCWALLET_REPO_PATH=${DEFAULT_BTCWALLET_REPO_PATH:-repos/btcwallet}
 export DEFAULT_LND_REPO_PATH=${DEFAULT_LND_REPO_PATH:-repos/lnd}
-
 export DEFAULT_BTCD_CONF_PATH=${DEFAULT_BTCD_CONF_PATH:-docker/btcd/btcd.conf}
 export DEFAULT_BTCWALLET_CONF_PATH=${DEFAULT_BTCWALLET_CONF_PATH:-docker/btcd/btcwallet.conf}
 export DEFAULT_LND_CONF_PATH=${DEFAULT_LND_CONF_PATH:-docker/lnd/lnd.conf}
-
-# ---------------------------------------------------------------------------------------------------------------------------
-# you can tweak these on per-node basis in your recipes
 
 export SIMVERSE_HOST_BIND=${SIMVERSE_HOST_BIND:-127.0.0.1:} # note the trailing colon, see https://docs.docker.com/compose/compose-file/#ports
 export SIMVERSE_EXTRA_SERVICE_CONFIG=${SIMVERSE_EXTRA_SERVICE_CONFIG}
