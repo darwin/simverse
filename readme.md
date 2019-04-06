@@ -146,6 +146,8 @@ Alternatively you can use our pre-generated `./tmux` script.
 #### How do I customize build/runtime parameters for individual docker containers?
 
 > By customizing your recipe before adding a node or globally via env variables. See [`_defaults.sh`](_defaults.sh).
+> For example you can set different `DEFAULT_LND_REPO_PATH` before each `add lnd ...` command. This would tweak effective
+config for following lnd nodes. Read the [`cookbook.sh`](recipes/cookbook/cookbook.sh) bash script for better understanding. 
 
 #### How do I rebuild everything from scratch?
 
