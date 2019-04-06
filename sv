@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-SIMVERSE_VERSION=0.1
+SIMVERSE_VERSION=0.2
 HOMEPAGE=https://github.com/darwin/simverse
 
 LAUNCH_DIR=$(pwd -P)
