@@ -10,10 +10,10 @@
         - LND_REPO_PATH=$LND_REPO_PATH
         - LND_CONF_PATH=$LND_CONF_PATH
     ports:
-      - $LND_SERVER_PORT_ON_HOST:9735 # lnd server port
-      - $LND_RPC_PORT_ON_HOST:10009 # lnd rpc port
-      - $LND_GRPC_PORT_ON_HOST:8080 # lnd grpc port
-      - $DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
+      - $SIMVERSE_HOST_BIND$LND_SERVER_PORT_ON_HOST:9735 # lnd server port
+      - $SIMVERSE_HOST_BIND$LND_RPC_PORT_ON_HOST:10009 # lnd rpc port
+      - $SIMVERSE_HOST_BIND$LND_GRPC_PORT_ON_HOST:8080 # lnd grpc port
+      - $SIMVERSE_HOST_BIND$DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
       # !DANGER! when touching this, review cookbook.sh > prepare_lnd_volumes
       - ./_volumes/certs:/certs:ro # shared certificates

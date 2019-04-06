@@ -28,6 +28,8 @@ export SIMVERSE_BTCD_REPO_URL=${SIMVERSE_BTCD_REPO_URL:-https://github.com/btcsu
 export SIMVERSE_BTCWALLET_REPO_URL=${SIMVERSE_BTCWALLET_REPO_URL:-https://github.com/btcsuite/btcwallet.git}
 export SIMVERSE_LND_REPO_URL=${SIMVERSE_LND_REPO_URL:-https://github.com/lightningnetwork/lnd.git}
 
+export SIMVERSE_HOST_BIND=${SIMVERSE_HOST_BIND:-127.0.0.1:} # note the trailing colon, see https://docs.docker.com/compose/compose-file/#ports
+
 export FIRST_DLV_PORT_ON_HOST=${FIRST_DLV_PORT_ON_HOST:-41000}
 export FIRST_DLV_PORT=${FIRST_DLV_PORT:-41000}
 
