@@ -19,16 +19,14 @@ export DEFAULT_SIMNET_NAME=${DEFAULT_SIMNET_NAME:-default}
 export DEFAULT_RECIPE_NAME=${DEFAULT_RECIPE_NAME:-default}
 export DEFAULT_STATE_NAME=${DEFAULT_STATE_NAME:-master}
 
-export SIMVERSE_GIT_CLONE_OPTS=${SIMVERSE_GIT_CLONE_OPTS:-"--depth=1 --recursive"}
-export SIMVERSE_GIT_REFERENCE_PREFIX=${SIMVERSE_GIT_REFERENCE_PREFIX} # used in tests
-export SIMVERSE_GIT_FETCH_OPTS=${SIMVERSE_GIT_FETCH_OPTS}
-export SIMVERSE_GIT_PULL_OPTS=${SIMVERSE_GIT_PULL_OPTS}
-
 export SIMVERSE_BTCD_REPO_URL=${SIMVERSE_BTCD_REPO_URL:-https://github.com/btcsuite/btcd.git}
 export SIMVERSE_BTCWALLET_REPO_URL=${SIMVERSE_BTCWALLET_REPO_URL:-https://github.com/btcsuite/btcwallet.git}
 export SIMVERSE_LND_REPO_URL=${SIMVERSE_LND_REPO_URL:-https://github.com/lightningnetwork/lnd.git}
 
-export SIMVERSE_HOST_BIND=${SIMVERSE_HOST_BIND:-127.0.0.1:} # note the trailing colon, see https://docs.docker.com/compose/compose-file/#ports
+export SIMVERSE_GIT_CLONE_OPTS=${SIMVERSE_GIT_CLONE_OPTS:-"--depth=1 --recursive"}
+export SIMVERSE_GIT_REFERENCE_PREFIX=${SIMVERSE_GIT_REFERENCE_PREFIX} # used in tests
+export SIMVERSE_GIT_FETCH_OPTS=${SIMVERSE_GIT_FETCH_OPTS}
+export SIMVERSE_GIT_PULL_OPTS=${SIMVERSE_GIT_PULL_OPTS}
 
 export FIRST_DLV_PORT_ON_HOST=${FIRST_DLV_PORT_ON_HOST:-41000}
 export FIRST_DLV_PORT=${FIRST_DLV_PORT:-41000}
@@ -60,6 +58,9 @@ export DEFAULT_LND_CONF_PATH=${DEFAULT_LND_CONF_PATH:-docker/lnd/lnd.conf}
 
 # ---------------------------------------------------------------------------------------------------------------------------
 # you can tweak these on per-node basis in your recipes
+
+export SIMVERSE_HOST_BIND=${SIMVERSE_HOST_BIND:-127.0.0.1:} # note the trailing colon, see https://docs.docker.com/compose/compose-file/#ports
+export SIMVERSE_EXTRA_SERVICE_CONFIG=${SIMVERSE_EXTRA_SERVICE_CONFIG}
 
 export RPC_USER=${RPC_USER:-devuser}
 export RPC_PASS=${RPC_PASS:-devpass}

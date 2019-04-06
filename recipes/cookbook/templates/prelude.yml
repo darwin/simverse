@@ -32,3 +32,4 @@ services:
       - ./_volumes/certs:/certs # shared certificates
     environment:
       - PRE_SIGNAL_PORT=${SIMVERSE_PRE_SIGNAL_PORT}
+    $SIMVERSE_EXTRA_SERVICE_CONFIG
