@@ -954,6 +954,7 @@ while test $# -gt 0; do
     -s | --switch) FLAG_SWITCH=1 ;;
     -q | --quiet) FLAG_QUIET=1; ;;
     -y | --yes) FLAG_YES=1; ;;
+    -h | --help) FLAG_HELP=1; ;;
     # ...
 
     # special cases
@@ -1002,11 +1003,16 @@ SIMVERSE_WORKSPACE_ABSOLUTE=$(pwd -P)
 
 # ---------------------------------------------------------------
 
+if [[ -n "$FLAG_HELP" ]]; then
+  show_help "$@"
+  exit 0
+fi
+
 COMMAND=${1:-help}
 shift || true
 
 case "$COMMAND" in
-  "help"|"--help") show_help "$@" ;;
+  "help") show_help "$@" ;;
   "create") create_simnet "$@" ;;
   "destroy") destroy_simnet "$@" ;;
   "enter") enter_simnet "$@" ;;
