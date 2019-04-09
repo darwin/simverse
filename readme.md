@@ -173,7 +173,9 @@ that they don't overlap for simnets you need to run in parallel.
 
 > `./dc exec <container> bash` or `./dc exec <container> fish` or `./dc exec <container> sh`
 > 
-> or `./dc exec <container> <one-off-cmd>` 
+> or `./dc exec <container> <one-off-cmd>`
+>
+> Pro Tip: you might want to add `--user root` before container name to run the command with unrestricted permissions
 
 #### Is it possible to keep simverse workspace on my own path?
 
