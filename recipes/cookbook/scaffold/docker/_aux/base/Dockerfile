@@ -30,3 +30,7 @@ RUN if id -u $SIMVERSE_HOST_UID > /dev/null 2>&1; \
 WORKDIR /home/simnet
 
 ENV PATH $PATH:/home/simnet
+
+# see https://github.com/krallin/tini
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
