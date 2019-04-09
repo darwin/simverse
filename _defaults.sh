@@ -9,7 +9,7 @@ export SIMVERSE_REPOS=${SIMVERSE_REPOS:-_repos}
 #############################################################################################################################
 # simnet create-time defaults, effective during ./sv create (or other ./sv commands)
 
-export SIMVERSE_DOCKER_IMAGE_PREFIX=${SIMVERSE_DOCKER_IMAGE_PREFIX:-sv_}
+export SIMVERSE_DOCKER_IMAGE_PREFIX=${SIMVERSE_DOCKER_IMAGE_PREFIX:-simverse/}
 export SIMVERSE_DOCKER_NETWORK_PREFIX=${SIMVERSE_DOCKER_NETWORK_PREFIX:-$SIMVERSE_DOCKER_IMAGE_PREFIX}
 export SIMVERSE_DOCKER_CONTAINER_PREFIX=${SIMVERSE_DOCKER_CONTAINER_PREFIX}
 export SIMVERSE_HOST_UID=${SIMVERSE_HOST_UID:-$(id -u)}
