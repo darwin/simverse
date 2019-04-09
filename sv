@@ -87,7 +87,7 @@ present() {
 
 show_main_help() {
   cat <<EOF
-SimVerse v${SIMVERSE_VERSION}.
+Simverse v${SIMVERSE_VERSION}.
 
 A generator of simnet clusters for lnd and friends.
 

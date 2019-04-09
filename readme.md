@@ -1,4 +1,4 @@
-# SimVerse
+# Simverse
 
 This is a tool for lnd developers. It can generate local simnet clusters of requested size and shape. It uses docker-compose
 to manage the cluster and provides a set of helper scripts for your convenience.   
@@ -203,9 +203,10 @@ that they don't overlap for simnets you need to run in parallel.
 ## sv utility reference
 
 
+
 `> ./sv help`
 ```
-SimVerse v0.1.
+Simverse v0.2.
 
 A generator of simnet clusters for lnd and friends.
 
@@ -220,6 +221,7 @@ Commands:
   state     perform state operations on a simnet
   repos     perform operations on code repositories
   help      this help page
+  version   display version
 
 Run `./sv help <command>` for specific usage.
 Run `./sv help <topic>` to learn about general concepts.
@@ -266,6 +268,7 @@ Typical simnet folder structure is:
     toolbox/
     dc
     docker-compose.yml
+    tmux
 
 Feel free to look around. Below we discuss state management.
 
