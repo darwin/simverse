@@ -2,6 +2,8 @@
 
 source lib/init.sh
 
+BTCD_MINING_ADDR_PRIVATE_KEY=${BTCD_MINING_ADDR_PRIVATE_KEY:?required}
+
 # we need to wait for btcwallet to connect to btcd to avoid "-1: Chain RPC is inactive" errors
 set +e
 PROBE_CMD="./btcctl.sh --wallet getbalance"
@@ -22,4 +24,4 @@ echo "Initializing wallet..."
 set -x
 
 ./btcctl.sh --wallet walletpassphrase "password" 0
-./btcctl.sh --wallet importprivkey FwKY4zwscP47RKYWjiDJZxUTbWcyXRXvrAhQ2iLEuJXcRiLa7tYy imported
+./btcctl.sh --wallet importprivkey ${BTCD_MINING_ADDR_PRIVATE_KEY} imported
