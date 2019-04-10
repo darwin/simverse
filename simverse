@@ -1013,13 +1013,11 @@ SIMVERSE_WORKSPACE_ABSOLUTE=$(pwd -P)
 # ---------------------------------------------------------------
 
 if [[ -n "$FLAG_HELP" ]]; then
-  show_help "$@"
-  exit 0
+  set -- help
 fi
 
 if [[ -n "$FLAG_VERSION" ]]; then
-  show_version "$@"
-  exit 0
+  set -- version
 fi
 
 COMMAND=${1:-help}
