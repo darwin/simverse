@@ -28,6 +28,7 @@ KNOWN_REPOS=(btcd btcwallet lnd)
 
 # error codes
 NO_ERR=0
+ERR_INTERNAL=9
 ERR_UNSUPPORTED_FLAG=10
 ERR_SIMNET_DOES_NOT_EXIST=11
 ERR_SIMNET_ALREADY_EXISTS=12
@@ -42,6 +43,10 @@ ERR_STATE_ALREADY_EXISTS=20
 ERR_UNKNOWN_REPO=21
 ERR_SOURCE_REPO_NOT_FOUND=22
 ERR_DESTINATION_REPO_EXISTS=23
+ERR_INVALID_SIMNET_NAME=24
+ERR_INVALID_STATE_NAME=25
+ERR_INVALID_REPO_NAME=26
+
 
 FAST_CP_OPTS=""
 case "$OSTYPE" in
@@ -374,6 +379,30 @@ EOF
 
 # -- helpers ----------------------------------------------------------------------------------------------------------------
 
+check_simnet_name() {
+  local simnet_name=${1?required}
+  if ! [[ ${simnet_name} =~ ^[-_A-Za-z0-9]+$ ]]; then
+    echo_err "simnet name '$simnet_name' is invalid, we allow only non-empty string of alphanum chars, underscores and dashes"
+    exit ${ERR_INVALID_SIMNET_NAME}
+  fi
+}
+
+check_state_name() {
+  local state_name=${1?required}
+  if ! [[ ${state_name} =~ ^[-_A-Za-z0-9]+$ ]]; then
+    echo_err "state name '$state_name' is invalid, we allow only non-empty string of alphanum chars, underscores and dashes"
+    exit ${ERR_INVALID_STATE_NAME}
+  fi
+}
+
+check_repo_name() {
+  local repo_name=${1?required}
+  if ! [[ ${repo_name} =~ ^[-_A-Za-z0-9]+$ ]]; then
+    echo_err "repo name '$repo_name' is invalid, we allow only non-empty string of alphanum chars, underscores and dashes"
+    exit ${ERR_INVALID_REPO_NAME}
+  fi
+}
+
 init_simverse_repos() {
   pushd "$LAUNCH_DIR"
   if [[ ! -d "$SIMVERSE_REPOS" ]]; then
@@ -416,7 +445,7 @@ cook_recipe() {
 }
 
 validate_simnet_exists() {
-  local simnet_name=$1
+  local simnet_name=${1:?required}
 
   pushd "$SIMVERSE_WORKSPACE_ABSOLUTE"
   if [[ ! -d "$simnet_name" ]]; then
@@ -427,7 +456,7 @@ validate_simnet_exists() {
 }
 
 get_state_dir() {
-  local simnet_name=$1
+  local simnet_name=${1:?required}
   local state_name=$2
   local states_dir_prefix="$simnet_name/_states"
   if [[ -z "$state_name" ]]; then
@@ -438,7 +467,7 @@ get_state_dir() {
 }
 
 get_selected_state_dir() {
-  local simnet_name=$1
+  local simnet_name=${1:?required}
   pushd "$SIMVERSE_WORKSPACE_ABSOLUTE"
   cd "$simnet_name"
   current_state_dir=$(cd "_volumes"; pwd -P) # resolves via symlink
@@ -540,6 +569,8 @@ create_simnet() {
   local simnet_name=${1:-$DEFAULT_SIMNET_NAME}
   local recipe_alias=${2:-$DEFAULT_RECIPE_NAME}
 
+  check_simnet_name "$simnet_name"
+
   local recipe_script="$RECIPES_DIR/${recipe_alias}.sh" # TODO: allow full path alternative
 
   if [[ ! -f "$recipe_script" ]]; then
@@ -573,6 +604,8 @@ create_simnet() {
 destroy_simnet() {
   local simnet_name=${1:-$DEFAULT_SIMNET_NAME}
 
+  check_simnet_name "$simnet_name"
+
   validate_simnet_exists "$simnet_name"
 
   make_sure_simnet_is_not_running
@@ -586,6 +619,8 @@ destroy_simnet() {
 # enter [simnet_name]
 enter_simnet() {
   local simnet_name=${1:-$DEFAULT_SIMNET_NAME}
+
+  check_simnet_name "$simnet_name"
 
   validate_simnet_exists "$simnet_name"
 
@@ -610,6 +645,8 @@ list_simnets() {
 show_state() {
   local simnet_name=${1:-$DEFAULT_SIMNET_NAME}
 
+  check_simnet_name "$simnet_name"
+
   validate_simnet_exists "$simnet_name"
 
   current_state_dir=$(get_selected_state_dir "$simnet_name")
@@ -627,6 +664,10 @@ rm_state() {
     simnet_name=${DEFAULT_SIMNET_NAME}
     state_name=${1:-$DEFAULT_STATE_NAME}
   fi
+
+  check_simnet_name "$simnet_name"
+
+  check_state_name "$state_name"
 
   validate_simnet_exists "$simnet_name"
 
@@ -661,6 +702,10 @@ switch_state() {
     simnet_name=${DEFAULT_SIMNET_NAME}
     state_name=${1:-$DEFAULT_STATE_NAME}
   fi
+
+  check_simnet_name "$simnet_name"
+
+  check_state_name "$state_name"
 
   validate_simnet_exists "$simnet_name"
 
@@ -702,6 +747,10 @@ clone_state() {
     new_state_name=$1
   fi
 
+  check_simnet_name "$simnet_name"
+
+  check_state_name "$new_state_name"
+
   validate_simnet_exists "$simnet_name"
 
   make_sure_simnet_is_not_running
@@ -711,6 +760,8 @@ clone_state() {
   if [[ -z "$old_state_name" ]]; then
     old_state_name=$(basename "$(get_selected_state_dir "$simnet_name")")
   fi
+
+  check_state_name "$old_state_name"
 
   local src=$(get_state_dir "$simnet_name" "$old_state_name")
   local dest=$(get_state_dir "$simnet_name" "$new_state_name")
@@ -736,7 +787,10 @@ list_states() {
   local simnet_name=${1:-$DEFAULT_SIMNET_NAME}
   local filter=$2
 
+  check_simnet_name "$simnet_name"
+
   validate_simnet_exists "$simnet_name"
+
   local state_dir=$(get_state_dir "$simnet_name")
   find "$state_dir" -maxdepth 1 -type d -exec basename {} \; | tail -n "+2" | sort | grep -i "$filter"
 }
@@ -772,7 +826,9 @@ get_repo_url() {
 }
 
 init_repo() {
-  local repo=$1
+  local repo=${1:?required}
+
+  check_repo_name "$repo"
 
   if [[ ! -e "$repo" ]]; then
     if [[ -n "$FLAG_FORCE" ]]; then
@@ -819,7 +875,9 @@ init_repos() {
 }
 
 update_repo() {
-  local repo=$1
+  local repo=${1:?required}
+
+  check_repo_name "$repo"
 
   if [[ ! -e "$repo" ]]; then
     if [[ -n "$FLAG_FORCE" ]]; then
@@ -874,6 +932,9 @@ clone_repo() {
     exit ${ERR_TOO_FEW_ARGUMENTS}
   fi
 
+  check_repo_name "$repo_name"
+  check_repo_name "$new_repo_name"
+
   cd "$SIMVERSE_REPOS_ABSOLUTE"
   present_cwd
 
@@ -906,6 +967,11 @@ list_repos() {
 rm_repos() {
   local args=$@
 
+  if [[ -z "$SIMVERSE_REPOS_ABSOLUTE" ]]; then
+    echo_err "internal error: SIMVERSE_REPOS_ABSOLUTE must be set"
+    exit ${ERR_INTERNAL}
+  fi
+
   cd "$SIMVERSE_REPOS_ABSOLUTE"
   present_cwd
 
@@ -926,6 +992,7 @@ rm_repos() {
   else
     # delete specific repos
     for repo in ${args}; do
+      check_repo_name "$repo"
       if [[ -e "$repo" ]]; then
         present rm -rf "$repo"
       else
