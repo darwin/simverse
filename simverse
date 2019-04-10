@@ -464,8 +464,10 @@ make_sure_simnet_is_not_running() {
     return
   fi
 
+  set +e
   nc -z "localhost" "$SIMVERSE_PRE_SIGNAL_PORT_ON_HOST" > /dev/null 2>&1
   result=$?
+  set -e
   if [[ "$result" -eq 0 ]]; then
     # _pre is running
     echo_err "some simnet seems to be running, please shut it down first or force this with the -f flag"
