@@ -374,6 +374,37 @@ EOF
 
 # -- helpers ----------------------------------------------------------------------------------------------------------------
 
+init_simverse_repos() {
+  pushd "$LAUNCH_DIR"
+  if [[ ! -d "$SIMVERSE_REPOS" ]]; then
+    say "simverse repos dir does not exist at '$SIMVERSE_REPOS', creating it..."
+    present mkdir -p "$SIMVERSE_REPOS"
+  fi
+
+  pushd "$SIMVERSE_REPOS"
+  SIMVERSE_REPOS_ABSOLUTE=$(pwd -P)
+  popd
+  popd
+}
+
+init_simverse_workspace() {
+  pushd "$LAUNCH_DIR"
+  if [[ ! -d "$SIMVERSE_WORKSPACE" ]]; then
+    say "simverse workspace dir does not exist at '$SIMVERSE_WORKSPACE', creating it..."
+    present mkdir -p "$SIMVERSE_WORKSPACE"
+  fi
+
+  pushd "$SIMVERSE_WORKSPACE"
+  SIMVERSE_WORKSPACE_ABSOLUTE=$(pwd -P)
+  popd
+  popd
+}
+
+ensure_workspace() {
+  init_simverse_workspace
+  cd "$SIMVERSE_WORKSPACE_ABSOLUTE"
+}
+
 cook_recipe() {
   local recipe_script=$1
   local simnet_name=$2
@@ -443,6 +474,7 @@ make_sure_simnet_is_not_running() {
 }
 
 are_known_repos_initialized() {
+  init_simverse_repos
   pushd "$SIMVERSE_REPOS_ABSOLUTE"
   for repo in ${KNOWN_REPOS[@]}; do
     if [[ ! -e "$repo" ]]; then
@@ -902,6 +934,8 @@ rm_repos() {
 }
 
 handle_repos() {
+  init_simverse_repos
+
   local subcommand=${1-list}
   shift || true
 
@@ -988,30 +1022,6 @@ done
 # reset with flags filtered out
 set -- ${ARGS[*]}
 
-# ---------------------------------------------------------------
-
-if [[ ! -d "$SIMVERSE_REPOS" ]]; then
-  say "simverse repos dir does not exist at '$SIMVERSE_REPOS', creating it..."
-  present mkdir -p "$SIMVERSE_REPOS"
-fi
-
-pushd "$SIMVERSE_REPOS"
-SIMVERSE_REPOS_ABSOLUTE=$(pwd -P)
-popd
-
-# ---------------------------------------------------------------
-
-if [[ ! -d "$SIMVERSE_WORKSPACE" ]]; then
-  say "simverse workspace dir does not exist at '$SIMVERSE_WORKSPACE', creating it..."
-  present mkdir -p "$SIMVERSE_WORKSPACE"
-fi
-
-cd "$SIMVERSE_WORKSPACE"
-
-SIMVERSE_WORKSPACE_ABSOLUTE=$(pwd -P)
-
-# ---------------------------------------------------------------
-
 if [[ -n "$FLAG_HELP" ]]; then
   set -- help
 fi
@@ -1026,12 +1036,14 @@ shift || true
 case "$COMMAND" in
   "help") show_help "$@" ;;
   "version") show_version "$@" ;;
-  "create") create_simnet "$@" ;;
-  "destroy") destroy_simnet "$@" ;;
-  "enter") enter_simnet "$@" ;;
-  "list") list_simnets "$@" ;;
-  "state") handle_state "$@" ;;
   "repos") handle_repos "$@" ;;
   "genreadme") generate_readme ;; # internal
+
+  # following commands need workspace and expect cwd to be set there
+  "create") ensure_workspace; create_simnet "$@" ;;
+  "destroy") ensure_workspace; destroy_simnet "$@" ;;
+  "enter") ensure_workspace; enter_simnet "$@" ;;
+  "list") ensure_workspace; list_simnets "$@" ;;
+  "state") ensure_workspace; handle_state "$@" ;;
   *) echo_err "unsupported command '$COMMAND', use './sv help'"; exit ${ERR_INVALID_COMMAND} ;;
 esac
