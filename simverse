@@ -505,7 +505,6 @@ make_sure_simnet_is_not_running() {
 }
 
 are_known_repos_initialized() {
-  init_simverse_repos
   pushd "$SIMVERSE_REPOS_ABSOLUTE"
   for repo in ${KNOWN_REPOS[@]}; do
     if [[ ! -e "$repo" ]]; then
@@ -517,6 +516,8 @@ are_known_repos_initialized() {
 }
 
 make_sure_repos_are_initialized() {
+  init_simverse_repos
+
   if [[ -n "$FLAG_FORCE" ]]; then
     return
   fi
