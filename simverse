@@ -438,7 +438,15 @@ cook_recipe() {
   local recipe_script=$1
   local simnet_name=$2
   pushd "$RECIPES_DIR"
+  if [[ -z "$SIMVERSE_WORKSPACE_ABSOLUTE" ]]; then
+    echo_err "internal error: SIMVERSE_WORKSPACE_ABSOLUTE must be set"
+    exit ${ERR_INTERNAL}
+  fi
   export SIMVERSE_WORKSPACE="$SIMVERSE_WORKSPACE_ABSOLUTE"
+  if [[ -z "$SIMVERSE_REPOS_ABSOLUTE" ]]; then
+    echo_err "internal error: SIMVERSE_REPOS_ABSOLUTE must be set"
+    exit ${ERR_INTERNAL}
+  fi
   export SIMVERSE_REPOS="$SIMVERSE_REPOS_ABSOLUTE"
   present ${recipe_script} ${simnet_name}
   popd
