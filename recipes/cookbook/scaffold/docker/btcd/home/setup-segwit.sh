@@ -13,8 +13,9 @@ fi
 #  "This means that the block height of the simnet blockchain is not high enough.
 #   The threshold for segwit activation is 300 blocks on simnet."
 # source: https://degreesofzero.com/article/shared-private-lightning-network.html
+NUM_BLOCKS_REQUIRED=500
 BLOCKS=$(./btcctl.sh getblockcount)
-if [[ "$BLOCKS" -lt "300" ]]; then
+if [[ "$BLOCKS" -lt "$NUM_BLOCKS_REQUIRED" ]]; then
   echo "Activating segwit..."
-  ./btcctl.sh generate 300
+  ./btcctl.sh generate ${NUM_BLOCKS_REQUIRED}
 fi

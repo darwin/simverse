@@ -4,7 +4,14 @@ source lib/init.sh
 
 cp "seed-btcwallet.conf" ".btcwallet/btcwallet.conf"
 
-PARAMS="--appdata=$(pwd -P)/.btcwallet"
+PARAMS=""
+
+# note we patch btcwallet's simnet mode to effectively run in regtest mode
+# see patches/simnet-as-regtest.patch
+# see https://github.com/btcsuite/btcwallet/issues/506
+PARAMS+=" --simnet"
+
+PARAMS+=" --appdata=$(pwd -P)/.btcwallet"
 
 # we keep one shared rpc cert for all btcd nodes
 PARAMS+=" --cafile=/certs/rpc.cert --rpccert=/certs/rpc.cert --rpckey=/certs/rpc.key"
@@ -17,11 +24,6 @@ RPC_PASS=${RPC_PASS}
 BTCWALLET_USER=${BTCWALLET_USER}
 BTCWALLET_PASS=${BTCWALLET_PASS}
 DEBUG=${DEBUG}
-NETWORK=${NETWORK}
-
-if [[ -n "$NETWORK" ]]; then
-  PARAMS+=" --$NETWORK"
-fi
 
 if [[ -n "$DEBUG" ]]; then
   PARAMS+=" --debuglevel=\"$DEBUG\""

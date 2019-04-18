@@ -3,13 +3,9 @@
 source lib/init.sh
 source lib/utils.sh
 
-NETWORK=${NETWORK}
-
 PARAMS=""
 
-if [[ -n "$NETWORK" ]]; then
-  PARAMS+=" --network=$NETWORK"
-fi
+PARAMS+=" --network=regtest"
 
 PARAMS+=" $@"
 

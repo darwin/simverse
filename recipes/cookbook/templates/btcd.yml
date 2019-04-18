@@ -12,9 +12,9 @@
         - BTCWALLET_REPO_PATH=$BTCWALLET_REPO_PATH
         - BTCWALLET_CONF_PATH=$BTCWALLET_CONF_PATH
     ports:
-      - $SIMVERSE_HOST_BIND$BTCWALLET_RPC_PORT_ON_HOST:18554 # btcwallet rpc port
-      - $SIMVERSE_HOST_BIND$BTCD_SERVER_PORT_ON_HOST:18555 # btcd server port
-      - $SIMVERSE_HOST_BIND$BTCD_RPC_PORT_ON_HOST:18556 # btcd rpc port
+      - $SIMVERSE_HOST_BIND$BTCWALLET_RPC_PORT_ON_HOST:18443 # btcwallet rpc port
+      - $SIMVERSE_HOST_BIND$BTCD_SERVER_PORT_ON_HOST:18444 # btcd server port
+      - $SIMVERSE_HOST_BIND$BTCD_RPC_PORT_ON_HOST:18334 # btcd rpc port
       - $SIMVERSE_HOST_BIND$DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
       # !DANGER! when touching this, review cookbook.sh > prepare_btcd_volumes
@@ -25,7 +25,6 @@
       - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}
       - SERVICE_COUNTER=${SERVICE_COUNTER}
       - DEBUG=${DEBUG}
-      - NETWORK=${NETWORK}
       - RPC_USER=${RPC_USER}
       - RPC_PASS=${RPC_PASS}
       - BTCD_COUNTER=${BTCD_COUNTER}

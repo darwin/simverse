@@ -1,0 +1,17 @@
+diff --git a/netparams/params.go b/netparams/params.go
+index c15047e..e85e4ab 100644
+--- a/netparams/params.go
++++ b/netparams/params.go
+@@ -32,8 +32,9 @@ var TestNet3Params = Params{
+ 
+ // SimNetParams contains parameters specific to the simulation test network
+ // (wire.SimNet).
++// !!! WARNING: this was patched for simverse !!!
+ var SimNetParams = Params{
+-	Params:        &chaincfg.SimNetParams,
+-	RPCClientPort: "18556",
+-	RPCServerPort: "18554",
++	Params:        &chaincfg.RegressionNetParams,
++	RPCClientPort: "18334",
++	RPCServerPort: "18443",
+ }

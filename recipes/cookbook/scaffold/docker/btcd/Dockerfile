@@ -16,6 +16,8 @@ RUN go mod download
 WORKDIR $GOPATH/src/github.com/btcsuite/btcwallet
 
 COPY "$BTCWALLET_REPO_PATH" .
+COPY "docker/btcd/patches/simnet-as-regtest.patch" .
+RUN git apply simnet-as-regtest.patch
 RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
@@ -38,6 +40,8 @@ WORKDIR $GOPATH/src/github.com/btcsuite/btcd
 
 # https://github.com/btcsuite/btcd#installation
 COPY "$BTCD_REPO_PATH" .
+COPY "docker/btcd/patches/btcctl-regtest.patch" .
+RUN git apply btcctl-regtest.patch
 RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------

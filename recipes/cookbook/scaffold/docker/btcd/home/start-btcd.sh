@@ -4,12 +4,10 @@ source lib/init.sh
 
 cp "seed-btcd.conf" ".btcd/btcd.conf"
 
-# we keep one shared rpc cert for all btcd nodes
-PARAMS="--rpccert=/certs/rpc.cert --rpckey=/certs/rpc.key"
+PARAMS=""
 
 # optional parameters
 DEBUG=${DEBUG}
-NETWORK=${NETWORK}
 RPC_USER=${RPC_USER}
 RPC_PASS=${RPC_PASS}
 BTCD_MINING_ADDR=${BTCD_MINING_ADDR}
@@ -17,9 +15,7 @@ BTCD_LISTEN=${BTCD_LISTEN}
 BTCD_RPC_LISTEN=${BTCD_RPC_LISTEN}
 BTCD_EXTRA_PARAMS=${BTCD_EXTRA_PARAMS}
 
-if [[ -n "$NETWORK" ]]; then
-  PARAMS+=" --$NETWORK"
-fi
+PARAMS+=" --regtest"
 
 if [[ -n "$DEBUG" ]]; then
   PARAMS+=" --debuglevel=\"$DEBUG\""
@@ -48,6 +44,9 @@ fi
 if [[ ! "$@" = *"--droptxindex"* ]]; then
   PARAMS+=" --txindex"
 fi
+
+# we keep one shared rpc cert for all btcd nodes
+PARAMS+=" --rpccert=/certs/rpc.cert --rpckey=/certs/rpc.key"
 
 PARAMS+=" $@"
 
