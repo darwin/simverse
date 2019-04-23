@@ -1,4 +1,4 @@
-FROM golang:1.11-alpine
+FROM golang:1.12-alpine
 
 ARG SIMVERSE_HOST_UID
 ARG SIMVERSE_HOST_GID
