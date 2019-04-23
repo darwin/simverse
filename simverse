@@ -635,8 +635,12 @@ enter_simnet() {
 
   present_cwd
   present cd "$simnet_name"
+
   local absolute_simnet_dir=$(pwd -P)
-  export PATH=$PATH:"$absolute_simnet_dir/toolbox":"$absolute_simnet_dir/aliases"
+  local absolute_aliases_dir="$absolute_simnet_dir/aliases"
+  local absolute_toolbox_dir="$absolute_simnet_dir/toolbox"
+
+  export PATH=${absolute_aliases_dir}:${absolute_toolbox_dir}:$PATH
   present exec "$SHELL"
 }
 
