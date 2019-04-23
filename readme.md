@@ -1,9 +1,17 @@
 # Simverse
 
-This is a tool for lnd developers. It can generate local simnet clusters of requested size and shape. It uses docker-compose
+This is a tool for lighting network developers. It can generate local simnet clusters of requested size and shape. It uses docker-compose
 to manage the cluster and provides a set of helper scripts for your convenience.   
 
-Tested on macOS and ubuntu 18.10 only.
+## Features
+
+* supports [btcd](https://github.com/btcsuite/btcd) and [bitcoind](https://github.com/bitcoin/bitcoin) as backend nodes
+* supports [lnd](https://github.com/lightningnetwork/lnd) as lightning nodes (c-lighting is planned)
+
+## Workflow 
+
+You use a simple DSL script (bash) to describe your cluster. Simverse will generate all Dockerfiles, docker-compose.yml
+and supporting scripts for you.
 
 ## Prerequisites:
 
@@ -11,6 +19,8 @@ On host machine you should have:
 
   * bash, git, jq
   * docker, docker-compose
+
+Tested on macOS and Ubuntu 18.10.
   
 ## Quick start
 
@@ -170,6 +180,13 @@ By default, all simnets use the same port mappings to the host machine, so you w
 But you can write a simple wrapper scripts which could modify all *_PORT_ON_HOST in _defaults.sh. You can allocate them so 
 that they don't overlap for simnets you need to run in parallel. 
 
+#### I noticed the nodes run in regtest mode, not simnet. Why?
+
+> Simnet mode is supported only in btcd and lnd. Bitcoind and c-lighting have regtest which happens to be available in btcd/lnd as well. 
+To allow hybrid simverse clusters we had to use regtest mode everywhere (which works like simnet for our purposes). 
+Only we had to [patch btcd](recipes/cookbook/scaffold/docker/btcd/patches) to fix some minor issue, because not many people use 
+it this way I guess.    
+
 #### How can I inspect a running container in shell?
 
 > `./dc exec <container> bash` or `./dc exec <container> fish` or `./dc exec <container> sh`
@@ -186,12 +203,21 @@ that they don't overlap for simnets you need to run in parallel.
 
 > Yes. Look for [`SIMVERSE_REPOS`](_defaults.sh) env var.
 
+#### What is a master bitcoin node?
+
+> In a cluster of bitcoin nodes we need one which will be special. It will do some privileged tasks like mining or holding
+mined coins in its associated wallet. By convention, master bitcoin node is always first bitcoin node created. You can get its hostname
+by running `lookup_host 1 role bitcoin`. Simverse supports multiple bitcoin node implementations and master node might be either 
+btcd or bitcoind "flavor". Raw cli interface might be slightly different, so we try to hide this in our commands like `balance`, 
+`chain_height` or `earn`. If you looked at their implementation you would spot code branches for different bitcoin node flavors. 
+
 #### Where is a faucet?
 
-> This is not a testnet with faucet so we have to mine coins ourselves. Look for [`BTCD_MINING_ADDR`](_defaults.sh) env var which contains
-> pre-generated bitcoin address which will receive all mined coins. During btcd node initialization we import this address into 
-> btcwallet under the 'imported' account (see [`setup-wallet.sh`](recipes/cookbook/scaffold/docker/btcd/home/setup-wallet.sh)). 
-> This way `btcctl --wallet sendfrom imported ...` can be used to send funds to others in need.
+> This is not a testnet with faucet so we have to mine coins ourselves. Look for [`FAUCET_ADDR`](_defaults.sh) env var which contains
+> pre-generated bitcoin address which will receive all mined coins. During bitcoin node initialization we import this address into 
+> a wallet (see [`setup-wallet.sh`](recipes/cookbook/scaffold/docker/btcd/home/setup-wallet.sh)). 
+> This way `btcctl --wallet sendfrom imported ...` can be used to send funds to others in need. We use similar approach when your
+> master bitcoin node is bitcoind.
 >
 > Please look at [`toolbox/fund`](toolbox/fund) script which can be used for convenient funding of lnd wallets. For example run `fund alice 10`
 > to send 10 BTC to Alice's lnd node wallet. The script might decide to call [`toolbox/earn`](toolbox/earn) to mine enough coins and wait 
@@ -199,8 +225,7 @@ that they don't overlap for simnets you need to run in parallel.
 
 ## Roadmap
 
-  * add support for bitcoind and other bitcoin implementations
-  * add support for c-lightning and other implementations
+  * add support for c-lightning
   * support for generating blackbox test cases
   
 ## sv utility reference
@@ -385,11 +410,15 @@ Explore `toolbox` folder for the details:
 
   attach_dlv
   balance
+  chain_height
   connect
   earn
   fund
+  generate
+  inspect_host
   invoice
   list_docker_ips
+  lookup_host
   oc
   pay
   pubkey
