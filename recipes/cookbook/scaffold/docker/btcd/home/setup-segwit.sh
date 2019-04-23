@@ -2,10 +2,10 @@
 
 source lib/init.sh
 
-BTCD_COUNTER=${BTCD_COUNTER}
+BITCOIN_COUNTER=${BITCOIN_COUNTER:?required}
 
-# mine for segwit activation only on first node
-if [[ ! "$BTCD_COUNTER" -eq 1 ]]; then
+# mine for segwit activation only on first bitcoin node
+if [[ ! "$BITCOIN_COUNTER" -eq 1 ]]; then
   exit 0
 fi
 

@@ -1,4 +1,4 @@
-FROM simverse_builder:local as builder
+FROM simverse_builder:local as builder_lnd
 
 ARG LND_REPO_PATH
 
@@ -26,13 +26,13 @@ RUN make && make install
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_base:local as final
+FROM simverse_base:local as final_lnd
 
 ARG LND_CONF_PATH
 
 # copy the binaries and entrypoint from the builder image.
-COPY --from=builder /go/bin/lncli /bin/
-COPY --from=builder /go/bin/lnd /bin/
+COPY --from=builder_lnd /go/bin/lncli /bin/
+COPY --from=builder_lnd /go/bin/lnd /bin/
 
 USER simnet
 

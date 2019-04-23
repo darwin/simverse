@@ -1,0 +1,42 @@
+  ${NAME}:
+    <<: *shared
+    image: ${SIMVERSE_DOCKER_IMAGE_PREFIX}${SIMNET_NAME}_bitcoind
+    container_name: ${SIMVERSE_DOCKER_CONTAINER_PREFIX}${SIMNET_NAME}_${NAME}
+    command: ["run"]
+    build:
+      context: .
+      dockerfile: docker/bitcoind/Dockerfile
+      args:
+        - BITCOIND_REPO_PATH=$BITCOIND_REPO_PATH
+        - BITCOIND_CONF_PATH=$BITCOIND_CONF_PATH
+    ports:
+      - $SIMVERSE_HOST_BIND$BITCOIND_SERVER_PORT_ON_HOST:${BITCOIN_P2P_PORT} # bitcoind server port
+      - $SIMVERSE_HOST_BIND$BITCOIND_RPC_PORT_ON_HOST:${BITCOIN_RPC_PORT} # bitcoind rpc port
+    volumes:
+      # !DANGER! when touching this, review cookbook.sh > prepare_bitcoind_volumes
+      - ./_volumes/bitcoind-data-${NAME}:/home/simnet/.bitcoin # bitcoind data dir
+    labels:
+      - "simverse.role=bitcoin"
+      - "simverse.flavor=bitcoind"
+      - "simverse.service_counter=${SERVICE_COUNTER}"
+      - "simverse.role_counter=${BITCOIN_COUNTER}"
+      - "simverse.flavor_counter=${BITCOIND_COUNTER}"
+    environment:
+      - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}
+      - SERVICE_COUNTER=${SERVICE_COUNTER}
+      - BITCOIN_COUNTER=${BITCOIN_COUNTER}
+      - BITCOIND_COUNTER=${BITCOIND_COUNTER}
+      - RPC_USER=${RPC_USER}
+      - RPC_PASS=${RPC_PASS}
+      - ZMQ_BIND=${ZMQ_BIND}
+      - ZMQ_PUBRAWBLOCK_PORT=${ZMQ_PUBRAWBLOCK_PORT}
+      - ZMQ_PUBRAWTX_PORT=${ZMQ_PUBRAWTX_PORT}
+      - BITCOIND_EXTRA_PARAMS=${BITCOIND_EXTRA_PARAMS}
+      - BITCOINCLI_EXTRA_PARAMS=${BITCOINCLI_EXTRA_PARAMS}
+      - FAUCET_ADDR=${FAUCET_ADDR}
+      - FAUCET_ADDR_PRIVATE_KEY=${FAUCET_ADDR_PRIVATE_KEY}
+      - BITCOIN_P2P_BIND=${BITCOIN_P2P_BIND}
+      - BITCOIN_P2P_PORT=${BITCOIN_P2P_PORT}
+      - BITCOIN_RPC_BIND=${BITCOIN_RPC_BIND}
+      - BITCOIN_RPC_PORT=${BITCOIN_RPC_PORT}
+    $SIMVERSE_EXTRA_SERVICE_CONFIG

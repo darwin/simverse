@@ -1,0 +1,14 @@
+diff --git a/src/rpc/rawtransaction.cpp b/src/rpc/rawtransaction.cpp
+index 1a7216c..6a8207b 100644
+--- a/src/rpc/rawtransaction.cpp
++++ b/src/rpc/rawtransaction.cpp
+@@ -817,7 +817,8 @@ static UniValue sendrawtransaction(const JSONRPCRequest& request)
+     CAmount max_raw_tx_fee = DEFAULT_MAX_RAW_TX_FEE;
+     // TODO: temporary migration code for old clients. Remove in v0.20
+     if (request.params[1].isBool()) {
+-        throw JSONRPCError(RPC_INVALID_PARAMETER, "Second argument must be numeric (maxfeerate) and no longer supports a boolean. To allow a transaction with high fees, set maxfeerate to 0.");
++// work around https://github.com/btcsuite/btcwallet/issues/611
++//        throw JSONRPCError(RPC_INVALID_PARAMETER, "Second argument must be numeric (maxfeerate) and no longer supports a boolean. To allow a transaction with high fees, set maxfeerate to 0.");
+     } else if (!request.params[1].isNull()) {
+         size_t weight = GetTransactionWeight(*tx);
+         CFeeRate fr(AmountFromValue(request.params[1]));

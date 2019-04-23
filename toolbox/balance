@@ -2,4 +2,8 @@
 
 source _lib.sh
 
-btcctl --wallet getbalance imported
+if is_btcd_master; then
+  btcctl --wallet getbalance imported
+else
+  bitcoin-cli getbalance
+fi

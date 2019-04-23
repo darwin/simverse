@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+NUM=${1:-1} # number of blocks
+FAUCET_ADDR=${FAUCET_ADDR:?required}
+
+if is_btcd_master; then
+  btcctl generate ${COINBASE_MATURITY}
+else
+  bitcoin-cli generatetoaddress ${NUM} ${FAUCET_ADDR}
+fi

@@ -3,5 +3,16 @@
 source _lib.sh
 
 PERSON=${1:-alice}
+TEMP_JSON_FILE=/tmp/simverse_pubkey_info.json
 
-${PERSON} getinfo | jq ".identity_pubkey" | unquote
+err_report() {
+  echo_err "error on line $(caller)"
+  echo_err "see '$TEMP_JSON_FILE'"
+  return 1
+}
+
+trap err_report ERR
+
+${PERSON} getinfo > ${TEMP_JSON_FILE}
+
+jq ".identity_pubkey" ${TEMP_JSON_FILE} | unquote

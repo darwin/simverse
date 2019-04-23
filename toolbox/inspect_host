@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+HOST_NAME=${1:?required}
+KEY=${2} # service, role, flavor
+
+if [[ -z "$KEY" ]]; then
+  docker inspect --format "{{json .Config.Labels}}" ${HOST_NAME}
+else
+  docker inspect --format "{{index .Config.Labels \"simverse.$KEY\" }}" ${HOST_NAME}
+fi

@@ -44,25 +44,31 @@ FIRST_LND_GRPC_PORT_ON_HOST=${FIRST_LND_GRPC_PORT_ON_HOST:?$REQUIRED}
 FIRST_BTCD_SERVER_PORT_ON_HOST=${FIRST_BTCD_SERVER_PORT_ON_HOST:?$REQUIRED}
 FIRST_BTCD_RPC_PORT_ON_HOST=${FIRST_BTCD_RPC_PORT_ON_HOST:?$REQUIRED}
 FIRST_BTCWALLET_RPC_PORT_ON_HOST=${FIRST_BTCWALLET_RPC_PORT_ON_HOST:?$REQUIRED}
+FIRST_BITCOIND_SERVER_PORT_ON_HOST=${FIRST_BITCOIND_SERVER_PORT_ON_HOST:?$REQUIRED}
+FIRST_BITCOIND_RPC_PORT_ON_HOST=${FIRST_BITCOIND_RPC_PORT_ON_HOST:?$REQUIRED}
 
 LND_AUTO_NAME_PREFIX=${LND_AUTO_NAME_PREFIX:?$REQUIRED}
 BTCD_AUTO_NAME_PREFIX=${BTCD_AUTO_NAME_PREFIX:?$REQUIRED}
+BITCOIND_AUTO_NAME_PREFIX=${BITCOIND_AUTO_NAME_PREFIX:?$REQUIRED}
 
 DEFAULT_BTCD_REPO_PATH=${DEFAULT_BTCD_REPO_PATH:?$REQUIRED}
 DEFAULT_BTCWALLET_REPO_PATH=${DEFAULT_BTCWALLET_REPO_PATH:?$REQUIRED}
 DEFAULT_LND_REPO_PATH=${DEFAULT_LND_REPO_PATH:?$REQUIRED}
+DEFAULT_BITCOIND_REPO_PATH=${DEFAULT_BITCOIND_REPO_PATH:?$REQUIRED}
 
 DEFAULT_BTCD_CONF_PATH=${DEFAULT_BTCD_CONF_PATH:?$REQUIRED}
 DEFAULT_BTCWALLET_CONF_PATH=${DEFAULT_BTCWALLET_CONF_PATH:?$REQUIRED}
 DEFAULT_LND_CONF_PATH=${DEFAULT_LND_CONF_PATH:?$REQUIRED}
+DEFAULT_BITCOIND_CONF_PATH=${DEFAULT_BITCOIND_CONF_PATH:?$REQUIRED}
 
-LND_RPC_HOST=${LND_RPC_HOST}
+LND_BITCOIN_RPC_HOST=${LND_BITCOIN_RPC_HOST}
+LND_BACKEND=${LND_BACKEND}
 
 # error codes
 NO_ERR=0
 ERR_NOT_IMPLEMENTED=10
 ERR_MUST_CALL_PRELUDE_FIRST=11
-ERR_NEED_BTCD=12
+ERR_NEED_BTCD_OR_BITCOIND=12
 
 # -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -100,16 +106,25 @@ init_lnd_defaults() {
   LND_CONF_PATH=${DEFAULT_LND_CONF_PATH}
 }
 
+init_bitcoind_defaults() {
+  BITCOIND_REPO_PATH=${DEFAULT_BITCOIND_REPO_PATH}
+  BITCOIND_CONF_PATH=${DEFAULT_BITCOIND_CONF_PATH}
+}
+
 init_defaults() {
   init_common_defaults
   init_btcd_defaults
   init_lnd_defaults
+  init_bitcoind_defaults
 }
 
 reset_common_counters() {
   SERVICE_COUNTER=1
+  BITCOIN_COUNTER=1
+  LN_COUNTER=1
   DLV_PORT=${FIRST_DLV_PORT}
   DLV_PORT_ON_HOST=${FIRST_DLV_PORT_ON_HOST}
+  LAST_BITCOIN_SERVICE=
 }
 
 reset_btcd_counters() {
@@ -129,10 +144,19 @@ reset_lnd_counters() {
   LND_GRPC_PORT_ON_HOST=${FIRST_LND_GRPC_PORT_ON_HOST}
 }
 
+reset_bitcoind_counters() {
+  LAST_BITCOIND_SERVICE=
+  BITCOIND_COUNTER=1
+  BITCOIND_AUTO_NAME_COUNTER=0
+  BITCOIND_SERVER_PORT_ON_HOST=${FIRST_BITCOIND_SERVER_PORT_ON_HOST}
+  BITCOIND_RPC_PORT_ON_HOST=${FIRST_BITCOIND_RPC_PORT_ON_HOST}
+}
+
 reset_counters() {
   reset_common_counters
   reset_lnd_counters
   reset_btcd_counters
+  reset_bitcoind_counters
 }
 
 advance_common_counters() {
@@ -146,6 +170,8 @@ advance_btcd_counters() {
   ((++BTCD_SERVER_PORT_ON_HOST))
   ((++BTCD_RPC_PORT_ON_HOST))
   ((++BTCWALLET_RPC_PORT_ON_HOST))
+
+  ((++BITCOIN_COUNTER))
 }
 
 advance_lnd_counters() {
@@ -153,6 +179,16 @@ advance_lnd_counters() {
   ((++LND_SERVER_PORT_ON_HOST))
   ((++LND_RPC_PORT_ON_HOST))
   ((++LND_GRPC_PORT_ON_HOST))
+
+  ((++LN_COUNTER))
+}
+
+advance_bitcoind_counters() {
+  ((++BITCOIND_COUNTER))
+  ((++BITCOIND_SERVER_PORT_ON_HOST))
+  ((++BITCOIND_RPC_PORT_ON_HOST))
+
+  ((++BITCOIN_COUNTER))
 }
 
 gen_lnd_auto_name() {
@@ -169,6 +205,14 @@ gen_btcd_auto_name() {
 
 advance_btcd_auto_name_counter() {
   ((++BTCD_AUTO_NAME_COUNTER))
+}
+
+gen_bitcoind_auto_name() {
+  echo "${BITCOIND_AUTO_NAME_PREFIX}${BITCOIND_AUTO_NAME_COUNTER}"
+}
+
+advance_bitcoind_auto_name_counter() {
+  ((++BITCOIND_AUTO_NAME_COUNTER))
 }
 
 eval_template() {
@@ -227,7 +271,10 @@ prepare_repos() {
 }
 
 scaffold_simnet() {
+  # copy including dot files
+  shopt -s dotglob
   cp -a "$SCAFFOLD_DIR"/* .
+  shopt -u dotglob
 }
 
 add_toolbox() {
@@ -271,6 +318,32 @@ prepare_lnd_volumes() {
   mkdir _volumes/lnd-data-${name}
 }
 
+prepare_bitcoind_volumes() {
+  local name=$1
+  mkdir _volumes/bitcoind-data-${name}
+}
+
+ensure_bitcoin_service() {
+  if [[ -z "$LAST_BITCOIN_SERVICE" ]]; then
+    echo_err_with_stack_trace "'add lnd' called but no prior btcd or bitcoind was added, call 'add btcd' or 'add bitcoind' prior adding lnd nodes or set LND_BITCOIN_RPC_HOST explicitly"
+    exit ${ERR_NEED_BTCD_OR_BITCOIND}
+  fi
+}
+
+get_last_bitcoin_service() {
+  ensure_bitcoin_service
+  echo "$LAST_BITCOIN_SERVICE"
+}
+
+get_last_bitcoin_backend() {
+  ensure_bitcoin_service
+  if [[ "$LAST_BITCOIN_SERVICE" == "$LAST_BITCOIND_SERVICE" ]]; then
+    echo "bitcoind"
+    return
+  fi
+  echo "btcd"
+}
+
 add_lnd() {
   NAME=$1
 
@@ -280,14 +353,14 @@ add_lnd() {
     NAME=$(gen_lnd_auto_name)
   fi
 
-  # auto-provide LND_RPC_HOST if not given
-  local prev_lnd_rpc_host="$LND_RPC_HOST"
-  if [[ -z "$LND_RPC_HOST" ]]; then
-    if [[ -z "$LAST_BTCD_SERVICE" ]]; then
-      echo_err_with_stack_trace "'add lnd' called but no prior btcd was added, call 'add btcd' prior adding lnd nodes or set LND_RPC_HOST"
-      exit ${ERR_NEED_BTCD}
-    fi
-    LND_RPC_HOST="$LAST_BTCD_SERVICE"
+  # auto-provide LND_BITCOIN_RPC_HOST if not given
+  local prev_lnd_bitcoin_rpc_host="$LND_BITCOIN_RPC_HOST"
+  if [[ -z "$LND_BITCOIN_RPC_HOST" ]]; then
+    LND_BITCOIN_RPC_HOST="$(get_last_bitcoin_service)"
+  fi
+  local prev_lnd_backend="$LND_BACKEND"
+  if [[ -z "$LND_BACKEND" ]]; then
+    LND_BACKEND="$(get_last_bitcoin_backend)"
   fi
 
   echo_service_separator lnd ${NAME} ${LND_COUNTER}
@@ -308,7 +381,8 @@ add_lnd() {
   advance_common_counters
   advance_lnd_counters
 
-  LND_RPC_HOST="$prev_lnd_rpc_host"
+  LND_BITCOIN_RPC_HOST="$prev_lnd_bitcoin_rpc_host"
+  LND_BACKEND="$prev_lnd_backend"
 }
 
 add_btcd() {
@@ -339,6 +413,38 @@ add_btcd() {
   advance_btcd_counters
 
   LAST_BTCD_SERVICE=${NAME}
+  LAST_BITCOIN_SERVICE=${LAST_BTCD_SERVICE}
+}
+
+add_bitcoind() {
+  NAME=$1
+
+  # generate default name if not given
+  if [[ -z "$NAME" ]]; then
+    advance_bitcoind_auto_name_counter
+    NAME=$(gen_bitcoind_auto_name)
+  fi
+
+  echo_service_separator bitcoind ${NAME} ${BITCOIND_COUNTER}
+  eval_template "$TEMPLATES_DIR/bitcoind.yml" >> ${COMPOSE_FILE}
+
+  local alias_file="$ALIASES_DIR_NAME/$NAME"
+  eval_script_template "$TEMPLATES_DIR/bitcoin-cli-alias.sh" >> "$alias_file"
+  chmod +x "$alias_file"
+
+  # point generic bitcoin-cli to first bitcoind node
+  local default_alias_file="$ALIASES_DIR_NAME/bitcoin-cli"
+  if [[ ! -f "$default_alias_file" ]]; then
+    ln -s "$NAME" ${default_alias_file}
+  fi
+
+  prepare_bitcoind_volumes "$NAME"
+
+  advance_common_counters
+  advance_bitcoind_counters
+
+  LAST_BITCOIND_SERVICE=${NAME}
+  LAST_BITCOIN_SERVICE=${LAST_BITCOIND_SERVICE}
 }
 
 # -- public API -------------------------------------------------------------------------------------------------------------
@@ -370,6 +476,7 @@ add() {
   case "$kind" in
     "btcd") add_btcd "$@" ;;
     "lnd") add_lnd "$@" ;;
+    "bitcoind") add_bitcoind "$@" ;;
     *) echo "unsupported service '$kind', currently allowed are 'btcd' or 'lnd'" ;;
   esac
 }

@@ -6,7 +6,8 @@ ARG SIMVERSE_HOST_GID
 RUN apk add --no-cache \
     bash fish \
     ca-certificates \
-    curl git
+    curl git \
+    libzmq libevent db db-c++ libressl
 
 RUN go get -u github.com/go-delve/delve/cmd/dlv
 RUN dlv version

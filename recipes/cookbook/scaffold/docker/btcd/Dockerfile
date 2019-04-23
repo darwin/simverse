@@ -46,7 +46,7 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_base:local as final
+FROM simverse_base:local as final_btcd
 
 ARG BTCD_CONF_PATH
 ARG BTCWALLET_CONF_PATH

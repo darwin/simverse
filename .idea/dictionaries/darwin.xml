@@ -2,9 +2,11 @@
   <dictionary name="darwin">
     <words>
       <w>&quot;force&quot;</w>
+      <w>alphanum</w>
       <w>apfs</w>
       <w>appdata</w>
       <w>bitcoin</w>
+      <w>bitcoincli</w>
       <w>bitcoind</w>
       <w>blockchain</w>
       <w>btcctl</w>
@@ -28,6 +30,7 @@
       <w>debuglevel</w>
       <w>dedolarize</w>
       <w>direnv</w>
+      <w>dnsseed</w>
       <w>dolarize</w>
       <w>droptxindex</w>
       <w>envrc</w>
@@ -55,17 +58,25 @@
       <w>noservertls</w>
       <w>notls</w>
       <w>popd</w>
+      <w>printtoconsole</w>
       <w>pubkey</w>
+      <w>pubrawblock</w>
+      <w>pubrawtx</w>
       <w>pushd</w>
+      <w>regtest</w>
       <w>reposdir</w>
       <w>restlisten</w>
       <w>roadmap</w>
+      <w>rpcallowip</w>
+      <w>rpcbind</w>
       <w>rpccert</w>
       <w>rpccertdir</w>
       <w>rpchost</w>
       <w>rpckey</w>
       <w>rpclisten</w>
       <w>rpcpass</w>
+      <w>rpcpassword</w>
+      <w>rpcport</w>
       <w>rpcserver</w>
       <w>rpcuser</w>
       <w>segwit</w>
@@ -79,7 +90,10 @@
       <w>tmuxinator</w>
       <w>txindex</w>
       <w>unshallow</w>
+      <w>upnp</w>
       <w>workdir</w>
+      <w>zmqpubrawblock</w>
+      <w>zmqpubrawtx</w>
     </words>
   </dictionary>
 </component>

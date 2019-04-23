@@ -25,6 +25,13 @@ announce() {
   printf "\e[35m%s\e[0m\n" "$1"
 }
 
+maybe_debug_test() {
+  if [[ -n "$SIMVERSE_DEBUG_TEST" ]]; then
+    echo "entering ad-hoc shell because SIMVERSE_DEBUG_TEST is set..."
+    $SHELL
+  fi
+}
+
 # this is a replacement for ./sv enter ${SIMNET_NAME}
 enter_simnet() {
   local SIMNET_NAME=$1
@@ -40,20 +47,21 @@ enter_simnet() {
   export PATH=$PATH:"$SIMNET_DIR/toolbox":"$SIMNET_DIR/aliases"
 }
 
-wait_for_btcd_ready() {
-  announce "waiting for btcd to mine 300 blocks..."
+wait_for_bitcoin_ready() {
+  local num_blocks=500
+  announce "waiting for master bitcoin node to mine $num_blocks blocks..."
   set +e
   local probe_counter=1
   local delay=1
-  local max_probes=(3*60) # approx 3min
-  while ! [[ $(btcctl getinfo | jq '.blocks') -ge 300 ]] > /dev/null 2>&1; do
+  local max_probes=$(expr 3*60) # approx 3min
+  while ! [[ $(chain_height) -ge ${num_blocks} ]] > /dev/null 2>&1; do
     # echo "$PROBE_COUNTER $(btcctl getinfo | jq '.blocks')"
     sleep ${delay}
     echo -n "."
     ((++probe_counter))
     if [[ ${probe_counter} -gt ${max_probes} ]]; then
       echo ""
-      echo_err "btcd didn't reach expected 300 blocks in time"
+      echo_err "master bitcoin node didn't reach expected $num_blocks blocks in time"
       return 1
     fi
   done

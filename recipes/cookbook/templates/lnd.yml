@@ -10,25 +10,40 @@
         - LND_REPO_PATH=$LND_REPO_PATH
         - LND_CONF_PATH=$LND_CONF_PATH
     ports:
-      - $SIMVERSE_HOST_BIND$LND_SERVER_PORT_ON_HOST:9735 # lnd server port
-      - $SIMVERSE_HOST_BIND$LND_RPC_PORT_ON_HOST:10009 # lnd rpc port
+      - $SIMVERSE_HOST_BIND$LND_SERVER_PORT_ON_HOST:${LND_P2P_PORT} # lnd server port
+      - $SIMVERSE_HOST_BIND$LND_RPC_PORT_ON_HOST:${LND_RPC_PORT} # lnd rpc port
       - $SIMVERSE_HOST_BIND$LND_GRPC_PORT_ON_HOST:8080 # lnd grpc port
       - $SIMVERSE_HOST_BIND$DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
       # !DANGER! when touching this, review cookbook.sh > prepare_lnd_volumes
       - ./_volumes/certs:/certs:ro # shared certificates
       - ./_volumes/lnd-data-${NAME}:/home/simnet/.lnd # lnd data dir
+    labels:
+      - "simverse.role=ln"
+      - "simverse.flavor=lnd"
+      - "simverse.service_counter=${SERVICE_COUNTER}"
+      - "simverse.role_counter=${LN_COUNTER}"
+      - "simverse.flavor_counter=${LND_COUNTER}"
     environment:
       - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}
       - SERVICE_COUNTER=${SERVICE_COUNTER}
+      - LN_COUNTER=${LN_COUNTER}
+      - LND_COUNTER=${LND_COUNTER}
       - DEBUG=${DEBUG}
       - RPC_USER=${RPC_USER}
       - RPC_PASS=${RPC_PASS}
-      - LND_COUNTER=${LND_COUNTER}
       - LND_EXTRA_PARAMS=${LND_EXTRA_PARAMS}
       - LND_CHAIN=${LND_CHAIN}
       - LND_BACKEND=${LND_BACKEND}
-      - LND_RPC_LISTEN=${LND_RPC_LISTEN}
-      - LND_RPC_HOST=${LND_RPC_HOST}
+      - LND_RPC_BIND=${LND_RPC_BIND}
+      - LND_RPC_PORT=${LND_RPC_PORT}
+      - LND_P2P_BIND=${LND_P2P_BIND}
+      - LND_P2P_PORT=${LND_P2P_PORT}
+      - LND_BITCOIN_RPC_HOST=${LND_BITCOIN_RPC_HOST}
+      - BITCOIN_RPC_PORT=${BITCOIN_RPC_PORT}
       - LND_LISTEN=${LND_LISTEN}
+      - FAUCET_ADDR=${FAUCET_ADDR}
+      - FAUCET_ADDR_PRIVATE_KEY=${FAUCET_ADDR_PRIVATE_KEY}
+      - ZMQ_PUBRAWBLOCK_PORT=${ZMQ_PUBRAWBLOCK_PORT}
+      - ZMQ_PUBRAWTX_PORT=${ZMQ_PUBRAWTX_PORT}
     $SIMVERSE_EXTRA_SERVICE_CONFIG

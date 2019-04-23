@@ -6,7 +6,10 @@ FROM_PERSON=${1:-alice}
 TO_PERSON=${2:-bob}
 
 TO_PERSON_CONNECTION=$(lnd_connect_string ${TO_PERSON})
+if [[ -z "$TO_PERSON_CONNECTION" ]]; then
+  echo_err "failed to format connection string for '${TO_PERSON}'"
+  exit 1
+fi
 
 set -x
 ${FROM_PERSON} connect ${TO_PERSON_CONNECTION}
-

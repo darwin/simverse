@@ -12,4 +12,4 @@ AMOUNT_SAT=$(echo "$AMOUNT_BTC" | btc2sat)
 set -x
 ${FROM_PERSON} openchannel --node_key=${TO_PERSON_PUBKEY} --local_amt=${AMOUNT_SAT}
 
-btcctl generate ${TX_CONF_COUNT}
+generate ${TX_CONF_COUNT}

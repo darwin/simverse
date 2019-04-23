@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+if is_btcd_master; then
+  btcctl getinfo | jq '.blocks'
+else
+  bitcoin-cli -getinfo | jq '.blocks'
+fi

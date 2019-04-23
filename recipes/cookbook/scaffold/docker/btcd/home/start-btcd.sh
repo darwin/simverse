@@ -10,35 +10,34 @@ PARAMS=""
 DEBUG=${DEBUG}
 RPC_USER=${RPC_USER}
 RPC_PASS=${RPC_PASS}
-BTCD_MINING_ADDR=${BTCD_MINING_ADDR}
-BTCD_LISTEN=${BTCD_LISTEN}
-BTCD_RPC_LISTEN=${BTCD_RPC_LISTEN}
+FAUCET_ADDR=${FAUCET_ADDR}
+BITCOIN_P2P_BIND=${BITCOIN_P2P_BIND}
+BITCOIN_P2P_PORT=${BITCOIN_P2P_PORT}
+BITCOIN_RPC_BIND=${BITCOIN_RPC_BIND}
+BITCOIN_RPC_PORT=${BITCOIN_RPC_PORT}
 BTCD_EXTRA_PARAMS=${BTCD_EXTRA_PARAMS}
 
 PARAMS+=" --regtest"
 
 if [[ -n "$DEBUG" ]]; then
-  PARAMS+=" --debuglevel=\"$DEBUG\""
+  PARAMS+=" --debuglevel=$DEBUG"
 fi
 
-if [[ -n "$BTCD_LISTEN" ]]; then
-  PARAMS+=" --listen=\"$BTCD_LISTEN\""
+if [[ -n "$BITCOIN_P2P_BIND" ]]; then
+  PARAMS+=" --listen=$BITCOIN_P2P_BIND:$BITCOIN_P2P_PORT"
 fi
 
-if [[ -n "$BTCD_RPC_LISTEN" ]]; then
-  PARAMS+=" --rpclisten=\"$BTCD_RPC_LISTEN\""
+if [[ -n "$BITCOIN_RPC_BIND" ]]; then
+  PARAMS+=" --rpclisten=$BITCOIN_RPC_BIND:$BITCOIN_RPC_PORT"
 fi
 
 if [[ -n "$RPC_USER" ]]; then
-  PARAMS+=" --rpcuser=\"$RPC_USER\""
+  PARAMS+=" --rpcuser=$RPC_USER"
+  PARAMS+=" --rpcpass=$RPC_PASS"
 fi
 
-if [[ -n "$RPC_PASS" ]]; then
-  PARAMS+=" --rpcpass=\"$RPC_PASS\""
-fi
-
-if [[ -n "$BTCD_MINING_ADDR" ]]; then
-  PARAMS+=" --miningaddr=$BTCD_MINING_ADDR"
+if [[ -n "$FAUCET_ADDR" ]]; then
+  PARAMS+=" --miningaddr=$FAUCET_ADDR"
 fi
 
 if [[ ! "$@" = *"--droptxindex"* ]]; then
@@ -46,7 +45,8 @@ if [[ ! "$@" = *"--droptxindex"* ]]; then
 fi
 
 # we keep one shared rpc cert for all btcd nodes
-PARAMS+=" --rpccert=/certs/rpc.cert --rpckey=/certs/rpc.key"
+PARAMS+=" --rpccert=/certs/rpc.cert"
+PARAMS+=" --rpckey=/certs/rpc.key"
 
 PARAMS+=" $@"
 

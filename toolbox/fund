@@ -18,9 +18,14 @@ if $(is "${AVAILABLE_BALANCE_BTC} < ${AMOUNT_BTC}"); then
 fi
 
 echo "sending $AMOUNT_BTC BTC to $PERSON"
-btcctl --wallet sendfrom imported ${ADDRESS} ${AMOUNT_BTC}
 
-btcctl generate ${TX_CONF_COUNT}
+if is_btcd_master; then
+  btcctl --wallet sendfrom imported ${ADDRESS} ${AMOUNT_BTC}
+else
+  bitcoin-cli sendtoaddress ${ADDRESS} ${AMOUNT_BTC}
+fi
+
+generate ${TX_CONF_COUNT}
 
 NEW_BALANCE_BTC=$(${PERSON} walletbalance | jq ".total_balance" | unquote | sat2btc)
 echo "$PERSON now has ${NEW_BALANCE_BTC} BTC"

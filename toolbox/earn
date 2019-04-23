@@ -3,10 +3,16 @@
 source _lib.sh
 
 AMOUNT=${1:-100} # minimal amount
+FAUCET_ADDR=${FAUCET_ADDR:?required}
 
 BLOCKS_NEEDED=$(compute "floor(${AMOUNT} / 50) + 1")
 echo "mining ${BLOCKS_NEEDED} blocks"
-btcctl generate ${BLOCKS_NEEDED}
+
+if is_btcd_master; then
+  btcctl generate ${BLOCKS_NEEDED}
+else
+  bitcoin-cli generatetoaddress ${BLOCKS_NEEDED} ${FAUCET_ADDR}
+fi
 
 # mine blocks to mature coinbase transactions
-btcctl generate ${COINBASE_MATURITY}
+generate ${COINBASE_MATURITY}

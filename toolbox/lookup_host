@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+NUM=${1:?required}
+BY=${2} # service, role, flavor
+FILTER=${3} # e.g. bitcoin, bitcoind, btcd, ln, lnd
+
+if [[ -z "$BY" ]]; then
+  docker ps -f "label=simverse.service_counter=${NUM}" --format "{{.Names}}"
+else
+  docker ps -f "label=simverse.${BY}=${FILTER}" -f "label=simverse.${BY}_counter=${NUM}" --format "{{.Names}}"
+fi

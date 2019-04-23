@@ -1,4 +1,4 @@
-FROM simverse_builder:local as builder_btcd
+FROM simverse_builder:local as builder_pre
 
 WORKDIR /root/build
 
@@ -14,16 +14,18 @@ WORKDIR $GOPATH/src/github.com/btcsuite/btcd
 
 # https://github.com/btcsuite/btcd#installation
 COPY "repos/btcd" .
+COPY "docker/btcd/patches/btcctl-regtest.patch" .
+RUN git apply btcctl-regtest.patch
 RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_base:local as final
+FROM simverse_base:local as final_pre
 
 RUN apk add --no-cache python
 
 # copy the compiled binaries from the builder image.
-COPY --from=builder_btcd /go/bin/gencerts /bin/
+COPY --from=builder_pre /go/bin/gencerts /bin/
 
 USER simnet
 

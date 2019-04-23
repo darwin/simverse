@@ -23,7 +23,14 @@ cd ..
 
 export SIMVERSE_HOME="$(pwd -P)"
 
-TMP_DIR=$(mktemp -d -t simverse_tests.XXXXXXXX)
+if [[ -n "$SIMVERSE_DEBUG_TEST" ]]; then
+  TMP_DIR=/tmp/simverse-tests
+  rm -rf "$TMP_DIR"
+  mkdir -p "$TMP_DIR"
+else
+  TMP_DIR=$(mktemp -d -t simverse_tests.XXXXXXXX)
+fi
+
 if [[ ! "$TMP_DIR" || ! -d "$TMP_DIR" ]]; then
   echo_err "failed to create temp directory"
   exit 1
@@ -44,6 +51,7 @@ cd "$TESTS_DIR"
 
 announce "running tests from '$(pwd -P)'"
 
-./test-cases/tutorial1/test.sh
+./test-cases/tutorial1/test.sh b1l2
+./test-cases/tutorial1/test.sh a1l2
 
 announce "all tests went OK"
