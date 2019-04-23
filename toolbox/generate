@@ -2,11 +2,11 @@
 
 source _lib.sh
 
-NUM=${1:-1} # number of blocks
+NUM_BLOCKS=${1:-1} # number of blocks
 FAUCET_ADDR=${FAUCET_ADDR:?required}
 
 if is_btcd_master; then
-  btcctl generate ${COINBASE_MATURITY}
+  btcctl generate ${NUM_BLOCKS} # note: faucet addr was passed to btcd daemon as config
 else
-  bitcoin-cli generatetoaddress ${NUM} ${FAUCET_ADDR}
+  bitcoin-cli generatetoaddress ${NUM_BLOCKS} ${FAUCET_ADDR}
 fi
