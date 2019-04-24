@@ -5,6 +5,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd "$HELPERS_DIR"
 
-./docker-build-base.sh
-./docker-build-buildtime.sh
-./docker-build-runtime.sh
+./docker-build-base.sh "$@"
+./docker-build-buildtime.sh "$@"
+./docker-build-runtime.sh "$@"

@@ -11,15 +11,16 @@ fi
 if [[ "$@" =~ "--no-cache" ]]; then
   echo "forcing rebuild of base containers."
   FORCE_REBUILD=1
+  EXTRA_BUILD_ARGS="--no-cache"
 fi
 if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BASE_DOCKER_IMAGE_NAME"; then
-  "$HELPERS_DIR/docker-build-base.sh"
+  "$HELPERS_DIR/docker-build-base.sh" ${EXTRA_BUILD_ARGS}
 fi
 if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BUILDTIME_DOCKER_IMAGE_NAME"; then
-  "$HELPERS_DIR/docker-build-buildtime.sh"
+  "$HELPERS_DIR/docker-build-buildtime.sh" ${EXTRA_BUILD_ARGS}
 fi
 if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$RUNTIME_DOCKER_IMAGE_NAME"; then
-  "$HELPERS_DIR/docker-build-runtime.sh"
+  "$HELPERS_DIR/docker-build-runtime.sh" ${EXTRA_BUILD_ARGS}
 fi
 
 exec docker-compose "$@"

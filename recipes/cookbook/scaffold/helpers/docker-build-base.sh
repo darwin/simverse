@@ -5,4 +5,4 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd "$DOCKER_DIR/_aux/base"
 
-docker build -t "$BASE_DOCKER_IMAGE_NAME" .
+docker build -t "$BASE_DOCKER_IMAGE_NAME" "$@" .

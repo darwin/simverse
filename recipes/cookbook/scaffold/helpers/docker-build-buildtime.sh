@@ -5,4 +5,4 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 cd "$DOCKER_DIR/_aux/buildtime"
 
-docker build --build-arg GCFLAGS="$GCFLAGS" -t "$BUILDTIME_DOCKER_IMAGE_NAME" .
+docker build --build-arg GCFLAGS="$GCFLAGS" -t "$BUILDTIME_DOCKER_IMAGE_NAME" "$@" .

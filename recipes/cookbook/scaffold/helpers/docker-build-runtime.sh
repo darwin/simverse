@@ -11,4 +11,5 @@ SIMVERSE_HOST_GID=${SIMVERSE_HOST_GID:?required}
 docker build -t "$RUNTIME_DOCKER_IMAGE_NAME" \
   --build-arg SIMVERSE_HOST_UID=${SIMVERSE_HOST_UID} \
   --build-arg SIMVERSE_HOST_GID=${SIMVERSE_HOST_GID} \
+   "$@" \
 .
