@@ -8,19 +8,39 @@ if [[ ! -d "$VOLUMES_DIR" ]]; then
   mkdir -p "$VOLUMES_DIR"
 fi
 
+AUX_REV=$(cat ./.auxrev | head -1)
+
+EXTRA_BUILD_ARGS="--label simverse.rev=$AUX_REV"
+
 if [[ "$@" =~ "--no-cache" ]]; then
-  echo "forcing rebuild of base containers."
+  echo "forcing rebuild of base containers due to --no-cache usage"
   FORCE_REBUILD=1
-  EXTRA_BUILD_ARGS="--no-cache"
+  EXTRA_BUILD_ARGS+=" --no-cache"
 fi
-if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BASE_DOCKER_IMAGE_NAME"; then
-  "$HELPERS_DIR/docker-build-base.sh" ${EXTRA_BUILD_ARGS}
-fi
-if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BUILDTIME_DOCKER_IMAGE_NAME"; then
-  "$HELPERS_DIR/docker-build-buildtime.sh" ${EXTRA_BUILD_ARGS}
-fi
-if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$RUNTIME_DOCKER_IMAGE_NAME"; then
-  "$HELPERS_DIR/docker-build-runtime.sh" ${EXTRA_BUILD_ARGS}
-fi
+
+rebuild_image_if_needed() {
+  local image_name=${1:?required}
+  local script_name=${2:?required}
+
+  # check forced rebuild
+  if [[ -n "$FORCE_REBUILD" ]]; then
+    echo "building '$image_name' because of force rebuild request..."
+    "$HELPERS_DIR/docker-build-$script_name.sh" ${EXTRA_BUILD_ARGS}
+  elif ! docker_image_exists "$image_name"; then # check missing image
+    echo "building '$image_name' because it is missing..."
+    "$HELPERS_DIR/docker-build-$script_name.sh" ${EXTRA_BUILD_ARGS}
+  else
+    # also check revision number and force rebuild in case of revision mismatch
+    local image_rev="$(docker_image_rev "$image_name")"
+    if [[ "$image_rev" != "$AUX_REV" ]]; then
+      echo "forcing rebuild of '$image_name' because of revision mismatch '$image_rev'!='$AUX_REV'..."
+      "$HELPERS_DIR/docker-build-$script_name.sh" ${EXTRA_BUILD_ARGS} --no-cache
+    fi
+  fi
+}
+
+rebuild_image_if_needed "$BASE_DOCKER_IMAGE_NAME" "base"
+rebuild_image_if_needed "$BUILDTIME_DOCKER_IMAGE_NAME" "buildtime"
+rebuild_image_if_needed "$RUNTIME_DOCKER_IMAGE_NAME" "runtime"
 
 exec docker-compose "$@"
