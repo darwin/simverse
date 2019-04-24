@@ -1,4 +1,4 @@
-FROM simverse_builder:local as builder_btcwallet
+FROM simverse_buildtime:local as simverse_buildtime_btcwallet
 
 ARG BTCWALLET_REPO_PATH
 
@@ -22,7 +22,7 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_builder:local as builder_btcd
+FROM simverse_buildtime:local as simverse_buildtime_btcd
 
 ARG BTCD_REPO_PATH
 
@@ -46,19 +46,19 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_base:local as final_btcd
+FROM simverse_runtime:local as simverse_runtime_btcd
 
 ARG BTCD_CONF_PATH
 ARG BTCWALLET_CONF_PATH
 
 # copy the compiled binaries from the builder image.
-COPY --from=builder_btcd /go/bin/addblock /bin/
-COPY --from=builder_btcd /go/bin/btcctl /bin/
-COPY --from=builder_btcd /go/bin/btcd /bin/
-COPY --from=builder_btcd /go/bin/findcheckpoint /bin/
-COPY --from=builder_btcd /go/bin/gencerts /bin/
+COPY --from=simverse_buildtime_btcd /go/bin/addblock /bin/
+COPY --from=simverse_buildtime_btcd /go/bin/btcctl /bin/
+COPY --from=simverse_buildtime_btcd /go/bin/btcd /bin/
+COPY --from=simverse_buildtime_btcd /go/bin/findcheckpoint /bin/
+COPY --from=simverse_buildtime_btcd /go/bin/gencerts /bin/
 
-COPY --from=builder_btcwallet /go/bin/btcwallet /bin/
+COPY --from=simverse_buildtime_btcwallet /go/bin/btcwallet /bin/
 
 USER simnet
 
@@ -68,7 +68,7 @@ COPY "docker/btcd/home" "/home/simnet/"
 
 # replace symlink with actual target lib files
 RUN rm lib
-COPY "docker/_aux/base/lib" "/home/simnet/lib"
+COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$BTCD_CONF_PATH" "/home/simnet/seed-btcd.conf"
 COPY "$BTCWALLET_CONF_PATH" "/home/simnet/seed-btcwallet.conf"

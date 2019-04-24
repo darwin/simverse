@@ -1,4 +1,4 @@
-FROM simverse_builder:local as builder_bitcoind
+FROM simverse_buildtime:local as simverse_buildtime_bitcoind
 
 ARG BITCOIND_REPO_PATH
 
@@ -29,16 +29,16 @@ RUN make install
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_base:local as final_bitcoind
+FROM simverse_runtime:local as simverse_runtime_bitcoind
 
 ARG BITCOIND_CONF_PATH
 
 # copy the compiled binaries from the builder image
-COPY --from=builder_bitcoind /usr/local/bin/bitcoin* /usr/local/bin/
+COPY --from=simverse_buildtime_bitcoind /usr/local/bin/bitcoin* /usr/local/bin/
 
 # we also need to copy some relevant libraries over
-COPY --from=builder_bitcoind /usr/lib/libboost* /usr/lib/
-COPY --from=builder_bitcoind /usr/local/lib/libbitcoin* /usr/local/lib/
+COPY --from=simverse_buildtime_bitcoind /usr/lib/libboost* /usr/lib/
+COPY --from=simverse_buildtime_bitcoind /usr/local/lib/libbitcoin* /usr/local/lib/
 
 USER simnet
 
@@ -48,6 +48,6 @@ COPY "docker/bitcoind/home" "/home/simnet/"
 
 # replace symlink with actual target lib files
 RUN rm lib
-COPY "docker/_aux/base/lib" "/home/simnet/lib"
+COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$BITCOIND_CONF_PATH" "/home/simnet/seed-bitcoin.conf"

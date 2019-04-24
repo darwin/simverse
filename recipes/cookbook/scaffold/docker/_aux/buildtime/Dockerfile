@@ -1,4 +1,5 @@
-FROM golang:1.12-alpine
+# this is a container used as a starting point for all docker containers used at building
+FROM simverse_base:local
 
 ARG GCFLAGS
 ENV GCFLAGS=$GCFLAGS
@@ -7,7 +8,6 @@ ENV GCFLAGS=$GCFLAGS
 RUN apk add --no-cache --update \
 musl-dev \
 alpine-sdk \
-git \
 gcc \
 make \
 file \

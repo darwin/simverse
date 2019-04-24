@@ -20,6 +20,7 @@
       <w>btcsuite</w>
       <w>btcwallet</w>
       <w>btcwalletd</w>
+      <w>buildtime</w>
       <w>cafile</w>
       <w>clonefile</w>
       <w>coinbase</w>
@@ -31,6 +32,7 @@
       <w>dedolarize</w>
       <w>direnv</w>
       <w>dnsseed</w>
+      <w>dockerfiles</w>
       <w>dolarize</w>
       <w>droptxindex</w>
       <w>envrc</w>

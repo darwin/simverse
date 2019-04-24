@@ -1,4 +1,4 @@
-FROM simverse_builder:local as builder_lnd
+FROM simverse_buildtime:local as simverse_buildtime_lnd
 
 ARG LND_REPO_PATH
 
@@ -26,13 +26,13 @@ RUN make && make install
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_base:local as final_lnd
+FROM simverse_runtime:local as simverse_runtime_lnd
 
 ARG LND_CONF_PATH
 
 # copy the binaries and entrypoint from the builder image.
-COPY --from=builder_lnd /go/bin/lncli /bin/
-COPY --from=builder_lnd /go/bin/lnd /bin/
+COPY --from=simverse_buildtime_lnd /go/bin/lncli /bin/
+COPY --from=simverse_buildtime_lnd /go/bin/lnd /bin/
 
 USER simnet
 
@@ -42,6 +42,6 @@ COPY "docker/lnd/home" "/home/simnet/"
 
 # replace symlink with actual target lib files
 RUN rm lib
-COPY "docker/_aux/base/lib" "/home/simnet/lib"
+COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$LND_CONF_PATH" "/home/simnet/seed-lnd.conf"

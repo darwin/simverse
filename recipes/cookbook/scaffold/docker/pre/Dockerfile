@@ -1,4 +1,4 @@
-FROM simverse_builder:local as builder_pre
+FROM simverse_buildtime:local as simverse_buildtime_pre
 
 WORKDIR /root/build
 
@@ -20,12 +20,12 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_base:local as final_pre
+FROM simverse_runtime:local as simverse_runtime_pre
 
 RUN apk add --no-cache python
 
 # copy the compiled binaries from the builder image.
-COPY --from=builder_pre /go/bin/gencerts /bin/
+COPY --from=simverse_buildtime_pre /go/bin/gencerts /bin/
 
 USER simnet
 
@@ -35,4 +35,4 @@ COPY "docker/pre/home" "/home/simnet/"
 
 # replace symlink with actual target lib files
 RUN rm lib
-COPY "docker/_aux/base/lib" "/home/simnet/lib"
+COPY "docker/_aux/runtime/lib" "/home/simnet/lib"

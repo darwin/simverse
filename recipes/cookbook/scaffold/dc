@@ -15,8 +15,11 @@ fi
 if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BASE_DOCKER_IMAGE_NAME"; then
   "$HELPERS_DIR/docker-build-base.sh"
 fi
-if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BUILDER_DOCKER_IMAGE_NAME"; then
-  "$HELPERS_DIR/docker-build-builder.sh"
+if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$BUILDTIME_DOCKER_IMAGE_NAME"; then
+  "$HELPERS_DIR/docker-build-buildtime.sh"
+fi
+if [[ -n "$FORCE_REBUILD" ]] || ! docker_image_exists "$RUNTIME_DOCKER_IMAGE_NAME"; then
+  "$HELPERS_DIR/docker-build-runtime.sh"
 fi
 
 exec docker-compose "$@"
