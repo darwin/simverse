@@ -1,5 +1,5 @@
 # this is a container used as a starting point for all docker containers used at runtime
-FROM simverse_base:local
+FROM simverse/base:local
 
 ARG SIMVERSE_HOST_UID
 ARG SIMVERSE_HOST_GID

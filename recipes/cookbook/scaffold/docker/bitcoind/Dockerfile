@@ -1,4 +1,4 @@
-FROM simverse_buildtime:local as simverse_buildtime_bitcoind
+FROM simverse/buildtime:local as simverse_buildtime_bitcoind
 
 ARG BITCOIND_REPO_PATH
 
@@ -29,7 +29,7 @@ RUN make install
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_runtime:local as simverse_runtime_bitcoind
+FROM simverse/runtime:local as simverse_runtime_bitcoind
 
 ARG BITCOIND_CONF_PATH
 

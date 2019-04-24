@@ -1,5 +1,6 @@
 # this is a container used as a starting point for all docker containers used at building
-FROM simverse_base:local
+# we use multi-stage builds, see https://docs.docker.com/develop/develop-images/multistage-build
+FROM simverse/base:local
 
 ARG GCFLAGS
 ENV GCFLAGS=$GCFLAGS

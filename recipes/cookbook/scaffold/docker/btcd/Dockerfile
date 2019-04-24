@@ -1,4 +1,4 @@
-FROM simverse_buildtime:local as simverse_buildtime_btcwallet
+FROM simverse/buildtime:local as simverse_buildtime_btcwallet
 
 ARG BTCWALLET_REPO_PATH
 
@@ -22,7 +22,7 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_buildtime:local as simverse_buildtime_btcd
+FROM simverse/buildtime:local as simverse_buildtime_btcd
 
 ARG BTCD_REPO_PATH
 
@@ -46,7 +46,7 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_runtime:local as simverse_runtime_btcd
+FROM simverse/runtime:local as simverse_runtime_btcd
 
 ARG BTCD_CONF_PATH
 ARG BTCWALLET_CONF_PATH

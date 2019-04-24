@@ -1,4 +1,4 @@
-FROM simverse_buildtime:local as simverse_buildtime_lnd
+FROM simverse/buildtime:local as simverse_buildtime_lnd
 
 ARG LND_REPO_PATH
 
@@ -26,7 +26,7 @@ RUN make && make install
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_runtime:local as simverse_runtime_lnd
+FROM simverse/runtime:local as simverse_runtime_lnd
 
 ARG LND_CONF_PATH
 

@@ -1,4 +1,4 @@
-FROM simverse_buildtime:local as simverse_buildtime_pre
+FROM simverse/buildtime:local as simverse_buildtime_pre
 
 WORKDIR /root/build
 
@@ -20,7 +20,7 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse_runtime:local as simverse_runtime_pre
+FROM simverse/runtime:local as simverse_runtime_pre
 
 RUN apk add --no-cache python
 

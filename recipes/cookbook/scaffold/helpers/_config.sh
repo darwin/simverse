@@ -15,8 +15,8 @@ HELPERS_DIR="$THIS_DIR/helpers"
 DOCKER_DIR="$THIS_DIR/docker"
 VOLUMES_DIR="$THIS_DIR/_volumes"
 
-BASE_DOCKER_IMAGE_NAME="simverse_base:local"
-RUNTIME_DOCKER_IMAGE_NAME="simverse_runtime:local"
-BUILDTIME_DOCKER_IMAGE_NAME="simverse_buildtime:local"
+BASE_DOCKER_IMAGE_NAME="simverse/base:local"
+RUNTIME_DOCKER_IMAGE_NAME="simverse/runtime:local"
+BUILDTIME_DOCKER_IMAGE_NAME="simverse/buildtime:local"
 
 popd
