@@ -6,12 +6,13 @@ to manage the cluster and provides a set of helper scripts for your convenience.
 ## Features
 
 * supports [btcd](https://github.com/btcsuite/btcd) and [bitcoind](https://github.com/bitcoin/bitcoin) as backend nodes
-* supports [lnd](https://github.com/lightningnetwork/lnd) as lightning nodes (c-lighting is planned)
+* supports [lnd](https://github.com/lightningnetwork/lnd) as lightning nodes (c-lightning is planned)
 
 ## Workflow 
 
-You use a simple DSL script (bash) to describe your cluster. Simverse will generate all Dockerfiles, docker-compose.yml
-and supporting scripts for you.
+You use a simple DSL script (bash) as a recipe to describe your cluster. Given a [recipe](recipes), Simverse will generate 
+a bunch of dockerfiles, docker-compose config and other supporting scripts for you. Before generating the files you can tweak your
+configuration using [env variables](_defaults.sh). 
 
 ## Prerequisites:
 
