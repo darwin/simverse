@@ -1,6 +1,6 @@
 # Simverse
 
-This is a tool for lighting network developers. It can generate local simnet clusters of requested size and shape. It uses docker-compose
+This is a tool for lightning network developers. It can generate local simnet clusters of requested size and shape. It uses docker-compose
 to manage the cluster and provides a set of helper scripts for your convenience.   
 
 ## Features
@@ -183,7 +183,7 @@ that they don't overlap for simnets you need to run in parallel.
 
 #### I noticed the nodes run in regtest mode, not simnet. Why?
 
-> Simnet mode is supported only in btcd and lnd. Bitcoind and c-lighting have regtest which happens to be available in btcd/lnd as well. 
+> Simnet mode is supported only in btcd and lnd. Bitcoind and c-lightning have regtest which happens to be available in btcd/lnd as well. 
 To allow hybrid simverse clusters we had to use regtest mode everywhere (which works like simnet for our purposes). 
 Only we had to [patch btcd](recipes/cookbook/scaffold/docker/btcd/patches) to fix some minor issue, because not many people use 
 it this way I guess.    
@@ -264,7 +264,7 @@ Please visit 'https://github.com/darwin/simverse' for further info.
 ```
 About simnets
 
-Simnet is a cluster of bitcoin and lighting nodes talking to each other.
+Simnet is a cluster of bitcoin and lightning nodes talking to each other.
 Simnets are used during development to test different scenarios/workflow
 where multiple nodes are required.
 

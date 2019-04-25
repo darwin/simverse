@@ -160,7 +160,7 @@ show_simnet_help() {
   cat <<EOF
 About simnets
 
-Simnet is a cluster of bitcoin and lighting nodes talking to each other.
+Simnet is a cluster of bitcoin and lightning nodes talking to each other.
 Simnets are used during development to test different scenarios/workflow
 where multiple nodes are required.
 
