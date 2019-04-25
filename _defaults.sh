@@ -23,6 +23,7 @@ export SIMVERSE_BTCD_REPO_URL=${SIMVERSE_BTCD_REPO_URL:-https://github.com/btcsu
 export SIMVERSE_BTCWALLET_REPO_URL=${SIMVERSE_BTCWALLET_REPO_URL:-https://github.com/btcsuite/btcwallet.git}
 export SIMVERSE_LND_REPO_URL=${SIMVERSE_LND_REPO_URL:-https://github.com/lightningnetwork/lnd.git}
 export SIMVERSE_BITCOIND_REPO_URL=${SIMVERSE_BITCOIND_REPO_URL:-https://github.com/bitcoin/bitcoin.git}
+export SIMVERSE_LIGHTNING_REPO_URL=${SIMVERSE_LIGHTNING_REPO_URL:-https://github.com/ElementsProject/lightning.git}
 
 export SIMVERSE_GIT_CLONE_OPTS=${SIMVERSE_GIT_CLONE_OPTS:-"--depth=1 --recursive"}
 export SIMVERSE_GIT_REFERENCE_PREFIX=${SIMVERSE_GIT_REFERENCE_PREFIX} # used in tests
