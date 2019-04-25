@@ -43,6 +43,7 @@
       <w>getbalance</w>
       <w>getinfo</w>
       <w>grpc</w>
+      <w>lightningd</w>
       <w>lightningnetwork</w>
       <w>litecoin</w>
       <w>lncli</w>
@@ -54,11 +55,13 @@
       <w>mainnet</w>
       <w>maxdepth</w>
       <w>miningaddr</w>
+      <w>msat</w>
       <w>mysn</w>
       <w>noclienttls</w>
       <w>noseedbackup</w>
       <w>noservertls</w>
       <w>notls</w>
+      <w>onchain</w>
       <w>popd</w>
       <w>printtoconsole</w>
       <w>pubkey</w>
@@ -73,6 +76,7 @@
       <w>rpcbind</w>
       <w>rpccert</w>
       <w>rpccertdir</w>
+      <w>rpcconnect</w>
       <w>rpchost</w>
       <w>rpckey</w>
       <w>rpclisten</w>

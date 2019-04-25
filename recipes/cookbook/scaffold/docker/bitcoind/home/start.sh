@@ -41,7 +41,5 @@ PARAMS+=" -zmqpubrawblock=$ZMQ_PUBRAWBLOCK"
 PARAMS+=" -zmqpubrawtx=$ZMQ_PUBRAWTX"
 PARAMS+=" -printtoconsole"
 
-PARAMS+=" $@"
-
 set -x
-exec bitcoind ${PARAMS} ${BITCOIND_EXTRA_PARAMS}
+exec bitcoind ${PARAMS} ${BITCOIND_EXTRA_PARAMS} "$@"

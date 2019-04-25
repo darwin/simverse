@@ -52,6 +52,6 @@ cd "$TESTS_DIR"
 announce "running tests from '$(pwd -P)'"
 
 ./test-cases/tutorial1/test.sh b1l2
-./test-cases/tutorial1/test.sh a1l2
+./test-cases/tutorial1/test.sh a1k2
 
 announce "all tests went OK"

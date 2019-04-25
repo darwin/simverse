@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+PERSON=${1:-alice}
+
+FLAVOR=$(get_flavor "$PERSON")
+case "$FLAVOR" in
+  lnd) ${PERSON} newaddress p2wkh | jq ".address" | unquote ;;
+  lightning) ${PERSON} newaddr bech32 | jq ".address" | unquote ;;
+  *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
+esac

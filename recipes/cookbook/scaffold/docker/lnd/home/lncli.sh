@@ -7,7 +7,5 @@ PARAMS=""
 
 PARAMS+=" --network=regtest"
 
-PARAMS+=" $@"
-
 #set -x
-exec lncli ${PARAMS}
+exec lncli ${PARAMS} "$@"

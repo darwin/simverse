@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+if is_btcd_master; then
+  btcctl --wallet getbalance imported | trim
+else
+  bitcoin-cli getbalance | trim
+fi

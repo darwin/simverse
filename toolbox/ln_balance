@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+PERSON=${1:-alice}
+
+FLAVOR=$(get_flavor "$PERSON")
+case "$FLAVOR" in
+  lnd)
+    BALANCE=$("$PERSON" channelbalance | jq ".balance" | unquote)
+    if [[ -z "$BALANCE" ]]; then
+      echo "-1"
+    fi
+    echo "$BALANCE" | sat2btc
+    ;;
+  lightning)
+    "$PERSON" listfunds | jq '[.channels[].channel_sat] | add' | sat2btc
+    ;;
+  *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
+esac

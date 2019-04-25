@@ -25,7 +25,7 @@ announce() {
   printf "\e[35m%s\e[0m\n" "$1"
 }
 
-maybe_debug_test() {
+maybe_debug() {
   if [[ -n "$SIMVERSE_DEBUG_TEST" ]]; then
     echo "entering ad-hoc shell because SIMVERSE_DEBUG_TEST is set..."
     $SHELL
@@ -68,13 +68,3 @@ wait_for_bitcoin_ready() {
   set -e
   echo ""
 }
-
-get_channel_balance() {
-  local person=$1
-  local balance=$(${person} channelbalance | jq ".balance" | unquote)
-  if [[ -z "$balance" ]]; then
-    echo "-1"
-  fi
-  echo ${balance}
-}
-

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+PERSON=${1:-alice}
+AMOUNT_BTC=${2:-0.01}
+LABEL=${3:-$PERSON invoicing $AMOUNT_BTC BTC [#$RANDOM]}
+DESCRIPTION=${4:-without description}
+
+FLAVOR=$(get_flavor "$PERSON")
+case "$FLAVOR" in
+  lnd)
+    AMOUNT_SAT=$(echo "$AMOUNT_BTC" | btc2sat)
+    # TODO: add support for LABEL/DESCRIPTION
+    "$PERSON" addinvoice --amt=${AMOUNT_SAT} | jq ".pay_req" | unquote
+    ;;
+  lightning)
+    AMOUNT_MSAT=$(echo "$AMOUNT_BTC" | btc2msat)
+    "$PERSON" invoice ${AMOUNT_MSAT} "$LABEL" "$DESCRIPTION" | jq ".bolt11" | unquote
+    ;;
+  *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
+esac

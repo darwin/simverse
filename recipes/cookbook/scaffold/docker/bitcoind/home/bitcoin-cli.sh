@@ -15,7 +15,5 @@ if [[ -n "$RPC_USER" ]]; then
   PARAMS+=" -rpcpassword=$RPC_PASS"
 fi
 
-PARAMS+=" $@"
-
 #set -x
-exec bitcoin-cli ${PARAMS} ${BITCOINCLI_EXTRA_PARAMS}
+exec bitcoin-cli ${PARAMS} ${BITCOINCLI_EXTRA_PARAMS} "$@"

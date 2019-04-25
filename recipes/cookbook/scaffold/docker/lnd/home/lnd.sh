@@ -68,7 +68,5 @@ fi
 
 PARAMS+=" --noseedbackup"
 
-PARAMS+=" $@"
-
 set -x
-exec lnd ${PARAMS} ${LND_EXTRA_PARAMS}
+exec lnd ${PARAMS} ${LND_EXTRA_PARAMS} "$@"

@@ -40,35 +40,43 @@ FIRST_DLV_PORT=${FIRST_DLV_PORT:?$REQUIRED}
 FIRST_LND_SERVER_PORT_ON_HOST=${FIRST_LND_SERVER_PORT_ON_HOST:?$REQUIRED}
 FIRST_LND_RPC_PORT_ON_HOST=${FIRST_LND_RPC_PORT_ON_HOST:?$REQUIRED}
 FIRST_LND_REST_PORT_ON_HOST=${FIRST_LND_REST_PORT_ON_HOST:?$REQUIRED}
-
 FIRST_BTCD_SERVER_PORT_ON_HOST=${FIRST_BTCD_SERVER_PORT_ON_HOST:?$REQUIRED}
 FIRST_BTCD_RPC_PORT_ON_HOST=${FIRST_BTCD_RPC_PORT_ON_HOST:?$REQUIRED}
 FIRST_BTCWALLET_RPC_PORT_ON_HOST=${FIRST_BTCWALLET_RPC_PORT_ON_HOST:?$REQUIRED}
 FIRST_BITCOIND_SERVER_PORT_ON_HOST=${FIRST_BITCOIND_SERVER_PORT_ON_HOST:?$REQUIRED}
 FIRST_BITCOIND_RPC_PORT_ON_HOST=${FIRST_BITCOIND_RPC_PORT_ON_HOST:?$REQUIRED}
+FIRST_LIGHTNING_SERVER_PORT_ON_HOST=${FIRST_LIGHTNING_SERVER_PORT_ON_HOST:?$REQUIRED}
+FIRST_LIGHTNING_RPC_PORT_ON_HOST=${FIRST_LIGHTNING_RPC_PORT_ON_HOST:?$REQUIRED}
 
 LND_AUTO_NAME_PREFIX=${LND_AUTO_NAME_PREFIX:?$REQUIRED}
 BTCD_AUTO_NAME_PREFIX=${BTCD_AUTO_NAME_PREFIX:?$REQUIRED}
 BITCOIND_AUTO_NAME_PREFIX=${BITCOIND_AUTO_NAME_PREFIX:?$REQUIRED}
+LIGHTNING_AUTO_NAME_PREFIX=${LIGHTNING_AUTO_NAME_PREFIX:?$REQUIRED}
 
 DEFAULT_BTCD_REPO_PATH=${DEFAULT_BTCD_REPO_PATH:?$REQUIRED}
 DEFAULT_BTCWALLET_REPO_PATH=${DEFAULT_BTCWALLET_REPO_PATH:?$REQUIRED}
 DEFAULT_LND_REPO_PATH=${DEFAULT_LND_REPO_PATH:?$REQUIRED}
 DEFAULT_BITCOIND_REPO_PATH=${DEFAULT_BITCOIND_REPO_PATH:?$REQUIRED}
+DEFAULT_LIGHTNING_REPO_PATH=${DEFAULT_LIGHTNING_REPO_PATH:?$REQUIRED}
 
 DEFAULT_BTCD_CONF_PATH=${DEFAULT_BTCD_CONF_PATH:?$REQUIRED}
 DEFAULT_BTCWALLET_CONF_PATH=${DEFAULT_BTCWALLET_CONF_PATH:?$REQUIRED}
 DEFAULT_LND_CONF_PATH=${DEFAULT_LND_CONF_PATH:?$REQUIRED}
 DEFAULT_BITCOIND_CONF_PATH=${DEFAULT_BITCOIND_CONF_PATH:?$REQUIRED}
+DEFAULT_LIGHTNING_CONF_PATH=${DEFAULT_LIGHTNING_CONF_PATH:?$REQUIRED}
 
 LND_BITCOIN_RPC_HOST=${LND_BITCOIN_RPC_HOST}
 LND_BACKEND=${LND_BACKEND}
+
+LIGHTNING_BITCOIN_RPC_HOST=${LIGHTNING_BITCOIN_RPC_HOST}
+LIGHTNING_BACKEND=${LIGHTNING_BACKEND}
 
 # error codes
 NO_ERR=0
 ERR_NOT_IMPLEMENTED=10
 ERR_MUST_CALL_PRELUDE_FIRST=11
 ERR_NEED_BTCD_OR_BITCOIND=12
+ERR_REQUIRE_BITCOIND=13
 
 # -- helpers ----------------------------------------------------------------------------------------------------------------
 
@@ -111,11 +119,16 @@ init_bitcoind_defaults() {
   BITCOIND_CONF_PATH=${DEFAULT_BITCOIND_CONF_PATH}
 }
 
+init_lightning_defaults() {
+  LIGHTNING_REPO_PATH=${DEFAULT_LIGHTNING_REPO_PATH}
+  LIGHTNING_CONF_PATH=${DEFAULT_LIGHTNING_CONF_PATH}
+}
 init_defaults() {
   init_common_defaults
   init_btcd_defaults
   init_lnd_defaults
   init_bitcoind_defaults
+  init_lightning_defaults
 }
 
 reset_common_counters() {
@@ -152,11 +165,19 @@ reset_bitcoind_counters() {
   BITCOIND_RPC_PORT_ON_HOST=${FIRST_BITCOIND_RPC_PORT_ON_HOST}
 }
 
+reset_lightning_counters() {
+  LIGHTNING_COUNTER=1
+  LIGHTNING_AUTO_NAME_COUNTER=0
+  LIGHTNING_SERVER_PORT_ON_HOST=${FIRST_LIGHTNING_SERVER_PORT_ON_HOST}
+  LIGHTNING_RPC_PORT_ON_HOST=${FIRST_LIGHTNING_RPC_PORT_ON_HOST}
+}
+
 reset_counters() {
   reset_common_counters
   reset_lnd_counters
   reset_btcd_counters
   reset_bitcoind_counters
+  reset_lightning_counters
 }
 
 advance_common_counters() {
@@ -191,6 +212,14 @@ advance_bitcoind_counters() {
   ((++BITCOIN_COUNTER))
 }
 
+advance_lightning_counters() {
+  ((++LIGHTNING_COUNTER))
+  ((++LIGHTNING_SERVER_PORT_ON_HOST))
+  ((++LIGHTNING_RPC_PORT_ON_HOST))
+
+  ((++LN_COUNTER))
+}
+
 gen_lnd_auto_name() {
   echo "${LND_AUTO_NAME_PREFIX}${LND_AUTO_NAME_COUNTER}"
 }
@@ -213,6 +242,14 @@ gen_bitcoind_auto_name() {
 
 advance_bitcoind_auto_name_counter() {
   ((++BITCOIND_AUTO_NAME_COUNTER))
+}
+
+gen_lightning_auto_name() {
+  echo "${LIGHTNING_AUTO_NAME_PREFIX}${LIGHTNING_AUTO_NAME_COUNTER}"
+}
+
+advance_lightning_auto_name_counter() {
+  ((++LIGHTNING_AUTO_NAME_COUNTER))
 }
 
 eval_template() {
@@ -308,19 +345,24 @@ prepare_pre_volumes() {
 }
 
 prepare_btcd_volumes() {
-  local name=$1
+  local name=${1:?required}
   mkdir _volumes/btcd-data-${name}
   mkdir _volumes/btcwallet-data-${name}
 }
 
 prepare_lnd_volumes() {
-  local name=$1
+  local name=${1:?required}
   mkdir _volumes/lnd-data-${name}
 }
 
 prepare_bitcoind_volumes() {
-  local name=$1
+  local name=${1:?required}
   mkdir _volumes/bitcoind-data-${name}
+}
+
+prepare_lightning_volumes() {
+  local name=${1:?required}
+  mkdir _volumes/lightning-data-${name}
 }
 
 ensure_bitcoin_service() {
@@ -447,6 +489,51 @@ add_bitcoind() {
   LAST_BITCOIN_SERVICE=${LAST_BITCOIND_SERVICE}
 }
 
+add_lightning() {
+  NAME=$1
+
+  # generate default name if not given
+  if [[ -z "$NAME" ]]; then
+    advance_lightning_auto_name_counter
+    NAME=$(gen_lightning_auto_name)
+  fi
+
+  # auto-provide LIGHTNING_BITCOIN_RPC_HOST if not given
+  local prev_lightning_bitcoin_rpc_host="$LIGHTNING_BITCOIN_RPC_HOST"
+  if [[ -z "$LIGHTNING_BITCOIN_RPC_HOST" ]]; then
+    LIGHTNING_BITCOIN_RPC_HOST="$(get_last_bitcoin_service)"
+  fi
+  local prev_lightning_backend="$LIGHTNING_BACKEND"
+  if [[ -z "$LIGHTNING_BACKEND" ]]; then
+    LIGHTNING_BACKEND="$(get_last_bitcoin_backend)"
+    if [[ "$LIGHTNING_BACKEND" != "bitcoind" ]]; then
+      echo_err "lightning node '$NAME' needs bitcoind backend, add at least one bitcoind before adding lightning nodes"
+      exit ${ERR_REQUIRE_BITCOIND}
+    fi
+  fi
+
+  echo_service_separator lightning ${NAME} ${LIGHTNING_COUNTER}
+  eval_template "$TEMPLATES_DIR/lightning.yml" >> ${COMPOSE_FILE}
+
+  local alias_file="$ALIASES_DIR_NAME/$NAME"
+  eval_script_template "$TEMPLATES_DIR/lightning-cli-alias.sh" >> "$alias_file"
+  chmod +x "$alias_file"
+
+  # point generic lightning-cli to the first lightning node
+  local default_alias_file="$ALIASES_DIR_NAME/lightning-cli"
+  if [[ ! -f "$default_alias_file" ]]; then
+    ln -s "$NAME" ${default_alias_file}
+  fi
+
+  prepare_lightning_volumes "$NAME"
+
+  advance_common_counters
+  advance_lightning_counters
+
+  LIGHTNING_BITCOIN_RPC_HOST="$prev_lightning_bitcoin_rpc_host"
+  LIGHTNING_BACKEND="$prev_lightning_backend"
+}
+
 # -- public API -------------------------------------------------------------------------------------------------------------
 
 prelude() {
@@ -477,6 +564,7 @@ add() {
     "btcd") add_btcd "$@" ;;
     "lnd") add_lnd "$@" ;;
     "bitcoind") add_bitcoind "$@" ;;
+    "lightning") add_lightning "$@" ;;
     *) echo "unsupported service '$kind', currently allowed are 'btcd' or 'lnd'" ;;
   esac
 }

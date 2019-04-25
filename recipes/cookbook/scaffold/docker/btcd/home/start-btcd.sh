@@ -48,7 +48,5 @@ fi
 PARAMS+=" --rpccert=/certs/rpc.cert"
 PARAMS+=" --rpckey=/certs/rpc.key"
 
-PARAMS+=" $@"
-
 set -x
-exec btcd ${PARAMS} ${BTCD_EXTRA_PARAMS}
+exec btcd ${PARAMS} ${BTCD_EXTRA_PARAMS} "$@"

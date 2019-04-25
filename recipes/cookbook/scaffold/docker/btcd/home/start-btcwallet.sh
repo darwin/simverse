@@ -56,7 +56,6 @@ if [[ -n "$BTCWALLET_USER" ]]; then
 fi
 
 PARAMS+=" --createtemp"
-PARAMS+=" $@"
 
 set -x
-exec btcwallet ${PARAMS} ${BTCWALLET_EXTRA_PARAMS}
+exec btcwallet ${PARAMS} ${BTCWALLET_EXTRA_PARAMS} "$@"

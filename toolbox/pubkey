@@ -15,4 +15,11 @@ trap err_report ERR
 
 ${PERSON} getinfo > ${TEMP_JSON_FILE}
 
-jq ".identity_pubkey" ${TEMP_JSON_FILE} | unquote
+FLAVOR=$(get_flavor "$PERSON")
+case "$FLAVOR" in
+  lnd) KEY="identity_pubkey" ;;
+  lightning) KEY="id" ;;
+  *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
+esac
+
+jq ".${KEY}" ${TEMP_JSON_FILE} | unquote

@@ -6,7 +6,7 @@ to manage the cluster and provides a set of helper scripts for your convenience.
 ## Features
 
 * supports [btcd](https://github.com/btcsuite/btcd) and [bitcoind](https://github.com/bitcoin/bitcoin) as backend nodes
-* supports [lnd](https://github.com/lightningnetwork/lnd) as lightning nodes (c-lightning is planned)
+* supports [lnd](https://github.com/lightningnetwork/lnd) and [lightningd](https://github.com/ElementsProject/lightning) as lightning nodes
 
 ## Workflow 
 
@@ -224,13 +224,7 @@ btcd or bitcoind "flavor". Raw cli interface might be slightly different, so we 
 > to send 10 BTC to Alice's lnd node wallet. The script might decide to call [`toolbox/earn`](toolbox/earn) to mine enough coins and wait 
 > for their maturity.
 
-## Roadmap
-
-  * add support for c-lightning
-  * support for generating blackbox test cases
-  
 ## sv utility reference
-
 
 
 `> ./sv help`
@@ -410,19 +404,22 @@ When you enter a simnet via `./sv enter [name]`, toolbox folder is added to your
 Explore `toolbox` folder for the details:
 
   attach_dlv
-  balance
   chain_height
   connect
   earn
+  faucet_balance
   fund
   generate
   inspect_host
-  invoice
   list_docker_ips
+  ln_balance
   lookup_host
+  newaddr
   oc
+  onchain_balance
   pay
   pubkey
+  req_pay
 
 ```
 

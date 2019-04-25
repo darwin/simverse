@@ -5,14 +5,14 @@ source _lib.sh
 PERSON=${1:-alice}
 AMOUNT_BTC=${2:-100}
 
-ADDRESS=$(${PERSON} newaddress np2wkh | jq ".address" | unquote)
+ADDRESS=$(newaddr "$PERSON")
 
-ORIGINAL_BALANCE_BTC=$(${PERSON} walletbalance | jq ".total_balance" | unquote | sat2btc)
+ORIGINAL_BALANCE_BTC=$(onchain_balance "$PERSON")
 echo "generated new address $ADDRESS for $PERSON (original balance ${ORIGINAL_BALANCE_BTC} BTC)"
 
-AVAILABLE_BALANCE_BTC=$(balance | trim)
+AVAILABLE_BALANCE_BTC=$(faucet_balance)
 
-if $(is "${AVAILABLE_BALANCE_BTC} < ${AMOUNT_BTC}"); then
+if is "${AVAILABLE_BALANCE_BTC} < ${AMOUNT_BTC}"; then
   echo "insufficient balance $AVAILABLE_BALANCE_BTC BTC, earning more..."
   earn ${AMOUNT_BTC}
 fi
@@ -27,5 +27,10 @@ fi
 
 generate ${TX_CONF_COUNT}
 
-NEW_BALANCE_BTC=$(${PERSON} walletbalance | jq ".total_balance" | unquote | sat2btc)
+# c-lighting is pretty lazy in updating its state
+# we have to resort to polling...
+EXPECTED_BALANCE=$(compute "${ORIGINAL_BALANCE_BTC} + ${AMOUNT_BTC}")
+wait_for_onchain_balance "$PERSON" "$EXPECTED_BALANCE"
+
+NEW_BALANCE_BTC=$(onchain_balance "$PERSON")
 echo "$PERSON now has ${NEW_BALANCE_BTC} BTC"

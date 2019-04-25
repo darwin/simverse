@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e -E -o pipefail
-
 RECIPE=${1:?required}
 
 SIMVERSE_HOME=${SIMVERSE_HOME:?required}
@@ -9,6 +7,7 @@ SIMVERSE_WORKSPACE=${SIMVERSE_WORKSPACE:?required}
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+source ../../../toolbox/_lib.sh
 source ../../_lib/helpers.sh
 source ../../_lib/travis.sh
 
@@ -36,7 +35,7 @@ tear_down() {
   ./dc down
 }
 
-trap maybe_debug_test ERR
+trap maybe_debug ERR
 trap tear_down EXIT
 
 if ! wait_for_bitcoin_ready; then
@@ -54,9 +53,10 @@ announce "running $SIMNET_NAME tests..."
 present connect alice bob
 present fund alice 10
 present oc alice bob 0.1
-present test $(get_channel_balance bob) -eq 0
+present is "$(ln_balance bob) == 0"
+sleep 20 # ad-hoc pause, c-lighting is slow to recognize new channel TODO: implement polling of channel discovery
 present pay alice bob 0.01
-present test $(get_channel_balance bob) -eq 1000000
+present is "$(ln_balance bob) == 0.01"
 
 # ---------------------------------------------------------------------------------------------------------------------------
 

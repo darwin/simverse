@@ -6,7 +6,16 @@ FROM_PERSON=${1:-alice}
 TO_PERSON=${2:-bob}
 AMOUNT_BTC=${3:-0.01}
 
-PAY_REQ=$(invoice ${TO_PERSON} ${AMOUNT_BTC} | jq ".pay_req" | unquote)
+PAY_REQUEST=$(req_pay "$TO_PERSON" ${AMOUNT_BTC})
 
-set -x
-${FROM_PERSON} sendpayment --force --pay_req=${PAY_REQ}
+FLAVOR=$(get_flavor "$FROM_PERSON")
+case "$FLAVOR" in
+  lnd)
+    set -x
+    "$FROM_PERSON" sendpayment --force --pay_req=${PAY_REQUEST}
+    ;;
+  lightning)
+    "$FROM_PERSON" pay ${PAY_REQUEST}
+    ;;
+  *) echo_err "unsupported flavor type '$FLAVOR' for '$FROM_PERSON'"; exit 1; ;;
+esac

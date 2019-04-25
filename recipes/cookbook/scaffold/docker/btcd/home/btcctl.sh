@@ -18,7 +18,5 @@ if [[ -n "$RPC_USER" ]]; then
   PARAMS+=" --rpcpass=\"$RPC_PASS\""
 fi
 
-PARAMS+=" $@"
-
 #set -x
-exec btcctl ${PARAMS} ${BTCCTL_EXTRA_PARAMS}
+exec btcctl ${PARAMS} ${BTCCTL_EXTRA_PARAMS} "$@"

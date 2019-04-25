@@ -10,7 +10,7 @@
         - BITCOIND_REPO_PATH=$BITCOIND_REPO_PATH
         - BITCOIND_CONF_PATH=$BITCOIND_CONF_PATH
     ports:
-      - $SIMVERSE_HOST_BIND$BITCOIND_SERVER_PORT_ON_HOST:${BITCOIN_P2P_PORT} # bitcoind server port
+      - $SIMVERSE_HOST_BIND$BITCOIND_SERVER_PORT_ON_HOST:${BITCOIN_P2P_PORT} # bitcoind p2p port
       - $SIMVERSE_HOST_BIND$BITCOIND_RPC_PORT_ON_HOST:${BITCOIN_RPC_PORT} # bitcoind rpc port
     volumes:
       # !DANGER! when touching this, review cookbook.sh > prepare_bitcoind_volumes
