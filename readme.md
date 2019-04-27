@@ -224,12 +224,18 @@ btcd or bitcoind "flavor". Raw cli interface might be slightly different, so we 
 > to send 10 BTC to Alice's lnd node wallet. The script might decide to call [`toolbox/earn`](toolbox/earn) to mine enough coins and wait 
 > for their maturity.
 
+#### What is the difference between heterogeneous and hybrid simnets?
+
+> A heterogeneous simnet is contains only `btcd` + `lnd` nodes or only `bitcoind` + `c-lightning` nodes. Does not mix them. 
+> A hybrid simnet is a simnet with cooperating nodes running in docker and also on the host machine. This is more advanced 
+developer setup where you want to develop/debug one specific node and have rest of the simnet running "in the background" in docker. 
+
 ## sv utility reference
 
 
 `> ./sv help`
 ```
-Simverse v0.2.
+Simverse v0.3.
 
 A generator of simnet clusters for lnd and friends.
 
