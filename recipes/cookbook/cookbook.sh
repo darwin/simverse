@@ -564,7 +564,7 @@ add() {
     "btcd") add_btcd "$@" ;;
     "lnd") add_lnd "$@" ;;
     "bitcoind") add_bitcoind "$@" ;;
-    "lightning") add_lightning "$@" ;;
+    "lightningd"|"lightning"|"c-lightning") add_lightning "$@" ;;
     *) echo "unsupported service '$kind', currently allowed are 'btcd' or 'lnd'" ;;
   esac
 }
