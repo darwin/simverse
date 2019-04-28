@@ -4,6 +4,9 @@ source lib/init.sh
 
 BITCOIN_COUNTER=${BITCOIN_COUNTER:?required}
 
+# always mine at least one block, this block might get orphaned by master node
+./btcctl.sh generate 1
+
 # mine for segwit activation only on first bitcoin node
 if [[ ! "$BITCOIN_COUNTER" -eq 1 ]]; then
   exit 0

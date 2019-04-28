@@ -549,7 +549,7 @@ prelude() {
   PRELUDE_DONE=1
 }
 
-# add [kind] [name] ...
+# add [flavor] [name] ...
 add() {
   local kind=$1
   shift
