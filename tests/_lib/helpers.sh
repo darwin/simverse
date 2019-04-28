@@ -26,8 +26,8 @@ check() {
   fi
 }
 
-announce() {
-  printf "\e[35m%s\e[0m\n" "$1"
+announce1() {
+  printf "\e[35m%s\e[0m" "$1"
 }
 
 maybe_debug() {
@@ -35,6 +35,9 @@ maybe_debug() {
     echo "entering ad-hoc shell because SIMVERSE_DEBUG_TEST is set..."
     $SHELL
   fi
+announce() {
+  announce1 "$@"
+  echo
 }
 
 # this is a replacement for ./sv enter ${SIMNET_NAME}
@@ -53,8 +56,8 @@ enter_simnet() {
 }
 
 wait_for_bitcoin_ready() {
-  local num_blocks=500
-  announce "waiting for master bitcoin node to mine $num_blocks blocks..."
+  local num_blocks=432
+  announce1 "waiting for master bitcoin node to mine $num_blocks blocks "
   set +e
   local probe_counter=1
   local delay=1
