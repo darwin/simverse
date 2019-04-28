@@ -343,7 +343,7 @@ Workspace is a working folder where your generated simnets get stored.
 By default it is under `_workspace` but you can control it
 via SIMVERSE_WORKSPACE environmental variable.
 
-Each simnet has a name given to it during `./sv create [name]` call.
+Each simnet has a name given to it during `./sv create [recipe] [name]` call.
 Workspace contains a folder for each simnet named after it.
 
 You can enter your simnet via `./sv enter [name]`.
@@ -351,7 +351,7 @@ You can enter your simnet via `./sv enter [name]`.
 
 `> ./sv help create`
 ```
-Usage: ./sv create [-f] [name] [recipe]
+Usage: ./sv create [-f] [recipe] [name]
 
 Creates a new simnet with `name` (default) based on `recipe` (default).
 On success, prints a path to generated simnet working folder in your workspace.
@@ -384,9 +384,9 @@ An example of a simple recipe:
     add lnd bob
 
 Recipes are located under `recipes` folder.
-Say, we store above recipe as `recipes/example.sh`.
+Say, we stored the above recipe as `recipes/example.sh`.
 
-By running `./sv create mysn example`, we create a new simnet named `mysn`
+By running `./sv create example mysn`, we create a new simnet named `mysn`
 which has one btcd node and two lnd nodes, all with default settings.
 
 Recipes are bash scripts executed as the last step in simnet creation.
@@ -416,10 +416,11 @@ Explore `toolbox` folder for the details:
   faucet_balance
   fund
   generate
-  inspect_host
+  inspect_container
   list_docker_ips
   ln_balance
-  lookup_host
+  lookup_container
+  lookup_service
   newaddr
   oc
   onchain_balance
