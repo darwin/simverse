@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+FROM_PERSON=${1:-alice}
+TO_PERSON=${2:-bob}
+AMOUNT_BTC=${3:-$(sat2btc 1)} # 1 sat by default
+RISK_FACTOR=${4:-10}
+
+TO_PERSON_ID=$(pubkey "$TO_PERSON")
+
+FLAVOR=$(get_flavor "$FROM_PERSON")
+case "$FLAVOR" in
+  lnd)
+    AMOUNT_SAT=$(btc2sat "$AMOUNT_BTC")
+    exec "$FROM_PERSON" queryroutes --num_max_routes 1 "$TO_PERSON_ID" "$AMOUNT_SAT"
+    ;;
+  lightning)
+    AMOUNT_MSAT=$(btc2msat "$AMOUNT_BTC")
+    exec "$FROM_PERSON" getroute "$TO_PERSON_ID" "$AMOUNT_MSAT" "$RISK_FACTOR"
+    ;;
+  *) echo_err "unsupported flavor type '$FLAVOR' for '$FROM_PERSON'"; exit 1; ;;
+esac
