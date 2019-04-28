@@ -3,10 +3,20 @@
 source _lib.sh
 
 NUM_BLOCKS=${1:-1} # number of blocks
+WHERE=${2} # (optional) bitcoin node which should mine it, defaults to master bitcoin node
 FAUCET_ADDR=${FAUCET_ADDR:?required}
 
-if is_btcd_master; then
-  btcctl generate ${NUM_BLOCKS} # note: faucet addr was passed to btcd daemon as config
-else
-  bitcoin-cli generatetoaddress ${NUM_BLOCKS} ${FAUCET_ADDR}
+if [[ -z "$WHERE" ]]; then
+  WHERE=$(lookup_service 1 role bitcoin)
 fi
+
+FLAVOR=$(get_flavor "$WHERE")
+case "$FLAVOR" in
+  bitcoind)
+    "$WHERE" generatetoaddress ${NUM_BLOCKS} ${FAUCET_ADDR}
+    ;;
+  btcd)
+    "$WHERE" generate ${NUM_BLOCKS} # note: faucet addr was passed to btcd daemon as config
+    ;;
+  *) echo_err "unsupported flavor type '$FLAVOR' for '$WHERE'"; exit 1; ;;
+esac

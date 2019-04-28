@@ -5,11 +5,43 @@ source _lib.sh
 FROM_PERSON=${1:-alice}
 TO_PERSON=${2:-bob}
 
-TO_PERSON_CONNECTION=$(ln_connect_string ${TO_PERSON})
-if [[ -z "$TO_PERSON_CONNECTION" ]]; then
-  echo_err "failed to format connection string for '${TO_PERSON}'"
-  exit 1
-fi
+connect_bitcoin_nodes() {
+  local role=$(get_role "$TO_PERSON")
+  if [[ "$role" != "bitcoin" ]]; then
+    echo_err "both nodes to have the same role, '$TO_PERSON' has role '$role' but 'bitcoin' was expected"
+    exit 2
+  fi
 
-set -x
-${FROM_PERSON} connect ${TO_PERSON_CONNECTION}
+  # note: we don't have to check for flavor here, both bitcoind and btcd have compatible 'addnode' cli interface
+  set -x
+  "$FROM_PERSON" addnode "$TO_PERSON" onetry
+  # note we need to generate one block to trigger potential block sync
+  # not sure what is the issue, but this might be related https://bitcoin.stackexchange.com/q/27055/875
+  generate 1 "$FROM_PERSON"
+}
+
+connect_ln_nodes() {
+  local role=$(get_role "$TO_PERSON")
+  if [[ "$role" != "ln" ]]; then
+    echo_err "both nodes to have the same role, '$TO_PERSON' has role '$role' but 'ln' was expected"
+    exit 2
+  fi
+
+  TO_PERSON_CONNECTION=$(ln_connect_string "$TO_PERSON")
+  if [[ -z "$TO_PERSON_CONNECTION" ]]; then
+    echo_err "failed to format connection string for '$TO_PERSON'"
+    exit 1
+  fi
+
+  # note: we don't have to check for flavor here, both lnd and lightningd have compatible 'connect' cli interface
+  set -x
+  "$FROM_PERSON" connect "$TO_PERSON_CONNECTION"
+}
+
+ROLE=$(get_role "$FROM_PERSON")
+case "$ROLE" in
+  bitcoin) connect_bitcoin_nodes ;;
+  ln) connect_ln_nodes ;;
+  *) echo_err "unsupported role type '$ROLE' for '$FROM_PERSON'"; exit 1; ;;
+esac
+

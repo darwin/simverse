@@ -88,9 +88,8 @@ uppercase() {
 ln_connect_string() {
   local person=${1:-alice}
   local pubkey
-  pubkey=$(pubkey ${person})
-  local status=$?
-  if [[ ${status} -ne 0 ]]; then
+  pubkey=$(pubkey "$person")
+  if [[ $? -ne 0 ]]; then
     return 1
   fi
   echo "$pubkey@$person"
@@ -99,15 +98,15 @@ ln_connect_string() {
 # checks whether btcd is our master bitcoin node
 # we branch some code based on this info
 is_btcd_master() {
-  local host=$(lookup_host 1 role bitcoin)
-  if [[ -z "$host" ]]; then
-    echo_err "unable to lookup first host with role bitcoin"
+  local container=$(lookup_container 1 role bitcoin)
+  if [[ -z "$container" ]]; then
+    echo_err "unable to lookup first container with role bitcoin"
     exit 1
   fi
 
-  local flavor=$(inspect_host ${host} flavor)
+  local flavor=$(inspect_container ${container} flavor)
   if [[ -z "flavor" ]]; then
-    echo_err "unable to determine flavor of service with host '$host'"
+    echo_err "unable to determine flavor of service in container '$container'"
     exit 1
   fi
 
@@ -116,14 +115,26 @@ is_btcd_master() {
 
 get_flavor() {
   local person=${1:?required}
-  local container_id=$(docker-compose ps -q "$person")
-  local flavor=$(inspect_host ${container_id} flavor)
+  local container=$(docker-compose ps -q "$person")
+  local flavor=$(inspect_container ${container} flavor)
   if [[ -z "flavor" ]]; then
-    echo_err "unable to determine flavor of service with host '$person'"
+    echo_err "unable to determine flavor of service for '$person'"
     exit 1
   fi
 
   echo -n "$flavor"
+}
+
+get_role() {
+  local person=${1:?required}
+  local container=$(docker-compose ps -q "$person")
+  local role=$(inspect_container ${container} role)
+  if [[ -z "flavor" ]]; then
+    echo_err "unable to determine role of service for '$person'"
+    exit 1
+  fi
+
+  echo -n "$role"
 }
 
 wait_for_onchain_balance() {

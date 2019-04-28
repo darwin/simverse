@@ -8,5 +8,8 @@ KEY=${2} # service, role, flavor
 if [[ -z "$KEY" ]]; then
   docker inspect --format "{{json .Config.Labels}}" ${HOST_NAME}
 else
-  docker inspect --format "{{index .Config.Labels \"simverse.$KEY\" }}" ${HOST_NAME}
+  if [[ "$KEY" != "com.docker"* ]]; then
+    KEY="simverse.$KEY"
+  fi
+  docker inspect --format "{{index .Config.Labels \"$KEY\" }}" ${HOST_NAME}
 fi

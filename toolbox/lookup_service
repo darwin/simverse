@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+CONTAINER=$(lookup_container "$@")
+
+inspect_container "$CONTAINER" "com.docker.compose.service"
