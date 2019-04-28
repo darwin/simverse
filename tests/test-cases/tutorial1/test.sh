@@ -35,7 +35,6 @@ tear_down() {
   ./dc down
 }
 
-trap maybe_debug ERR
 trap tear_down EXIT
 
 if ! wait_for_bitcoin_ready; then

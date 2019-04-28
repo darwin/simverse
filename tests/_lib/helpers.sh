@@ -15,7 +15,7 @@ check() {
   printf "\$ \e[33m%s\e[0m\n" "$command"
   # eval the command
   set +e
-  eval ${command}
+  eval "${command}"
   status=$?
   set -e
   # print evaluated args on failure
@@ -30,11 +30,6 @@ announce1() {
   printf "\e[35m%s\e[0m" "$1"
 }
 
-maybe_debug() {
-  if [[ -n "$SIMVERSE_DEBUG_TEST" ]]; then
-    echo "entering ad-hoc shell because SIMVERSE_DEBUG_TEST is set..."
-    $SHELL
-  fi
 announce() {
   announce1 "$@"
   echo
@@ -68,11 +63,11 @@ wait_for_bitcoin_ready() {
     echo -n "."
     ((++probe_counter))
     if [[ ${probe_counter} -gt ${max_probes} ]]; then
-      echo ""
+      echo
       echo_err "master bitcoin node didn't reach expected $num_blocks blocks in time"
       return 1
     fi
   done
   set -e
-  echo ""
+  echo
 }
