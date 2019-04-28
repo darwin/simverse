@@ -50,13 +50,13 @@ sleep 5
 
 announce "running $SIMNET_NAME tests..."
 
-present connect alice bob
-present fund alice 10
-present oc alice bob 0.1
-present is "$(ln_balance bob) == 0"
+check "connect alice bob"
+check "fund alice 10"
+check "oc alice bob 0.1"
+check "is \"\$(ln_balance bob) == 0\""
 sleep 20 # ad-hoc pause, c-lighting is slow to recognize new channel TODO: implement polling of channel discovery
-present pay alice bob 0.01
-present is "$(ln_balance bob) == 0.01"
+check "pay alice bob 0.01"
+check "is \"\$(ln_balance bob) == 0.01\""
 
 # ---------------------------------------------------------------------------------------------------------------------------
 

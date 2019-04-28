@@ -8,17 +8,22 @@ unquote() {
   tr -d '"'
 }
 
-# https://stackoverflow.com/a/17841619/84283
-join_by() {
- local IFS="$1"
- shift
- echo "$*"
-}
-
-present() {
-  local line="$(join_by " " ${@/eval/})"
-  printf "\$ \e[33m%s\e[0m\n" "$line"
-  "$@"
+check() {
+  local command=${1:?required}
+  local status
+  # print the command
+  printf "\$ \e[33m%s\e[0m\n" "$command"
+  # eval the command
+  set +e
+  eval ${command}
+  status=$?
+  set -e
+  # print evaluated args on failure
+  if [[ "$status" -ne 0 ]]; then
+    evaluated_arguments=$(eval echo -e ${command})
+    printf "! \e[31m%s\e[0m\n" "$evaluated_arguments"
+    return ${status}
+  fi
 }
 
 announce() {
