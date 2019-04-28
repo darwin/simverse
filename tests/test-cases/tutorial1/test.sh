@@ -20,7 +20,7 @@ cd "${SIMVERSE_HOME}"
 travis_fold start "prepare-$SIMNET_NAME"
 announce "preparing $SIMNET_NAME simnet..."
 
-./sv create ${SIMNET_NAME} ${RECIPE} --yes
+./sv create ${RECIPE} ${SIMNET_NAME} --yes
 
 enter_simnet ${SIMNET_NAME}
 

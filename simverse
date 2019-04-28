@@ -121,7 +121,7 @@ EOF
 
 show_create_help() {
   cat <<EOF
-Usage: ./sv create [-f] [name] [recipe]
+Usage: ./sv create [-f] [recipe] [name]
 
 Creates a new simnet with \`name\` (default) based on \`recipe\` (default).
 On success, prints a path to generated simnet working folder in your workspace.
@@ -308,9 +308,9 @@ An example of a simple recipe:
     add lnd bob
 
 Recipes are located under \`recipes\` folder.
-Say, we store above recipe as \`recipes/example.sh\`.
+Say, we stored the above recipe as \`recipes/example.sh\`.
 
-By running \`./sv create mysn example\`, we create a new simnet named \`mysn\`
+By running \`./sv create example mysn\`, we create a new simnet named \`mysn\`
 which has one btcd node and two lnd nodes, all with default settings.
 
 Recipes are bash scripts executed as the last step in simnet creation.
@@ -332,7 +332,7 @@ Workspace is a working folder where your generated simnets get stored.
 By default it is under \`_workspace\` but you can control it
 via SIMVERSE_WORKSPACE environmental variable.
 
-Each simnet has a name given to it during \`./sv create [name]\` call.
+Each simnet has a name given to it during \`./sv create [recipe] [name]\` call.
 Workspace contains a folder for each simnet named after it.
 
 You can enter your simnet via \`./sv enter [name]\`.
@@ -574,10 +574,10 @@ show_version() {
   echo "$SIMVERSE_VERSION"
 }
 
-# create [-f] [simnet_name] [recipe_name]
+# create [-f] [recipe_name] [simnet_name]
 create_simnet() {
-  local simnet_name=${1:-$DEFAULT_SIMNET_NAME}
-  local recipe_alias=${2:-$DEFAULT_RECIPE_NAME}
+  local recipe_alias=${1:-$DEFAULT_RECIPE_NAME}
+  local simnet_name=${2:-$DEFAULT_SIMNET_NAME}
 
   check_simnet_name "$simnet_name"
 
