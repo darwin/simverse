@@ -52,20 +52,26 @@ trim() {
 }
 
 sat2btc() {
-  local number
-  read number
+  local number=${1}
+  if [[ -z "$number" ]]; then
+    read number
+  fi
   echo "${number} / 100000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 8
 }
 
 btc2sat() {
-  local number
-  read number
+  local number=${1}
+  if [[ -z "$number" ]]; then
+    read number
+  fi
   echo "${number} * 100000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 0
 }
 
 btc2msat() {
-  local number
-  read number
+  local number=${1}
+  if [[ -z "$number" ]]; then
+    read number
+  fi
   echo "${number} * 100000000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 0
 }
 
