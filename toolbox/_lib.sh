@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e -E -o pipefail
+set -e -o pipefail
 
 echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
