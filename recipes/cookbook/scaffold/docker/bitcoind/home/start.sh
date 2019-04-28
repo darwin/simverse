@@ -41,5 +41,10 @@ PARAMS+=" -zmqpubrawblock=$ZMQ_PUBRAWBLOCK"
 PARAMS+=" -zmqpubrawtx=$ZMQ_PUBRAWTX"
 PARAMS+=" -printtoconsole"
 
+# this instructs bitcoind to activate segwit with mainnet rules since block 0
+# without this segwit would be activated by default and that would break consensus with btcd peers
+# https://github.com/bitcoin/bitcoin/pull/11389
+PARAMS+=" -vbparams=segwit:0:999999999999"
+
 set -x
 exec bitcoind ${PARAMS} ${BITCOIND_EXTRA_PARAMS} "$@"
