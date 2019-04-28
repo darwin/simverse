@@ -3,17 +3,19 @@
 source _lib.sh
 
 PERSON=${1:-alice}
-TEMP_JSON_FILE=/tmp/simverse_pubkey_info.json
 
 err_report() {
   echo_err "error on line $(caller)"
-  echo_err "see '$TEMP_JSON_FILE'"
+  if [[ -n "$INFO" ]]; then
+    echo_err "getinfo output:"
+    echo_err "$INFO"
+  fi
   return 1
 }
 
 trap err_report ERR
 
-${PERSON} getinfo > ${TEMP_JSON_FILE}
+INFO=$("$PERSON" getinfo)
 
 FLAVOR=$(get_flavor "$PERSON")
 case "$FLAVOR" in
@@ -22,4 +24,4 @@ case "$FLAVOR" in
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac
 
-jq ".${KEY}" ${TEMP_JSON_FILE} | unquote
+echo -n "$INFO" | jq ".${KEY}" | unquote
