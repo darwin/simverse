@@ -53,7 +53,7 @@ check "connect alice bob"
 check "fund alice 10"
 check "oc alice bob 0.1"
 check "is \"\$(ln_balance bob) == 0\""
-sleep 20 # ad-hoc pause, c-lighting is slow to recognize new channel TODO: implement polling of channel discovery
+check "wait_for_route alice bob"
 check "pay alice bob 0.01"
 check "is \"\$(ln_balance bob) == 0.01\""
 
