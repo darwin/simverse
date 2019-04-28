@@ -32,7 +32,7 @@ realpath() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
-TX_CONF_COUNT=6
+TX_CONF_COUNT=10
 COINBASE_MATURITY=100
 
 ROOT_DIR="../.."
