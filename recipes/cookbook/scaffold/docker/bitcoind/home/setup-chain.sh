@@ -14,7 +14,7 @@ if [[ ! "$BITCOIN_COUNTER" -eq 1 ]]; then
   exit 0
 fi
 
-NUM_BLOCKS_REQUIRED=500
+NUM_BLOCKS_REQUIRED=432 # https://gist.github.com/t4sk/0bc6b35a26998b9007d68f376a852636
 BLOCKS=$(./bitcoin-cli.sh getblockcount)
 if [[ "$BLOCKS" -lt "$NUM_BLOCKS_REQUIRED" ]]; then
   echo "Activating segwit..."
