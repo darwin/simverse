@@ -143,20 +143,51 @@ get_role() {
   echo -n "$role"
 }
 
-wait_for_onchain_balance() {
-  local person=${1:?required}
-  local expected_amount=${2:?required}
+wait_for() {
+  local msg=${1:?required}
+  local cmd=${2:?required}
+  local max=${3:-100}
+
   local counter=1
-  local max=100
-  while is "$(onchain_balance "$person") < $expected_amount"  > /dev/null 2>&1; do
+  local status
+  while true; do
+    set +e
+    eval "${cmd}" > /dev/null 2>&1;
+    status=$?
+    set -e
+    if [[ "$status" -eq 0 ]]; then
+      if [[ "$counter" -ne 1 ]]; then
+        echo
+      fi
+      return 0
+    fi
+    if [[ "$counter" -eq 1 ]]; then
+      echo -n "Zzz.. waiting for $msg "
+    fi
     sleep 1
     echo -n "."
     ((++counter))
     if [[ ${counter} -gt ${max} ]]; then
       echo
-      echo "wait_for_onchain_balance stuck waiting for '$person' to receive $expected_amount BTC on-chain"
+      echo_err "wait_for stuck waiting for '$msg' (tried $max times)"
       exit 1
     fi
   done
-  echo
+}
+
+wait_for_onchain_balance() {
+  local person=${1:?required}
+  local expected_amount=${2:?required}
+
+  local cmd="is \"\$(onchain_balance "$person") >= $expected_amount\""
+  wait_for "$person to receive onchain balance of $expected_amount BTC" "$cmd"
+}
+
+wait_for_route() {
+  local from_person=${1:?required}
+  local to_person=${2:?required}
+  local amt_btc=${3}
+
+  local cmd="get_route \"$from_person\" \"$to_person\" ${amt_btc}"
+  wait_for "route between $from_person and $to_person" "$cmd"
 }
