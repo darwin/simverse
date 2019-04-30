@@ -147,8 +147,8 @@ wait_for() {
   local msg=${1:?required}
   local cmd=${2:?required}
   local cmd2=${3}
-  local max=${4:-100}
-  local interval=${5:-3}
+  local interval=${4:-5}
+  local max=${5:-100}
 
   local counter=1
   local status
@@ -169,7 +169,7 @@ wait_for() {
     sleep 1
     echo -n "."
     if  [[ -n "$cmd2" ]]; then
-      if (( "$counter" % "$interval" )); then
+      if ! (( "$counter" % "$interval" )); then
         echo
         set +e
         eval "${cmd2}"
@@ -200,5 +200,6 @@ wait_for_route() {
   local amt_btc=${3}
 
   local cmd="get_route \"$from_person\" \"$to_person\" ${amt_btc}"
-  wait_for "route between $from_person and $to_person" "$cmd"
+  local cmd2="generate 1"
+  wait_for "route between $from_person and $to_person" "$cmd" "$cmd2"
 }
