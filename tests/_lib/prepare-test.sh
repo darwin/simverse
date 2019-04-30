@@ -38,7 +38,3 @@ trap tear_down EXIT
 if ! wait_for_bitcoin_ready; then
   exit 2
 fi
-
-# give LND a bit more time
-# TODO: revisit this
-sleep 5
