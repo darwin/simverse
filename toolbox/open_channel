@@ -22,4 +22,4 @@ case "$FLAVOR" in
   *) echo_err "unsupported flavor type '$FLAVOR' for host '$FROM_PERSON'"; exit 1; ;;
 esac
 
-generate ${TX_CONF_COUNT}
+generate ${CHANNEL_CONF_COUNT}
