@@ -17,6 +17,8 @@ announce "running $SIMNET_NAME tests..."
 #
 # resulting LN state: alice <-0.09--0.01-> charlie <-0.09--0.01-> bob
 
+check "wait_sync alice bob charlie"
+
 # init connections
 check "./init"
 

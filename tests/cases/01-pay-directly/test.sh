@@ -11,6 +11,7 @@ source ../../_lib/prepare-test.sh
 
 announce "running $SIMNET_NAME tests..."
 
+check "wait_sync alice bob"
 check "connect alice bob"
 check "fund alice 10"
 check "open_channel alice bob 0.1"
