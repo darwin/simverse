@@ -8,16 +8,21 @@ unquote() {
   tr -d '"'
 }
 
+CHECK_COUNTER=1
+
 check() {
   local command=${1:?required}
   local status
-  # print the command
+
   printf "\$ \e[33m%s\e[0m\n" "$command"
-  # eval the command
+  travis_fold start "check-$CHECK_COUNTER"
   set +e
   eval "${command}"
   status=$?
   set -e
+  travis_fold end "check-$CHECK_COUNTER"
+  ((CHECK_COUNTER++))
+
   # print evaluated args on failure
   if [[ "$status" -ne 0 ]]; then
     evaluated_arguments=$(eval echo -e ${command})

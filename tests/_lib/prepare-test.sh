@@ -26,7 +26,9 @@ enter_simnet ${SIMNET_NAME}
 
 travis_fold end "prepare-$SIMNET_NAME"
 
+travis_fold start "up-$SIMNET_NAME"
 ./dc up -d
+travis_fold end "up-$SIMNET_NAME"
 
 tear_down() {
   if [[ $? -ne 0 ]]; then
@@ -35,8 +37,11 @@ tear_down() {
       "$SIMVERSE_SHELL"
     fi
   fi
+
   announce "tearing down $SIMNET_NAME"
+  travis_fold start "down-$SIMNET_NAME"
   ./dc down
+  travis_fold end "down-$SIMNET_NAME"
 }
 
 trap tear_down EXIT
