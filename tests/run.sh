@@ -26,8 +26,9 @@ cd ..
 
 export SIMVERSE_HOME="$(pwd -P)"
 
-if [[ -n "$SIMVERSE_DEBUG_TEST" ]]; then
-  TMP_DIR=/tmp/simverse-tests
+SIMVERSE_TEST_TMP=${SIMVERSE_TEST_TMP}
+if [[ -n "$SIMVERSE_TEST_TMP" ]]; then
+  TMP_DIR="$SIMVERSE_TEST_TMP/simverse-tests"
   rm -rf "$TMP_DIR"
   mkdir -p "$TMP_DIR"
 else
