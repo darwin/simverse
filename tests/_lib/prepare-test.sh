@@ -15,21 +15,21 @@ source travis.sh
 
 cd "${SIMVERSE_HOME}"
 
-travis_fold start "prepare_simnet"
+travis_section start "prepare_simnet"
   announce "creating simnet '$SIMNET_NAME'..."
   ./sv create ${RECIPE} ${SIMNET_NAME} --yes
   enter_simnet ${SIMNET_NAME}
-travis_fold end "prepare_simnet"
+travis_section end "prepare_simnet"
 
-travis_fold start "build_docker_containers"
+travis_section start "build_docker_containers"
   announce "building docker containers..."
   ./dc build
-travis_fold end "build_docker_containers"
+travis_section end "build_docker_containers"
 
-travis_fold start "start_docker_containers"
+travis_section start "start_docker_containers"
   announce "starting docker containers..."
   ./dc up -d
-travis_fold end "start_docker_containers"
+travis_section end "start_docker_containers"
 
 tear_down() {
   if [[ $? -ne 0 ]]; then
@@ -39,10 +39,10 @@ tear_down() {
     fi
   fi
 
-  travis_fold start "stop_docker_containers"
+  travis_section start "stop_docker_containers"
     announce "stopping docker containers..."
     ./dc down
-  travis_fold end "stop_docker_containers"
+  travis_section end "stop_docker_containers"
 }
 
 trap tear_down EXIT

@@ -55,16 +55,20 @@ travis_cmd() {
 }
 
 travis_time_start() {
+  set -e
   travis_timer_id=$(printf %08x $(( RANDOM * RANDOM )))
   travis_start_time=$(travis_nanoseconds)
   echo -en "travis_time:start:$travis_timer_id\r${ANSI_CLEAR}"
+  set +e
 }
 
 travis_time_finish() {
   local result=$?
+  set -e
   travis_end_time=$(travis_nanoseconds)
   local duration=$(($travis_end_time-$travis_start_time))
   echo -en "\ntravis_time:end:$travis_timer_id:start=$travis_start_time,finish=$travis_end_time,duration=$duration\r${ANSI_CLEAR}"
+  set +e
   return $result
 }
 
@@ -192,9 +196,16 @@ travis_retry() {
 travis_fold() {
   local action=$1
   local name=$2
-  echo -en "travis_fold:${action}:${name}\r${ANSI_CLEAR}"
+  echo -en " travis_fold:${action}:${name}\r${ANSI_CLEAR}"
 }
 
-#travis_fold start install
-#  travis_cmd lein\ deps --assert --echo --retry --timing
-#travis_fold end install
+travis_section() {
+  local action=$1
+  if [[ "$action" == "start" ]]; then
+    travis_fold "$@"
+    travis_time_start
+  else
+    travis_time_finish
+    travis_fold "$@"
+  fi
+}

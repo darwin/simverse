@@ -14,14 +14,14 @@ check() {
   local command=${1:?required}
   local status
 
-  travis_fold start "test.$CHECK_COUNTER"
+  travis_section start "test.$CHECK_COUNTER"
   printf "\$ \e[33m%s\e[0m\n" "$command"
   set +e
   eval "${command}"
   status=$?
   set -e
-  travis_fold end "test.$CHECK_COUNTER"
-  ((CHECK_COUNTER++))
+  travis_section end "test.$CHECK_COUNTER"
+  ((++CHECK_COUNTER))
 
   # print evaluated args on failure
   if [[ "$status" -ne 0 ]]; then
