@@ -29,6 +29,12 @@ travis_fold end "prepare-$SIMNET_NAME"
 ./dc up -d
 
 tear_down() {
+  if [[ $? -ne 0 ]]; then
+    if [[ -n "$SIMVERSE_DEBUG_TEST" ]]; then
+      echo "entering shell for debugging because SIMVERSE_DEBUG_TEST is set:"
+      "$SIMVERSE_SHELL"
+    fi
+  fi
   announce "tearing down $SIMNET_NAME"
   ./dc down
 }
