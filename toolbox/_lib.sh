@@ -32,7 +32,7 @@ realpath() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
-TX_CONF_COUNT=10
+TX_CONF_COUNT=6
 CHANNEL_CONF_COUNT=20
 COINBASE_MATURITY=100
 
