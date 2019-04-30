@@ -2,6 +2,8 @@
 
 set -e -o pipefail
 
+TEST_SUITE=${1:-default}
+
 LAUNCH_DIR=$(pwd -P)
 
 SIMVERSE_DEBUG_TEST=${SIMVERSE_DEBUG_TEST}
@@ -57,23 +59,8 @@ fi
 
 cd "$TESTS_DIR"
 
-announce "running tests from '$(pwd -P)'"
+announce "running [$TEST_SUITE] tests from '$(pwd -P)'"
 
-./test-cases/01-pay-directly/test.sh b1l2
-./test-cases/01-pay-directly/test.sh a1k2
-
-./test-cases/02-pay-via-charlie/test.sh b1l3
-./test-cases/02-pay-via-charlie/test.sh a1k3
-./test-cases/02-pay-via-charlie/test.sh a1k1l2
-./test-cases/02-pay-via-charlie/test.sh a1l1k2
-./test-cases/02-pay-via-charlie/test.sh a1k2l1
-./test-cases/02-pay-via-charlie/test.sh a1l2k1
-
-./test-cases/02-pay-via-charlie/test.sh a1l1a1l2
-./test-cases/02-pay-via-charlie/test.sh a1k1a1k2
-./test-cases/02-pay-via-charlie/test.sh a1k1a1l2
-
-# this one is broken with "Incoming htlc(<id>) has an expiration that is too soon" for now
-#./test-cases/02-pay-via-charlie/test.sh a1k1b1l2
+. "suites/$TEST_SUITE.sh"
 
 announce "all tests went OK"
