@@ -1,9 +1,23 @@
 #!/usr/bin/env bash
 
-SIMNET_NAME=${SIMNET_NAME:?required}
 RECIPE=${RECIPE:?require}
+TRAVIS=${TRAVIS}
+
+SIMNET_NAME=${SIMNET_NAME:?required}
 SIMVERSE_HOME=${SIMVERSE_HOME:?required}
 SIMVERSE_WORKSPACE=${SIMVERSE_WORKSPACE:?required}
+SIMVERSE_NOANSI=${SIMVERSE_NOANSI}
+SIMVERSE_DEBUG_TEST=${SIMVERSE_DEBUG_TEST}
+SIMVERSE_SHELL=${SIMVERSE_SHELL:-$SHELL}
+
+if [[ -n "$TRAVIS" ]]; then
+  SIMVERSE_NOANSI=1
+fi
+
+DOCKER_COMPOSE_OPTS=
+if [[ -n "$SIMVERSE_NOANSI" ]]; then
+  DOCKER_COMPOSE_OPTS="--no-ansi"
+fi
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
@@ -23,12 +37,12 @@ travis_section end "prepare_simnet"
 
 travis_section start "build_docker_containers"
   announce "building docker containers..."
-  ./dc build --parallel
+  ./dc ${DOCKER_COMPOSE_OPTS} build --parallel
 travis_section end "build_docker_containers"
 
 travis_section start "start_docker_containers"
   announce "starting docker containers..."
-  ./dc --no-ansi up -d
+  ./dc ${DOCKER_COMPOSE_OPTS} up -d
 travis_section end "start_docker_containers"
 
 tear_down() {
@@ -41,7 +55,7 @@ tear_down() {
 
   travis_section start "stop_docker_containers"
     announce "stopping docker containers..."
-    ./dc down
+    ./dc ${DOCKER_COMPOSE_OPTS} down
   travis_section end "stop_docker_containers"
 }
 
