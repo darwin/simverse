@@ -4,11 +4,11 @@
 
 prelude
 
-add btcd b1
+add bitcoind b1
 
 add lnd alice
-add lnd bob
-add lnd charlie
+add lightningd bob
+add lightningd charlie
 
 # generate init script to build connections
 cat > init <<EOF
@@ -18,9 +18,9 @@ set -e -o pipefail
 
 # assuming LN -> Bitcoin connections
 #
-# alice -> b1 (btcd)
-# bob -> b1 (btcd)
-# charlie -> b1 (btcd)
+# alice (lnd) -> b1 (bitcoind)
+# bob (lightningd) -> b1 (bitcoind)
+# charlie (lightningd) -> b1 (bitcoind)
 
 # connect LN nodes
 connect alice charlie
