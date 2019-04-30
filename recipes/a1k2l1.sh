@@ -7,7 +7,7 @@ prelude
 add bitcoind b1
 
 add lightningd alice
-add lnd bob
+add lightningd bob
 add lnd charlie
 
 # generate init script to build connections
