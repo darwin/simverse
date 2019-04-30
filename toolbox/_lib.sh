@@ -145,7 +145,7 @@ get_role() {
   fi
 
   local role=$(inspect_container ${container} role)
-  if [[ -z "flavor" ]]; then
+  if [[ -z "role" ]]; then
     echo_err "unable to determine role of service for '$person'"
     exit 1
   fi
