@@ -41,6 +41,11 @@ tear_down() {
 
 trap tear_down EXIT
 
+announce "waiting for docker containers to warm up..."
+# this is here to wait for ln nodes to start inside the container
+# TODO: replace with polling
+sleep 15
+
 if ! wait_for_bitcoin_ready; then
   exit 2
 fi
