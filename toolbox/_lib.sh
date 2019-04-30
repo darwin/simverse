@@ -213,3 +213,34 @@ wait_for_route() {
   local cmd2="generate 1"
   wait_for "route between $from_person and $to_person" "$cmd" "$cmd2"
 }
+
+wait_sync_one() {
+  local person=${1:?required}
+
+  local cmd="\"$person\" getinfo"
+  wait_for "$person to become available" "$cmd"
+
+  local flavor
+  flavor=$(get_flavor "$person")
+  local cmd
+  case "$flavor" in
+    lnd)
+      cmd="[[ \$(\"$person\" getinfo | jq \".synced_to_chain\") == \"true\" ]]"
+      wait_for "$person to sync" "$cmd"
+      ;;
+    lightning)
+      cmd="[[ \$(chain_height) == \$(\"$person\" getinfo | jq .blockheight) ]]"
+      wait_for "$person to sync" "$cmd"
+      ;;
+    *)
+      echo_err "unsupported flavor type '$flavor' for '$person'"
+      return 1
+      ;;
+  esac
+}
+
+wait_sync() {
+  for person in "$@"; do
+    wait_sync_one "$person"
+  done
+}
