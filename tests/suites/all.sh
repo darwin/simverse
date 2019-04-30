@@ -2,6 +2,6 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-./pay-directly.sh
-./pay-via-charlie.sh
-./pay-via-charlie-rest.sh
+. ./pay-directly.sh
+. ./pay-via-charlie.sh
+. ./pay-via-charlie-rest.sh
