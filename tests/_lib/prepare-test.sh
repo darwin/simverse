@@ -28,7 +28,7 @@ travis_section end "build_docker_containers"
 
 travis_section start "start_docker_containers"
   announce "starting docker containers..."
-  ./dc up -d
+  ./dc --no-ansi up -d
 travis_section end "start_docker_containers"
 
 tear_down() {
