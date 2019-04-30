@@ -31,8 +31,8 @@ check "open_channel alice charlie 0.1"
 check "open_channel charlie bob 0.1"
 
 # perform payment
-check "is \"\$(ln_balance bob) == 0\""
 check "wait_for_route alice bob"
+check "is \"\$(ln_balance bob) == 0\""
 check "pay alice bob 0.01"
 check "is \"\$(ln_balance bob) == 0.01\""
 check "is \"\$(ln_balance charlie) > 0.099\"" # losing on fees?
