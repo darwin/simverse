@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# this script might be useful for developing toolbox commands
+# it brings you into interactive bash shell with toolbox lib sourced
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+export SIMVERSE_SHELL=bash
+
+exec ./enter --init-file <(cat <<EOF
+source toolbox/_lib.sh
+set +e +o pipefail
+trap - ERR
+EOF
+)
