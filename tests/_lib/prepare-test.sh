@@ -23,7 +23,7 @@ travis_section end "prepare_simnet"
 
 travis_section start "build_docker_containers"
   announce "building docker containers..."
-  ./dc build
+  ./dc build --parallel
 travis_section end "build_docker_containers"
 
 travis_section start "start_docker_containers"
