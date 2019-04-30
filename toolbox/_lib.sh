@@ -27,7 +27,6 @@ report_error() {
 
 trap report_error ERR
 
-
 realpath() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
@@ -147,7 +146,9 @@ get_role() {
 wait_for() {
   local msg=${1:?required}
   local cmd=${2:?required}
-  local max=${3:-100}
+  local cmd2=${3}
+  local max=${4:-100}
+  local interval=${5:-3}
 
   local counter=1
   local status
@@ -167,6 +168,15 @@ wait_for() {
     fi
     sleep 1
     echo -n "."
+    if  [[ -n "$cmd2" ]]; then
+      if (( "$counter" % "$interval" )); then
+        echo
+        set +e
+        eval "${cmd2}"
+        set -e
+        echo -n "Zzz.. waiting for $msg "
+      fi
+    fi
     ((++counter))
     if [[ ${counter} -gt ${max} ]]; then
       echo
@@ -180,7 +190,7 @@ wait_for_onchain_balance() {
   local person=${1:?required}
   local expected_amount=${2:?required}
 
-  local cmd="is \"\$(onchain_balance "$person") >= $expected_amount\""
+  local cmd="is \"\$(onchain_balance \"$person\") >= $expected_amount\""
   wait_for "$person to receive onchain balance of $expected_amount BTC" "$cmd"
 }
 
