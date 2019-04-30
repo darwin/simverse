@@ -330,6 +330,10 @@ prepare_tmux_script() {
   chmod +x "tmux"
 }
 
+prepare_home_link() {
+  ln -s "$SIMVERSE_HOME" home
+}
+
 echo_service_separator() {
   local kind=$1
   local name=$2
@@ -544,6 +548,7 @@ prelude() {
   init_states
   prepare_pre_volumes
   prepare_tmux_script
+  prepare_home_link
   eval_template "$TEMPLATES_DIR/prelude.yml" > ${COMPOSE_FILE}
   touch docker-compose.yml
   PRELUDE_DONE=1

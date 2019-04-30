@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+. home/_defaults.sh
+
+SIMNET_DIR_ABSOLUTE=$(pwd -P)
+ALIASES_DIR_ABSOLUTE="$SIMNET_DIR_ABSOLUTE/aliases"
+TOOLBOX_DIR_ABSOLUTE="$SIMNET_DIR_ABSOLUTE/toolbox"
+
+export PATH=${ALIASES_DIR_ABSOLUTE}:${TOOLBOX_DIR_ABSOLUTE}:$PATH
+
+exec "$SIMVERSE_SHELL"

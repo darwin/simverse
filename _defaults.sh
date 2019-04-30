@@ -6,6 +6,8 @@ export SIMVERSE_WORKSPACE=${SIMVERSE_WORKSPACE:-_workspace}
 # simverse repos can be located outside this repo checkout
 export SIMVERSE_REPOS=${SIMVERSE_REPOS:-_repos}
 
+export SIMVERSE_SHELL=${SIMVERSE_SHELL:-$SHELL}
+
 #############################################################################################################################
 # simnet create-time defaults, effective during ./sv create (or other ./sv commands)
 
