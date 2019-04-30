@@ -48,13 +48,13 @@ _workspace/default > btcd1 getinfo
 ...
 _workspace/default > alice getinfo
 ...
-_workspace/default > connect alice bob        # connect Alice's lnd node to Bob's
+_workspace/default > connect alice bob           # connect Alice's lnd node to Bob's
 ...
-_workspace/default > fund alice 10            # fund Alice with 10 BTC
+_workspace/default > fund alice 10               # fund Alice with 10 BTC
 ...
-_workspace/default > oc alice bob 0.1         # open LN channel
+_workspace/default > open_channel alice bob 0.1  # open a LN channel
 ...
-_workspace/default > pay alice bob 0.01       # pay via LN
+_workspace/default > pay alice bob 0.01          # pay via LN
 ```
 
 Here is the default recipe which was used for simnet generation (see `recipes/default.sh`):
@@ -123,8 +123,8 @@ fund charlie 10
 connect alice charlie
 connect bob charlie
 
-oc alice charlie 0.1
-oc charlie bob 0.05
+open_channel alice charlie 0.1
+open_channel charlie bob 0.05
 
 # wait for channel discovery to kick in (circa 20s)
 
