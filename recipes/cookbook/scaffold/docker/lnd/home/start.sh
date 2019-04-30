@@ -2,7 +2,7 @@
 
 # give bitcoin nodes some head start
 # TODO: revisit this
-sleep 5
+sleep 10
 
 # wait for shared certificate creation
 while [[ ! -f /certs/rpc.cert ]]; do sleep 1; done

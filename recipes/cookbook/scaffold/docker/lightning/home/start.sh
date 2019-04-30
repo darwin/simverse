@@ -2,6 +2,6 @@
 
 # give bitcoin nodes some head start
 # TODO: revisit this
-sleep 5
+sleep 10
 
 exec lightningd.sh
