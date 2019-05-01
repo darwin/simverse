@@ -20,5 +20,5 @@ NUM_BLOCKS_REQUIRED=432 # https://gist.github.com/t4sk/0bc6b35a26998b9007d68f376
 BLOCKS=$(./btcctl.sh getblockcount)
 if [[ "$BLOCKS" -lt "$NUM_BLOCKS_REQUIRED" ]]; then
   echo "Activating segwit..."
-  ./btcctl.sh generate ${NUM_BLOCKS_REQUIRED}
+  ./btcctl.sh generate ${NUM_BLOCKS_REQUIRED} > /dev/null
 fi

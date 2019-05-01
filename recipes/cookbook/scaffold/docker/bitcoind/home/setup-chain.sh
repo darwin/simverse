@@ -18,5 +18,5 @@ NUM_BLOCKS_REQUIRED=432 # https://gist.github.com/t4sk/0bc6b35a26998b9007d68f376
 BLOCKS=$(./bitcoin-cli.sh getblockcount)
 if [[ "$BLOCKS" -lt "$NUM_BLOCKS_REQUIRED" ]]; then
   echo "Activating segwit..."
-  ./bitcoin-cli.sh generatetoaddress ${NUM_BLOCKS_REQUIRED} ${FAUCET_ADDR}
+  ./bitcoin-cli.sh generatetoaddress ${NUM_BLOCKS_REQUIRED} ${FAUCET_ADDR} > /dev/null
 fi
