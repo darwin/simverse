@@ -416,17 +416,19 @@ Explore `toolbox` folder for the details:
   faucet_balance
   fund
   generate
+  get_route
   inspect_container
   list_docker_ips
   ln_balance
   lookup_container
   lookup_service
   newaddr
-  oc
   onchain_balance
+  open_channel
   pay
   pubkey
   req_pay
+  simnet_ready
 
 ```
 
