@@ -20,3 +20,43 @@ wait_for_socket() {
     fi
   done
 }
+
+generate_cert() {
+  local name=${1:-ssl}
+  local cert_file="$name.cert"
+  local key_file="$name.key"
+  local csr_file="$name.csr"
+  local cnf_file=openssl.cnf
+
+  cat /etc/ssl/openssl.cnf > "$cnf_file"
+  cat >> "$cnf_file" <<EOF
+
+[ SAN ]
+subjectAltName=DNS:*
+
+EOF
+
+  openssl ecparam \
+    -genkey \
+    -name secp521r1 \
+    -out "$key_file"
+  openssl req \
+    -new \
+    -out "$csr_file" \
+    -sha512 -key "$key_file" \
+    -subj '/CN=localhost/O=simverse' \
+    -extensions SAN \
+    -config "$cnf_file"
+  openssl req \
+    -x509 \
+    -out "$cert_file" \
+    -sha512 \
+    -days 36500 \
+    -key "$key_file" \
+    -in "$csr_file" \
+    -extensions SAN \
+    -config "$cnf_file"
+
+  rm "$csr_file"
+  rm "$cnf_file"
+}
