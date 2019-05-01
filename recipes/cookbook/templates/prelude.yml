@@ -26,12 +26,11 @@ services:
       context: .
       dockerfile: docker/pre/Dockerfile
     ports:
-      - $SIMVERSE_HOST_BIND$SIMVERSE_PRE_SIGNAL_PORT_ON_HOST:$SIMVERSE_PRE_SIGNAL_PORT # pre signal port
+      - $SIMVERSE_HOST_BIND$SERVICE_READY_PORT_ON_HOST:$SERVICE_READY_PORT # readiness signal port
     volumes:
       # !DANGER! when touching this, review cookbook.sh > prepare_pre_volumes
       - ./_volumes/certs:/certs # shared certificates
     environment:
       - SERVICE_READY_PORT=${SERVICE_READY_PORT}
-      - PRE_SIGNAL_PORT=${SIMVERSE_PRE_SIGNAL_PORT}
       - SIMNET_NAME=${SIMNET_NAME}
     $SIMVERSE_EXTRA_SERVICE_CONFIG

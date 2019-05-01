@@ -504,7 +504,7 @@ make_sure_simnet_is_not_running() {
 
   local name
   set +e
-  name=$(nc "localhost" "$SIMVERSE_PRE_SIGNAL_PORT_ON_HOST")
+  name=$(nc "localhost" "$SERVICE_READY_PORT_ON_HOST")
   result=$?
   set -e
   if [[ "$result" -eq 0 ]]; then

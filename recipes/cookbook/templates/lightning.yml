@@ -11,6 +11,7 @@
         - LIGHTNING_CONF_PATH=$LIGHTNING_CONF_PATH
         - RELEVANT_BITCOIND_IMAGE=${SIMVERSE_DOCKER_IMAGE_PREFIX}${SIMNET_NAME}_bitcoind
     ports:
+      - $SIMVERSE_HOST_BIND$(($SERVICE_READY_PORT_ON_HOST+$SERVICE_COUNTER)):$SERVICE_READY_PORT # readiness signal port
       - $SIMVERSE_HOST_BIND$LIGHTNING_SERVER_PORT_ON_HOST:${LIGHTNING_P2P_PORT} # lightning p2p port
       - $SIMVERSE_HOST_BIND$LIGHTNING_RPC_PORT_ON_HOST:${LIGHTNING_RPC_PORT} # lightning rpc port
     volumes:
@@ -24,9 +25,8 @@
       - "simverse.flavor_counter=${LIGHTNING_COUNTER}"
     environment:
       - SERVICE_READY_PORT=${SERVICE_READY_PORT}
-      - PRE_SIGNAL=_pre:${SIMVERSE_PRE_SIGNAL_PORT}
       - SERVICE_COUNTER=${SERVICE_COUNTER}
-      - EXPOSE_TCP=true # TODO
+      - EXPOSE_TCP=true # TODO: maybe we want to move this somewhere else
       - LN_COUNTER=${LN_COUNTER}
       - LIGHTNING_COUNTER=${LIGHTNING_COUNTER}
       - DEBUG=${DEBUG}
