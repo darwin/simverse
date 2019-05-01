@@ -17,5 +17,4 @@ else
 fi
 
 # we use this in ./sv to check if simnet is running
-PRE_SIGNAL_PORT=${PRE_SIGNAL_PORT:?not specified}
-exec nc -nlk -p ${PRE_SIGNAL_PORT} -e sh -c "echo \"$SIMNET_NAME\""
+signal_service_ready "$SIMNET_NAME"
