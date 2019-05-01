@@ -2,6 +2,7 @@
 
 source lib/init.sh
 
+# TODO: replace this with polling
 sleep 10
 
 ./setup-wallet.sh

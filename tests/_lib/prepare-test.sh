@@ -66,3 +66,6 @@ trap tear_down EXIT
 if ! wait_for_bitcoin_ready; then
   exit 2
 fi
+
+# TODO: remove this after implementing robust health-checks
+sleep 10
