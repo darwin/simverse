@@ -67,3 +67,41 @@ signal_service_ready() {
   local port=${SERVICE_READY_PORT:?required}
   exec nc -nlk -p "$port" -e sh -c "echo -e \"$answer\""
 }
+
+wait_for() {
+  local msg=${1:?required}
+  local cmd=${2:?required}
+  local cmd2=${3}
+  local interval=${4:-5}
+  local max=${5:-100}
+
+  local counter=1
+  local status
+  while true; do
+    set +e
+    eval "${cmd}" > /dev/null 2>&1;
+    status=$?
+    set -e
+    if [[ "$status" -eq 0 ]]; then
+      if [[ "$counter" -ne 1 ]]; then
+        echo
+      fi
+      return 0
+    fi
+    sleep 1
+    if  [[ -n "$cmd2" ]]; then
+      if ! (( "$counter" % "$interval" )); then
+        echo
+        set +e
+        eval "${cmd2}"
+        set -e
+      fi
+    fi
+    ((++counter))
+    if [[ ${counter} -gt ${max} ]]; then
+      echo
+      echo_err "wait_for stuck waiting for '$msg' (tried $max times)"
+      return 1
+    fi
+  done
+}

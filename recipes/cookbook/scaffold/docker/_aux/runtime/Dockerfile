@@ -9,7 +9,8 @@ libzmq \
 libevent \
 db \
 db-c++ \
-libressl
+libressl \
+jq
 
 RUN go get -u github.com/go-delve/delve/cmd/dlv
 RUN dlv version
