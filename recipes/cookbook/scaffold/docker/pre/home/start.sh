@@ -10,7 +10,7 @@ else
   echo "certificate not present at '$CERTS_DIR/rpc.cert', generating a new one..."
   pushd "$CERTS_DIR" > /dev/null
   generate_cert "rpc"
-  openssl x509 -text -noout -in "rpc.cert"
+  # openssl x509 -text -noout -in "rpc.cert"
   popd
 fi
 
