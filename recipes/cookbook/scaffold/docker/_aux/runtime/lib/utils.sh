@@ -62,7 +62,8 @@ EOF
 }
 
 signal_service_ready() {
+  local answer=${1:-READY}
   SERVICE_READY_PORT=${SERVICE_READY_PORT}
   local port=${SERVICE_READY_PORT:?required}
-  exec nc -nlk -p "$port" -e sh -c 'echo -e "READY"'
+  exec nc -nlk -p "$port" -e sh -c "echo -e \"$answer\""
 }
