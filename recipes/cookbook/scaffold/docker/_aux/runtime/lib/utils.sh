@@ -60,3 +60,9 @@ EOF
   rm "$csr_file"
   rm "$cnf_file"
 }
+
+signal_service_ready() {
+  SERVICE_READY_PORT=${SERVICE_READY_PORT}
+  local port=${SERVICE_READY_PORT:?required}
+  exec nc -nlk -p "$port" -e sh -c 'echo -e "READY"'
+}
