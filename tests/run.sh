@@ -13,16 +13,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 TESTS_DIR="$(pwd -P)"
 
+source ../toolbox/_lib.sh
 source _lib/helpers.sh
-
-function print_error {
-    read line file <<<$(caller)
-    echo_err "Test runner failed on line $line of '$file':"
-    cd ${LAUNCH_DIR}
-    local content=$(sed "${line}q;d" "$file")
-    echo_err "> $content"
-}
-trap print_error ERR
 
 cd ..
 
