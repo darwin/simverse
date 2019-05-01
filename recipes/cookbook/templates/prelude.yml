@@ -31,6 +31,7 @@ services:
       # !DANGER! when touching this, review cookbook.sh > prepare_pre_volumes
       - ./_volumes/certs:/certs # shared certificates
     environment:
+      - CONTAINER_NAME=pre
       - SERVICE_READY_PORT=${SERVICE_READY_PORT}
       - SIMNET_NAME=${SIMNET_NAME}
     $SIMVERSE_EXTRA_SERVICE_CONFIG
