@@ -7,4 +7,7 @@ while [[ ! -f /certs/rpc.cert ]]; do sleep 1; done
 
 ./start-btcwallet.sh &
 
+# start container service in background
+./container-server.sh &
+
 exec start-btcd.sh
