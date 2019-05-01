@@ -2,9 +2,11 @@
   <dictionary name="darwin">
     <words>
       <w>&quot;force&quot;</w>
+      <w>addnode</w>
       <w>alphanum</w>
       <w>apfs</w>
       <w>appdata</w>
+      <w>backends</w>
       <w>bitcoin</w>
       <w>bitcoincli</w>
       <w>bitcoind</w>
@@ -62,6 +64,7 @@
       <w>noservertls</w>
       <w>notls</w>
       <w>onchain</w>
+      <w>pipefail</w>
       <w>popd</w>
       <w>printtoconsole</w>
       <w>pubkey</w>
@@ -97,6 +100,7 @@
       <w>txindex</w>
       <w>unshallow</w>
       <w>upnp</w>
+      <w>vbparams</w>
       <w>workdir</w>
       <w>zmqpubrawblock</w>
       <w>zmqpubrawtx</w>
