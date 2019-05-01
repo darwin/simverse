@@ -14,8 +14,7 @@ else
   popd
 fi
 
-# this is a signal to start other containers
-# we also use this in ./sv to check if simnet is running
+# we use this in ./sv to check if simnet is running
 PRE_SIGNAL_PORT=${PRE_SIGNAL_PORT:?not specified}
 set -x
-exec python -m SimpleHTTPServer ${PRE_SIGNAL_PORT}
+exec nc -lk ${PRE_SIGNAL_PORT}

@@ -1,7 +1,5 @@
 FROM simverse/runtime:local as simverse_runtime_pre
 
-RUN apk add --no-cache python
-
 USER simnet
 
 WORKDIR /home/simnet
