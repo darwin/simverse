@@ -4,6 +4,12 @@ version: '3.7'
 x-shared: &shared
   networks:
     - ${SIMVERSE_DOCKER_NETWORK_PREFIX}${SIMNET_NAME}_network
+  healthcheck:
+    test: "nc -z localhost ${SERVICE_READY_PORT}"
+    interval: 5s
+    timeout: 10s
+    retries: 3
+    start_period: 2m
   privileged: true # needed for dlv attach
   stop_grace_period: 1m
   security_opt:
