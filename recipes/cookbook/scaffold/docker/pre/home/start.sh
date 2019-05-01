@@ -3,6 +3,8 @@
 source lib/init.sh
 source lib/utils.sh
 
+SIMNET_NAME=${SIMNET_NAME:?required}
+
 CERTS_DIR=/certs
 if [[ -f "$CERTS_DIR/rpc.cert" ]]; then
   echo "certificate present at '$CERTS_DIR/rpc.cert', nothing to do"
@@ -16,5 +18,4 @@ fi
 
 # we use this in ./sv to check if simnet is running
 PRE_SIGNAL_PORT=${PRE_SIGNAL_PORT:?not specified}
-set -x
-exec nc -lk ${PRE_SIGNAL_PORT}
+exec nc -nlk -p ${PRE_SIGNAL_PORT} -e sh -c "echo \"$SIMNET_NAME\""
