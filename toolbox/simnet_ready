@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+STATUS_LIST=$(docker inspect --format "{{json .State.Health }}" $(docker-compose ps -q) | jq .Status | grep -v '^\s*$')
+
+LIST_COUNT=$(echo "$STATUS_LIST" | wc -l | trim)
+
+echo "$LIST_COUNT"
+
+if [[ "$LIST_COUNT" < 2 ]]; then
+  exit 2
+fi
+
+IFS=$'\n'
+while read LINE; do
+  if [[ "$LINE" != '"healthy"' ]]; then
+    exit 1
+  fi
+done <<< "$STATUS_LIST"

@@ -174,7 +174,7 @@ wait_for() {
       return 0
     fi
     if [[ "$counter" -eq 1 ]]; then
-      echo -n "Zzz.. waiting for $msg "
+      echo -n "Waiting for $msg. Zzz.."
     fi
     sleep 1
     echo -n "."
@@ -184,13 +184,13 @@ wait_for() {
         set +e
         eval "${cmd2}"
         set -e
-        echo -n "Zzz.. waiting for $msg "
+        echo -n "Waiting for $msg. Zzz.."
       fi
     fi
     ((++counter))
     if [[ ${counter} -gt ${max} ]]; then
       echo
-      echo_err "wait_for stuck waiting for '$msg' (tried $max times)"
+      echo_err "FATAL: wait_for stuck waiting for '$msg' (tried $max times)"
       exit 1
     fi
   done
@@ -243,4 +243,8 @@ wait_sync() {
   for person in "$@"; do
     wait_sync_one "$person"
   done
+}
+
+wait_simnet_ready() {
+  wait_for "simnet to get ready" "simnet_ready"
 }
