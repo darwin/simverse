@@ -14,9 +14,6 @@ else
   popd
 fi
 
-# linux/ubuntu needs some time for changes to propagate?
-sleep 3
-
 # this is a signal to start other containers
 # we also use this in ./sv to check if simnet is running
 PRE_SIGNAL_PORT=${PRE_SIGNAL_PORT:?not specified}
