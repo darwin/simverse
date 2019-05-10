@@ -7,6 +7,8 @@ export SIMVERSE_WORKSPACE=${SIMVERSE_WORKSPACE:-_workspace}
 export SIMVERSE_REPOS=${SIMVERSE_REPOS:-_repos}
 
 export SIMVERSE_SHELL=${SIMVERSE_SHELL:-$SHELL}
+export SIMVERSE_VERBOSE=${SIMVERSE_VERBOSE}
+export SIMVERSE_VERBOSE_ALIASES=${SIMVERSE_VERBOSE_ALIASES}
 
 #############################################################################################################################
 # simnet create-time defaults, effective during ./sv create (or other ./sv commands)
