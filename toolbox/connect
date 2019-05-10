@@ -13,7 +13,6 @@ connect_bitcoin_nodes() {
   fi
 
   # note: we don't have to check for flavor here, both bitcoind and btcd have compatible 'addnode' cli interface
-  set -x
   "$FROM_PERSON" addnode "$TO_PERSON" onetry
   # note we need to generate one block to trigger potential block sync
   # not sure what is the issue, but this might be related https://bitcoin.stackexchange.com/q/27055/875
@@ -34,7 +33,6 @@ connect_ln_nodes() {
   fi
 
   # note: we don't have to check for flavor here, both lnd and lightningd have compatible 'connect' cli interface
-  set -x
   "$FROM_PERSON" connect "$TO_PERSON_CONNECTION"
 }
 
