@@ -6,7 +6,6 @@ source lib/init.sh
 
 cp "seed-bitcoin.conf" ".bitcoin/bitcoin.conf"
 
-## optional parameters
 RPC_USER=${RPC_USER}
 RPC_PASS=${RPC_PASS}
 BITCOIN_P2P_BIND=${BITCOIN_P2P_BIND}
