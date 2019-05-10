@@ -25,7 +25,7 @@ DEFAULT_SIMNET_NAME=${DEFAULT_SIMNET_NAME:?REQUIRED}
 DEFAULT_RECIPE_NAME=${DEFAULT_RECIPE_NAME:?REQUIRED}
 DEFAULT_STATE_NAME=${DEFAULT_STATE_NAME:?REQUIRED}
 
-KNOWN_REPOS=(btcd btcwallet lnd bitcoin lightning)
+KNOWN_REPOS=(btcd btcwallet lnd bitcoin lightning eclair)
 
 # error codes
 NO_ERR=0
@@ -831,6 +831,7 @@ get_repo_url() {
     "lnd") REPO_URL="$SIMVERSE_LND_REPO_URL" ;;
     "bitcoin") REPO_URL="$SIMVERSE_BITCOIND_REPO_URL" ;;
     "lightning") REPO_URL="$SIMVERSE_LIGHTNING_REPO_URL" ;;
+    "eclair") REPO_URL="$SIMVERSE_ECLAIR_REPO_URL" ;;
     *) echo_err "unknown repo '$repo'"; exit ${ERR_UNKNOWN_REPO} ;;
   esac
 
