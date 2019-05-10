@@ -46,9 +46,12 @@ BC_ARGS="-l $BIN_DIR/_lib.bc"
 
 trim() {
   local str
-  read str
-  [[ "$str" =~ [^[:space:]](.*[^[:space:]])? ]]
-  printf "%s" "$BASH_REMATCH"
+  str=$(cat)
+  if [[ "$str" =~ [^[:space:]](.*[^[:space:]])? ]]; then
+    printf "%s" "$BASH_REMATCH"
+  else
+    echo -n "$str"
+  fi
 }
 
 sat2btc() {
@@ -73,6 +76,14 @@ btc2msat() {
     read number
   fi
   echo "${number} * 100000000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 0
+}
+
+msat2btc() {
+  local number=${1}
+  if [[ -z "$number" ]]; then
+    read number
+  fi
+  echo "${number} / 100000000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 8
 }
 
 unquote() {

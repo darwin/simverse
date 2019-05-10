@@ -31,6 +31,7 @@
       <w>datadir</w>
       <w>debuggo</w>
       <w>debuglevel</w>
+      <w>declair</w>
       <w>dedolarize</w>
       <w>direnv</w>
       <w>dnsseed</w>
@@ -59,6 +60,7 @@
       <w>miningaddr</w>
       <w>msat</w>
       <w>mysn</w>
+      <w>newaddr</w>
       <w>noclienttls</w>
       <w>noseedbackup</w>
       <w>noservertls</w>
@@ -102,8 +104,10 @@
       <w>upnp</w>
       <w>vbparams</w>
       <w>workdir</w>
+      <w>zmqblock</w>
       <w>zmqpubrawblock</w>
       <w>zmqpubrawtx</w>
+      <w>zmqtx</w>
     </words>
   </dictionary>
 </component>

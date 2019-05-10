@@ -21,6 +21,7 @@ FLAVOR=$(get_flavor "$PERSON")
 case "$FLAVOR" in
   lnd) KEY="identity_pubkey" ;;
   lightning) KEY="id" ;;
+  eclair) KEY="nodeId" ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac
 

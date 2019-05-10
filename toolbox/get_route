@@ -19,5 +19,15 @@ case "$FLAVOR" in
     AMOUNT_MSAT=$(btc2msat "$AMOUNT_BTC")
     exec "$FROM_PERSON" getroute "$TO_PERSON_ID" "$AMOUNT_MSAT" "$RISK_FACTOR"
     ;;
+  eclair)
+    AMOUNT_SAT=$(btc2sat "$AMOUNT_BTC")
+    ROUTE=$("$FROM_PERSON" findroutetonode --nodeId="$TO_PERSON_ID" --amountMsat="$AMOUNT_SAT")
+    echo "$ROUTE"
+    if [[ "$ROUTE" == "route not found"* ]]; then
+      exit 1
+    else
+      exit 0
+    fi
+    ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$FROM_PERSON'"; exit 1; ;;
 esac

@@ -45,7 +45,8 @@ I adopted a simple naming convention: strings of letter-number to hint on networ
   * `b` - [btcd](https://github.com/btcsuite/btcd)
   * `k` - [lightningd](https://github.com/ElementsProject/lightning)
   * `l` - [lnd](https://github.com/lightningnetwork/lnd)
+  * `m` - [eclair](https://github.com/ACINQ/eclair)
   
-So for example `b1l2` reads as "one master btcd node and two lnd nodes". You can specify arbitrary postfix if want to 
+So for example `b1l2` reads as "one master btcd node and two lnd nodes". You can specify arbitrary postfix if you want to 
 distinguish more nuanced setups. e.g. `a1k1b1l2-routing-test`.
 

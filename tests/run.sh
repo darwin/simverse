@@ -53,6 +53,9 @@ cd "$TESTS_DIR"
 
 announce "running [$TEST_SUITE] tests from '$(pwd -P)'"
 
+# echo alias commands during tests
+export SIMVERSE_VERBOSE_ALIASES=1
+
 . "suites/$TEST_SUITE.sh"
 
 announce "all tests went OK"

@@ -47,29 +47,37 @@ FIRST_BITCOIND_SERVER_PORT_ON_HOST=${FIRST_BITCOIND_SERVER_PORT_ON_HOST:?$REQUIR
 FIRST_BITCOIND_RPC_PORT_ON_HOST=${FIRST_BITCOIND_RPC_PORT_ON_HOST:?$REQUIRED}
 FIRST_LIGHTNING_SERVER_PORT_ON_HOST=${FIRST_LIGHTNING_SERVER_PORT_ON_HOST:?$REQUIRED}
 FIRST_LIGHTNING_RPC_PORT_ON_HOST=${FIRST_LIGHTNING_RPC_PORT_ON_HOST:?$REQUIRED}
+FIRST_ECLAIR_SERVER_PORT_ON_HOST=${FIRST_ECLAIR_SERVER_PORT_ON_HOST:?$REQUIRED}
+FIRST_ECLAIR_RPC_PORT_ON_HOST=${FIRST_ECLAIR_RPC_PORT_ON_HOST:?$REQUIRED}
 
 LND_AUTO_NAME_PREFIX=${LND_AUTO_NAME_PREFIX:?$REQUIRED}
 BTCD_AUTO_NAME_PREFIX=${BTCD_AUTO_NAME_PREFIX:?$REQUIRED}
 BITCOIND_AUTO_NAME_PREFIX=${BITCOIND_AUTO_NAME_PREFIX:?$REQUIRED}
 LIGHTNING_AUTO_NAME_PREFIX=${LIGHTNING_AUTO_NAME_PREFIX:?$REQUIRED}
+ECLAIR_AUTO_NAME_PREFIX=${ECLAIR_AUTO_NAME_PREFIX:?$REQUIRED}
 
 DEFAULT_BTCD_REPO_PATH=${DEFAULT_BTCD_REPO_PATH:?$REQUIRED}
 DEFAULT_BTCWALLET_REPO_PATH=${DEFAULT_BTCWALLET_REPO_PATH:?$REQUIRED}
 DEFAULT_LND_REPO_PATH=${DEFAULT_LND_REPO_PATH:?$REQUIRED}
 DEFAULT_BITCOIND_REPO_PATH=${DEFAULT_BITCOIND_REPO_PATH:?$REQUIRED}
 DEFAULT_LIGHTNING_REPO_PATH=${DEFAULT_LIGHTNING_REPO_PATH:?$REQUIRED}
+DEFAULT_ECLAIR_REPO_PATH=${DEFAULT_ECLAIR_REPO_PATH:?$REQUIRED}
 
 DEFAULT_BTCD_CONF_PATH=${DEFAULT_BTCD_CONF_PATH:?$REQUIRED}
 DEFAULT_BTCWALLET_CONF_PATH=${DEFAULT_BTCWALLET_CONF_PATH:?$REQUIRED}
 DEFAULT_LND_CONF_PATH=${DEFAULT_LND_CONF_PATH:?$REQUIRED}
 DEFAULT_BITCOIND_CONF_PATH=${DEFAULT_BITCOIND_CONF_PATH:?$REQUIRED}
 DEFAULT_LIGHTNING_CONF_PATH=${DEFAULT_LIGHTNING_CONF_PATH:?$REQUIRED}
+DEFAULT_ECLAIR_CONF_PATH=${DEFAULT_ECLAIR_CONF_PATH:?$REQUIRED}
 
 LND_BITCOIN_RPC_HOST=${LND_BITCOIN_RPC_HOST}
 LND_BACKEND=${LND_BACKEND}
 
 LIGHTNING_BITCOIN_RPC_HOST=${LIGHTNING_BITCOIN_RPC_HOST}
 LIGHTNING_BACKEND=${LIGHTNING_BACKEND}
+
+ECLAIR_BITCOIN_RPC_HOST=${ECLAIR_BITCOIN_RPC_HOST}
+ECLAIR_BACKEND=${ECLAIR_BACKEND}
 
 # error codes
 NO_ERR=0
@@ -123,12 +131,19 @@ init_lightning_defaults() {
   LIGHTNING_REPO_PATH=${DEFAULT_LIGHTNING_REPO_PATH}
   LIGHTNING_CONF_PATH=${DEFAULT_LIGHTNING_CONF_PATH}
 }
+
+init_eclair_defaults() {
+  ECLAIR_REPO_PATH=${DEFAULT_ECLAIR_REPO_PATH}
+  ECLAIR_CONF_PATH=${DEFAULT_ECLAIR_CONF_PATH}
+}
+
 init_defaults() {
   init_common_defaults
-  init_btcd_defaults
-  init_lnd_defaults
   init_bitcoind_defaults
+  init_btcd_defaults
   init_lightning_defaults
+  init_lnd_defaults
+  init_eclair_defaults
 }
 
 reset_common_counters() {
@@ -172,12 +187,20 @@ reset_lightning_counters() {
   LIGHTNING_RPC_PORT_ON_HOST=${FIRST_LIGHTNING_RPC_PORT_ON_HOST}
 }
 
+reset_eclair_counters() {
+  ECLAIR_COUNTER=1
+  ECLAIR_AUTO_NAME_COUNTER=0
+  ECLAIR_SERVER_PORT_ON_HOST=${FIRST_ECLAIR_SERVER_PORT_ON_HOST}
+  ECLAIR_RPC_PORT_ON_HOST=${FIRST_ECLAIR_RPC_PORT_ON_HOST}
+}
+
 reset_counters() {
   reset_common_counters
   reset_lnd_counters
   reset_btcd_counters
   reset_bitcoind_counters
   reset_lightning_counters
+  reset_eclair_counters
 }
 
 advance_common_counters() {
@@ -220,6 +243,14 @@ advance_lightning_counters() {
   ((++LN_COUNTER))
 }
 
+advance_eclair_counters() {
+  ((++ECLAIR_COUNTER))
+  ((++ECLAIR_SERVER_PORT_ON_HOST))
+  ((++ECLAIR_RPC_PORT_ON_HOST))
+
+  ((++LN_COUNTER))
+}
+
 gen_lnd_auto_name() {
   echo "${LND_AUTO_NAME_PREFIX}${LND_AUTO_NAME_COUNTER}"
 }
@@ -250,6 +281,14 @@ gen_lightning_auto_name() {
 
 advance_lightning_auto_name_counter() {
   ((++LIGHTNING_AUTO_NAME_COUNTER))
+}
+
+gen_eclair_auto_name() {
+  echo "${ECLAIR_AUTO_NAME_PREFIX}${ECLAIR_AUTO_NAME_COUNTER}"
+}
+
+advance_eclair_auto_name_counter() {
+  ((++ECLAIR_AUTO_NAME_COUNTER))
 }
 
 eval_template() {
@@ -367,6 +406,11 @@ prepare_bitcoind_volumes() {
 prepare_lightning_volumes() {
   local name=${1:?required}
   mkdir _volumes/lightning-data-${name}
+}
+
+prepare_eclair_volumes() {
+  local name=${1:?required}
+  mkdir _volumes/eclair-data-${name}
 }
 
 ensure_bitcoin_service() {
@@ -538,6 +582,51 @@ add_lightning() {
   LIGHTNING_BACKEND="$prev_lightning_backend"
 }
 
+add_eclair() {
+  NAME=$1
+
+  # generate default name if not given
+  if [[ -z "$NAME" ]]; then
+    advance_eclair_auto_name_counter
+    NAME=$(gen_eclair_auto_name)
+  fi
+
+  # auto-provide ECLAIR_BITCOIN_RPC_HOST if not given
+  local prev_eclair_bitcoin_rpc_host="$ECLAIR_BITCOIN_RPC_HOST"
+  if [[ -z "$ECLAIR_BITCOIN_RPC_HOST" ]]; then
+    ECLAIR_BITCOIN_RPC_HOST="$(get_last_bitcoin_service)"
+  fi
+  local prev_eclair_backend="$ECLAIR_BACKEND"
+  if [[ -z "$ECLAIR_BACKEND" ]]; then
+    ECLAIR_BACKEND="$(get_last_bitcoin_backend)"
+    if [[ "$ECLAIR_BACKEND" != "bitcoind" ]]; then
+      echo_err "lightning node '$NAME' needs bitcoind backend, add at least one bitcoind before adding eclair nodes"
+      exit ${ERR_REQUIRE_BITCOIND}
+    fi
+  fi
+
+  echo_service_separator eclair ${NAME} ${ECLAIR_COUNTER}
+  eval_template "$TEMPLATES_DIR/eclair.yml" >> ${COMPOSE_FILE}
+
+  local alias_file="$ALIASES_DIR_NAME/$NAME"
+  eval_script_template "$TEMPLATES_DIR/eclair-cli-alias.sh" >> "$alias_file"
+  chmod +x "$alias_file"
+
+  # point generic lncli to first eclair node
+  local default_alias_file="$ALIASES_DIR_NAME/eclair-cli"
+  if [[ ! -f "$default_alias_file" ]]; then
+    ln -s "$NAME" ${default_alias_file}
+  fi
+
+  prepare_eclair_volumes "$NAME"
+
+  advance_common_counters
+  advance_eclair_counters
+
+  ECLAIR_BITCOIN_RPC_HOST="$prev_eclair_bitcoin_rpc_host"
+  ECLAIR_BACKEND="$prev_eclair_backend"
+}
+
 # -- public API -------------------------------------------------------------------------------------------------------------
 
 prelude() {
@@ -570,6 +659,7 @@ add() {
     "lnd") add_lnd "$@" ;;
     "bitcoind") add_bitcoind "$@" ;;
     "lightningd"|"lightning"|"c-lightning") add_lightning "$@" ;;
+    "eclair") add_eclair "$@" ;;
     *) echo "unsupported service '$kind', currently allowed are 'btcd' or 'lnd'" ;;
   esac
 }

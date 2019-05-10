@@ -8,5 +8,6 @@ FLAVOR=$(get_flavor "$PERSON")
 case "$FLAVOR" in
   lnd) exec "$PERSON" newaddress p2wkh | jq ".address" | unquote ;;
   lightning) exec "$PERSON" newaddr bech32 | jq ".address" | unquote ;;
+  eclair) exec "$PERSON" newaddr bech32 ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac

@@ -18,5 +18,9 @@ case "$FLAVOR" in
     AMOUNT_MSAT=$(echo "$AMOUNT_BTC" | btc2msat)
     "$PERSON" invoice ${AMOUNT_MSAT} "$LABEL" "$DESCRIPTION" | jq ".bolt11" | unquote
     ;;
+  eclair)
+    AMOUNT_MSAT=$(echo "$AMOUNT_BTC" | btc2msat)
+    "$PERSON" createinvoice --description="$DESCRIPTION" --amountMsat=${AMOUNT_MSAT} | jq ".serialized" | unquote
+    ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac

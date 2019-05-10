@@ -32,8 +32,12 @@ connect_ln_nodes() {
     exit 1
   fi
 
-  # note: we don't have to check for flavor here, both lnd and lightningd have compatible 'connect' cli interface
-  "$FROM_PERSON" connect "$TO_PERSON_CONNECTION"
+  local flavor=$(get_flavor "$FROM_PERSON")
+  case "$flavor" in
+    lnd|lightning) "$FROM_PERSON" connect "$TO_PERSON_CONNECTION" ;;
+    eclair) "$FROM_PERSON" connect --uri="$TO_PERSON_CONNECTION" ;;
+    *) echo_err "unsupported flavor type '$flavor' for '$FROM_PERSON'"; exit 1; ;;
+  esac
 }
 
 ROLE=$(get_role "$FROM_PERSON")

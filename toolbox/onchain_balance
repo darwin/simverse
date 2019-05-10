@@ -8,5 +8,6 @@ FLAVOR=$(get_flavor "$PERSON")
 case "$FLAVOR" in
   lnd) "$PERSON" walletbalance | jq ".total_balance" | unquote | sat2btc ;;
   lightning) "$PERSON" listfunds | jq '[.outputs[].value] | add' | sat2btc ;;
+  eclair) "$PERSON" walletbalance ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac

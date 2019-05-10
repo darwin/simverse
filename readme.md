@@ -6,7 +6,7 @@ to manage the cluster and provides a set of helper scripts for your convenience.
 ## Features
 
 * supports [btcd](https://github.com/btcsuite/btcd) and [bitcoind](https://github.com/bitcoin/bitcoin) as backend nodes
-* supports [lnd](https://github.com/lightningnetwork/lnd) and [lightningd](https://github.com/ElementsProject/lightning) as lightning nodes
+* supports [lnd](https://github.com/lightningnetwork/lnd), [lightningd](https://github.com/ElementsProject/lightning) and [eclair](https://github.com/ACINQ/eclair) as lightning nodes
 
 ## Workflow 
 

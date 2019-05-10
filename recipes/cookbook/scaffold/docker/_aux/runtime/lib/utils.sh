@@ -4,6 +4,16 @@ echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
 }
 
+trim() {
+  local str
+  str=$(cat)
+  if [[ "$str" =~ [^[:space:]](.*[^[:space:]])? ]]; then
+    printf "%s" "$BASH_REMATCH"
+  else
+    echo -n "$str"
+  fi
+}
+
 wait_for_socket() {
   local port=${1:?required}
   local host=${2:-localhost}
@@ -104,4 +114,9 @@ wait_for() {
       return 1
     fi
   done
+}
+
+strip_ansi_colors() {
+  # https://superuser.com/a/380778/8244
+  sed 's/\x1b\[[0-9;]*m//g'
 }
