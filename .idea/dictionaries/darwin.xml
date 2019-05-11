@@ -40,6 +40,7 @@
       <w>droptxindex</w>
       <w>envrc</w>
       <w>externalip</w>
+      <w>fromjson</w>
       <w>gcflags</w>
       <w>gencerts</w>
       <w>genreadme</w>
@@ -61,6 +62,7 @@
       <w>msat</w>
       <w>mysn</w>
       <w>newaddr</w>
+      <w>noansi</w>
       <w>noclienttls</w>
       <w>noseedbackup</w>
       <w>noservertls</w>
@@ -91,6 +93,7 @@
       <w>rpcserver</w>
       <w>rpcuser</w>
       <w>segwit</w>
+      <w>sendfrom</w>
       <w>simnet</w>
       <w>simnets</w>
       <w>simverse</w>
