@@ -34,6 +34,4 @@ if [[ -n "$RPC_PASS" ]]; then
 fi
 
 #set -x
-
-# hack it to undo ansi colors added by jq in eclair-cli
-exec eclair-cli ${PARAMS} "$@" | strip_ansi_colors
+exec eclair-cli ${PARAMS} "$@"
