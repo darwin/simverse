@@ -20,14 +20,21 @@ fi
 echo "sending $AMOUNT_BTC BTC to $PERSON"
 
 if is_btcd_master; then
-  btcctl --wallet sendfrom imported ${ADDRESS} ${AMOUNT_BTC}
+  # a simple direct command would be:
+  # btcctl --wallet sendfrom imported ${ADDRESS} ${AMOUNT_BTC}
+
+  # btcctl can be flaky and report "-32603: insufficient funds available to construct transaction"
+  # see https://travis-ci.org/darwin/simverse/builds/531193450#L3941
+  # let's try it in a loop and hope it succeeds at some point, also mine some blocks between trials
+  SEND_CMD="btcctl --wallet sendfrom imported ${ADDRESS} ${AMOUNT_BTC}"
+  wait_for "sending funds to $PERSON" "$SEND_CMD" "generate 1"
 else
   bitcoin-cli sendtoaddress ${ADDRESS} ${AMOUNT_BTC}
 fi
 
 generate ${TX_CONF_COUNT}
 
-# c-lighting is pretty lazy in updating its state
+# c-lightning is pretty lazy in updating its state
 # we have to resort to polling...
 EXPECTED_BALANCE=$(compute "${ORIGINAL_BALANCE_BTC} + ${AMOUNT_BTC}")
 wait_for_onchain_balance "$PERSON" "$EXPECTED_BALANCE"
