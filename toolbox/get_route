@@ -13,7 +13,7 @@ FLAVOR=$(get_flavor "$FROM_PERSON")
 case "$FLAVOR" in
   lnd)
     AMOUNT_SAT=$(btc2sat "$AMOUNT_BTC")
-    exec "$FROM_PERSON" queryroutes --num_max_routes 1 "$TO_PERSON_ID" "$AMOUNT_SAT"
+    exec "$FROM_PERSON" queryroutes "$TO_PERSON_ID" "$AMOUNT_SAT"
     ;;
   lightning)
     AMOUNT_MSAT=$(btc2msat "$AMOUNT_BTC")
