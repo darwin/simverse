@@ -2,6 +2,8 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+source _lib.sh
+
 cd ".."
 
 SIMVERSE_VERBOSE_ALIASES=${SIMVERSE_VERBOSE_ALIASES}
@@ -16,4 +18,4 @@ if [[ ! -t 1 ]]; then
   DC_EXEC_EXTRA_ARGS+=" -T"
 fi
 
-exec docker-compose exec ${DC_EXEC_EXTRA_ARGS} "$$NAME" btcctl.sh "$@"
+exec docker-compose exec ${DC_EXEC_EXTRA_ARGS} "$$NAME" btcctl.sh "$@" | beautify_if_needed
