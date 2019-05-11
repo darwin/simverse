@@ -18,7 +18,7 @@ cat > init <<EOF
 set -e -o pipefail
 
 # connect bitcoin nodes
-connect b1 b2
+connect bitcoind1 bitcoind2
 
 # connect LN nodes
 connect alice charlie

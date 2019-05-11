@@ -7,7 +7,7 @@ prelude
 add bitcoind
 add lightningd alice
 
-add bitcoind b2
+add bitcoind
 add lightningd bob
 add lightningd charlie
 
@@ -18,7 +18,7 @@ cat > init <<EOF
 set -e -o pipefail
 
 # connect bitcoin nodes
-connect b1 b2
+connect bitcoind1 bitcoind2
 
 # connect LN nodes
 connect alice charlie
