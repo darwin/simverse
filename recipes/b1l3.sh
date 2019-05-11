@@ -4,7 +4,7 @@
 
 prelude
 
-add btcd b1
+add btcd
 
 add lnd alice
 add lnd bob
@@ -15,12 +15,6 @@ cat > init <<EOF
 #!/usr/bin/env bash
 
 set -e -o pipefail
-
-# assuming LN -> Bitcoin connections
-#
-# alice -> b1 (btcd)
-# bob -> b1 (btcd)
-# charlie -> b1 (btcd)
 
 # connect LN nodes
 connect alice charlie

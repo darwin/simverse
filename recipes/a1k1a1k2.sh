@@ -4,7 +4,7 @@
 
 prelude
 
-add bitcoind b1
+add bitcoind
 add lightningd alice
 
 add bitcoind b2

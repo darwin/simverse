@@ -4,10 +4,10 @@
 
 prelude
 
-add bitcoind b1
+add bitcoind
 add lnd alice
 
-add bitcoind b2
+add bitcoind
 add lnd bob
 add lnd charlie
 
