@@ -4,4 +4,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 . ./pay-directly.sh
 . ./pay-via-charlie.sh
-. ./pay-via-charlie-rest.sh
+. ./pay-via-charlie-b2.sh
+. ./pay-via-charlie-hetero.sh
