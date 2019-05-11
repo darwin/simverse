@@ -646,7 +646,7 @@ enter_simnet() {
 # list [filter]
 list_simnets() {
   local filter=$1
-  find . -maxdepth 1 -type d -exec basename {} \; | tail -n "+2" | sort | grep -i "$filter"
+  find . -maxdepth 1 -type d -exec basename {} \; | tail -n "+2" | sort | grep -i "$filter" | grep -v '^\.'
 }
 
 # ---------------------------------------------------------------------------------------------------------------------------
@@ -802,7 +802,7 @@ list_states() {
   validate_simnet_exists "$simnet_name"
 
   local state_dir=$(get_state_dir "$simnet_name")
-  find "$state_dir" -maxdepth 1 -type d -exec basename {} \; | tail -n "+2" | sort | grep -i "$filter"
+  find "$state_dir" -maxdepth 1 -type d -exec basename {} \; | tail -n "+2" | sort | grep -i "$filter" | grep -v '^\.'
 }
 
 handle_state() {
@@ -973,7 +973,7 @@ clone_repo() {
 list_repos() {
   local filter=$1
 
-  find "$SIMVERSE_REPOS_ABSOLUTE" -maxdepth 1 -type d -exec basename {} \; | tail -n "+2" | sort | grep -i "$filter"
+  find "$SIMVERSE_REPOS_ABSOLUTE" -maxdepth 1 -type d -exec basename {} \; | tail -n "+2" | sort | grep -i "$filter" | grep -v '^\.'
 }
 
 # repos rm [repo_name] [...]
