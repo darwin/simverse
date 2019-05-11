@@ -319,7 +319,7 @@ TEMPLATE_EOF_MARKER
 
 create_aliases_dir() {
   mkdir "$ALIASES_DIR_NAME"
-  cp "$TEMPLATES_DIR/_lib.sh" "$ALIASES_DIR_NAME"
+  cp "$TEMPLATES_DIR/_alias_utils.sh" "$ALIASES_DIR_NAME"
 }
 
 prepare_repos() {

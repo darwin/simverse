@@ -2,7 +2,7 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-source _lib.sh
+source _alias_utils.sh
 
 cd ".."
 
