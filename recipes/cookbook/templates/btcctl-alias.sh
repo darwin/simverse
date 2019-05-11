@@ -10,5 +10,10 @@ if [[ -n "$SIMVERSE_VERBOSE_ALIASES" ]]; then
   [[ -t 1 ]] && echo ">" "$(basename "$0")" "$@"
 fi
 
-exec docker-compose exec "$$NAME" btcctl.sh "$@"
+DC_EXEC_EXTRA_ARGS=""
+if [[ ! -t 1 ]]; then
+  # do not allocate pseudo TTY when not running under terminal
+  DC_EXEC_EXTRA_ARGS+=" -T"
+fi
 
+exec docker-compose exec ${DC_EXEC_EXTRA_ARGS} "$$NAME" btcctl.sh "$@"
