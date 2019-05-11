@@ -7,7 +7,7 @@ PERSON=${1:-alice}
 FLAVOR=$(get_flavor "$PERSON")
 case "$FLAVOR" in
   lnd)
-    BALANCE=$("$PERSON" channelbalance | jq ".balance" | unquote)
+    BALANCE=$("$PERSON" channelbalance | jq -r ".balance")
     if [[ -z "$BALANCE" ]]; then
       echo "-1"
     fi

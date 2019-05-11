@@ -12,15 +12,15 @@ case "$FLAVOR" in
   lnd)
     AMOUNT_SAT=$(echo "$AMOUNT_BTC" | btc2sat)
     # TODO: add support for LABEL/DESCRIPTION
-    "$PERSON" addinvoice --amt=${AMOUNT_SAT} | jq ".pay_req" | unquote
+    "$PERSON" addinvoice --amt=${AMOUNT_SAT} | jq -r ".pay_req"
     ;;
   lightning)
     AMOUNT_MSAT=$(echo "$AMOUNT_BTC" | btc2msat)
-    "$PERSON" invoice ${AMOUNT_MSAT} "$LABEL" "$DESCRIPTION" | jq ".bolt11" | unquote
+    "$PERSON" invoice ${AMOUNT_MSAT} "$LABEL" "$DESCRIPTION" | jq -r ".bolt11"
     ;;
   eclair)
     AMOUNT_MSAT=$(echo "$AMOUNT_BTC" | btc2msat)
-    "$PERSON" createinvoice --description="$DESCRIPTION" --amountMsat=${AMOUNT_MSAT} | jq ".serialized" | unquote
+    "$PERSON" createinvoice --description="$DESCRIPTION" --amountMsat=${AMOUNT_MSAT} | jq -r ".serialized"
     ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac
