@@ -519,10 +519,12 @@ Sub-commands:
   clone    clone existing repo under a new name
   list     list repos
   rm       remove repo(s)
+  report   report current tips
 
 ./sv repos init [repo_name] [...]
 ./sv repos update [repo_name] [...]
 ./sv repos clone [--force] <repo_name> <new_repo_name>
 ./sv repos list [filter]
 ./sv repos rm [repo_name] [...]
+./sv repos report [filter]
 ```

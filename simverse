@@ -280,12 +280,14 @@ Sub-commands:
   clone    clone existing repo under a new name
   list     list repos
   rm       remove repo(s)
+  report   report current tips
 
 ./sv repos init [repo_name] [...]
 ./sv repos update [repo_name] [...]
 ./sv repos clone [--force] <repo_name> <new_repo_name>
 ./sv repos list [filter]
 ./sv repos rm [repo_name] [...]
+./sv repos report [filter]
 EOF
 }
 
@@ -1015,6 +1017,20 @@ rm_repos() {
   fi
 }
 
+# repos report [filter]
+report_repos() {
+  local repos=$(list_repos "$@")
+  while read -r repo; do
+    pushd "$SIMVERSE_REPOS_ABSOLUTE/$repo"
+    local short_rev=`git rev-parse --short HEAD`
+    local short_rev_indent=`printf "%${#short_rev}s"` # short rev can have different length depending on short sha collisions
+    echo "$repo"
+    git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset)%n$short_rev_indent └ %C(blue)%an%C(reset) | %ad" --date=rfc --color=auto
+    echo
+    popd
+  done <<< "$repos"
+}
+
 handle_repos() {
   init_simverse_repos
 
@@ -1026,6 +1042,7 @@ handle_repos() {
     "update") update_repos "$@" ;;
     "clone") clone_repo "$@" ;;
     "list") list_repos "$@" ;;
+    "report") report_repos "$@" ;;
     "rm") rm_repos "$@" ;;
     *) echo_err "unsupported subcommand '$subcommand', use './sv help repos'"; exit ${ERR_INVALID_REPOS_COMMAND} ;;
   esac
