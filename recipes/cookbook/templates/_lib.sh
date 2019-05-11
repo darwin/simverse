@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+SIMVERSE_VERBOSE_ALIASES=${SIMVERSE_VERBOSE_ALIASES}
 SIMVERSE_DONT_BEAUTIFY_ALIASES=${SIMVERSE_DONT_BEAUTIFY_ALIASES}
 
 beautify_if_needed() {
@@ -9,5 +10,17 @@ beautify_if_needed() {
     echo "$first_line"; cat -
   else
     ( echo "$first_line"; cat - ) | jq
+  fi
+}
+
+echo_command_if_needed() {
+  if [[ -n "$SIMVERSE_VERBOSE_ALIASES" && -t 1 ]]; then
+    echo ">" "$(basename "$0")" "$@"
+  fi
+}
+
+prepare_docker_compose_exec_args() {
+  if [[ ! -t 1 ]]; then
+    echo "-T"
   fi
 }

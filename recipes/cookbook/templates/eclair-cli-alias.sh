@@ -6,16 +6,6 @@ source _lib.sh
 
 cd ".."
 
-SIMVERSE_VERBOSE_ALIASES=${SIMVERSE_VERBOSE_ALIASES}
-
-if [[ -n "$SIMVERSE_VERBOSE_ALIASES" ]]; then
-  [[ -t 1 ]] && echo ">" "$(basename "$0")" "$@"
-fi
-
-DC_EXEC_EXTRA_ARGS=""
-if [[ ! -t 1 ]]; then
-  # do not allocate pseudo TTY when not running under terminal
-  DC_EXEC_EXTRA_ARGS+=" -T"
-fi
-
+echo_command_if_needed "$@"
+DC_EXEC_EXTRA_ARGS=$(prepare_docker_compose_exec_args)
 exec ./dc exec ${DC_EXEC_EXTRA_ARGS} "$$NAME" eclair-cli.sh "$@" | beautify_if_needed
