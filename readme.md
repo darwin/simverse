@@ -16,10 +16,10 @@ configuration using [env variables](_defaults.sh).
 
 ## Prerequisites:
 
-On host machine you should have:
+On host machine you should have recent versions of:
 
-  * bash, git, jq
-  * docker, docker-compose
+  * bash 4+, git 2+, jq 1.6+
+  * docker 18+, docker-compose 1.24+
 
 Tested on macOS and Ubuntu 18.10.
   
