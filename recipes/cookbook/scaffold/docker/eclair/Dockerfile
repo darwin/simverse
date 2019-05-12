@@ -171,3 +171,5 @@ RUN rm lib
 COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$ECLAIR_CONF_PATH" "/home/simnet/seed-eclair.conf"
+
+RUN mkdir .eclair

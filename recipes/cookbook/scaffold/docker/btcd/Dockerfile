@@ -72,3 +72,6 @@ COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$BTCD_CONF_PATH" "/home/simnet/seed-btcd.conf"
 COPY "$BTCWALLET_CONF_PATH" "/home/simnet/seed-btcwallet.conf"
+
+RUN mkdir .btcd
+RUN mkdir .btcwallet

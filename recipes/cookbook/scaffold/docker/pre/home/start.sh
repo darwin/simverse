@@ -5,7 +5,7 @@ source lib/utils.sh
 
 SIMNET_NAME=${SIMNET_NAME:?required}
 
-CERTS_DIR=/certs
+CERTS_DIR=~/certs
 if [[ -f "$CERTS_DIR/rpc.cert" ]]; then
   echo "certificate present at '$CERTS_DIR/rpc.cert', nothing to do"
 else

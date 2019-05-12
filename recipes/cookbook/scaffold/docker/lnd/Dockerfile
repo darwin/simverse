@@ -45,3 +45,5 @@ RUN rm lib
 COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$LND_CONF_PATH" "/home/simnet/seed-lnd.conf"
+
+RUN mkdir .lnd

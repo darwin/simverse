@@ -51,3 +51,5 @@ RUN rm lib
 COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$BITCOIND_CONF_PATH" "/home/simnet/seed-bitcoin.conf"
+
+RUN mkdir .bitcoin

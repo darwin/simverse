@@ -104,3 +104,5 @@ RUN rm lib
 COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
 
 COPY "$LIGHTNING_CONF_PATH" "/home/simnet/seed-config"
+
+RUN mkdir .lightning
