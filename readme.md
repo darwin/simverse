@@ -235,7 +235,7 @@ developer setup where you want to develop/debug one specific node and have rest 
 
 `> ./sv help`
 ```
-Simverse v0.3.
+Simverse v0.4.
 
 A generator of simnet clusters for lnd and friends.
 
@@ -514,12 +514,13 @@ Manipulates code repositories.
 
 Sub-commands:
 
-  init     init default repos (git clone)
-  update   update default repos (git pull)
-  clone    clone existing repo under a new name
-  list     list repos
-  rm       remove repo(s)
-  report   report current tips
+  init       init default repos (git clone)
+  update     update default repos (git pull)
+  clone      clone existing repo under a new name
+  list       list repos
+  rm         remove repo(s)
+  report     report current tips
+  unshallow  unshallow repos
 
 ./sv repos init [repo_name] [...]
 ./sv repos update [repo_name] [...]
@@ -527,4 +528,5 @@ Sub-commands:
 ./sv repos list [filter]
 ./sv repos rm [repo_name] [...]
 ./sv repos report [filter]
+./sv repos unshallow [filter]
 ```
