@@ -14,7 +14,6 @@
       - $SIMVERSE_HOST_BIND$ECLAIR_SERVER_PORT_ON_HOST:${ECLAIR_P2P_PORT} # eclair p2p port
       - $SIMVERSE_HOST_BIND$ECLAIR_RPC_PORT_ON_HOST:${ECLAIR_RPC_PORT} # eclair rpc port
     volumes:
-      # !DANGER! when touching this, review cookbook.sh > prepare_eclair_volumes
       - ./_volumes/eclair-data-${NAME}:/home/simnet/.eclair # eclair data dir
     labels:
       - "simverse.role=ln"

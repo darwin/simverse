@@ -16,7 +16,6 @@
       - $SIMVERSE_HOST_BIND$LND_REST_PORT_ON_HOST:${LND_REST_PORT} # lnd rest port
       - $SIMVERSE_HOST_BIND$DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
-      # !DANGER! when touching this, review cookbook.sh > prepare_lnd_volumes
       - ./_volumes/certs:/certs:ro # shared certificates
       - ./_volumes/lnd-data-${NAME}:/home/simnet/.lnd # lnd data dir
     labels:

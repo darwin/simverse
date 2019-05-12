@@ -34,7 +34,6 @@ services:
     ports:
       - $SIMVERSE_HOST_BIND$SERVICE_READY_PORT_ON_HOST:$SERVICE_READY_PORT # readiness signal port
     volumes:
-      # !DANGER! when touching this, review cookbook.sh > prepare_pre_volumes
       - ./_volumes/certs:/certs # shared certificates
     environment:
       - CONTAINER_NAME=pre
