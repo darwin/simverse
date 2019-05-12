@@ -17,17 +17,27 @@ check() {
   travis_section start "test.$CHECK_COUNTER"
   printf "\$ \e[33m%s\e[0m\n" "$command"
   set +e
-  eval "${command}"
-  status=$?
+  # partially evaluate our command arguments
+  eval set -- ${command}
+  status1=$?
+  evaluated_arguments="$@" # this is for potential error message below
+  if [[ "$status1" -eq 0 ]]; then
+    # evaluate actual command with pre-evaluated arguments
+    "$@"
+    status2=$?
+  fi
   set -e
   travis_section end "test.$CHECK_COUNTER"
   ((++CHECK_COUNTER))
 
   # print evaluated args on failure
-  if [[ "$status" -ne 0 ]]; then
-    evaluated_arguments=$(eval echo -e ${command})
+  if [[ "$status1" -ne 0 ]]; then
+    printf "!! \e[31m%s\e[0m\n" "$evaluated_arguments"
+    return ${status1}
+  fi
+  if [[ "$status2" -ne 0 ]]; then
     printf "! \e[31m%s\e[0m\n" "$evaluated_arguments"
-    return ${status}
+    return ${status2}
   fi
 }
 
