@@ -49,6 +49,7 @@ travis_section end "start_docker_containers"
 
 tear_down() {
   if [[ $? -ne 0 ]]; then
+    brief
     if [[ -n "$SIMVERSE_DEBUG_TEST" ]]; then
       echo "entering shell for debugging because SIMVERSE_DEBUG_TEST is set:"
       "$SIMVERSE_SHELL"
