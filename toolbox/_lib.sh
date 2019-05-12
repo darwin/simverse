@@ -42,7 +42,7 @@ BTCCTL="$DOCKER_DIR/btcctl.sh"
 
 BIN_DIR="$(realpath $(dirname "${BASH_SOURCE[0]}"))"
 
-BC_ARGS="-l $BIN_DIR/_lib.bc"
+BC_ARGS=(-l "$BIN_DIR/_lib.bc")
 
 trim() {
   local str
@@ -59,7 +59,7 @@ sat2btc() {
   if [[ -z "$number" ]]; then
     read number
   fi
-  echo "${number} / 100000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 8
+  echo "${number} / 100000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 8
 }
 
 btc2sat() {
@@ -67,7 +67,7 @@ btc2sat() {
   if [[ -z "$number" ]]; then
     read number
   fi
-  echo "${number} * 100000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 0
+  echo "${number} * 100000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 0
 }
 
 btc2msat() {
@@ -75,7 +75,7 @@ btc2msat() {
   if [[ -z "$number" ]]; then
     read number
   fi
-  echo "${number} * 100000000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 0
+  echo "${number} * 100000000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 0
 }
 
 msat2btc() {
@@ -83,7 +83,7 @@ msat2btc() {
   if [[ -z "$number" ]]; then
     read number
   fi
-  echo "${number} / 100000000000" | bc ${BC_ARGS} | xargs printf "%.*f\n" 8
+  echo "${number} / 100000000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 8
 }
 
 unquote() {
@@ -91,11 +91,11 @@ unquote() {
 }
 
 is() {
-  test $(echo "$1" | bc ${BC_ARGS}) -eq 1
+  test $(echo "$1" | bc "${BC_ARGS[@]}") -eq 1
 }
 
 compute() {
-  echo "$1" | bc ${BC_ARGS}
+  echo "$1" | bc "${BC_ARGS[@]}"
 }
 
 uppercase() {
