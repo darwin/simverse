@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+source _lib.sh
+
+docker-compose ps
+
+SERVICES=$(docker-compose ps -q)
+while read CONTAINER_ID; do
+  CONTAINER_NAME=$(docker inspect --format="{{.Name}}" "$CONTAINER_ID")
+  echo
+  echo "$CONTAINER_NAME"
+  echo "> docker logs --tail 10 \"$CONTAINER_ID\""
+  docker logs --tail 10 "$CONTAINER_ID"
+done <<< "$SERVICES"
