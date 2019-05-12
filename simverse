@@ -275,12 +275,13 @@ Manipulates code repositories.
 
 Sub-commands:
 
-  init     init default repos (git clone)
-  update   update default repos (git pull)
-  clone    clone existing repo under a new name
-  list     list repos
-  rm       remove repo(s)
-  report   report current tips
+  init       init default repos (git clone)
+  update     update default repos (git pull)
+  clone      clone existing repo under a new name
+  list       list repos
+  rm         remove repo(s)
+  report     report current tips
+  unshallow  unshallow repos
 
 ./sv repos init [repo_name] [...]
 ./sv repos update [repo_name] [...]
@@ -288,6 +289,7 @@ Sub-commands:
 ./sv repos list [filter]
 ./sv repos rm [repo_name] [...]
 ./sv repos report [filter]
+./sv repos unshallow [filter]
 EOF
 }
 
@@ -1031,6 +1033,21 @@ report_repos() {
   done <<< "$repos"
 }
 
+# repos unshallow [filter]
+unshallow_repos() {
+  local repos=$(list_repos "$@")
+  while read -r repo; do
+    pushd "$SIMVERSE_REPOS_ABSOLUTE/$repo"
+    present_cwd
+    if [[ $(git rev-parse --is-shallow-repository) != "false" ]]; then
+      present git fetch --unshallow
+    else
+      echo "already complete repository, nothing to do"
+    fi
+    popd
+  done <<< "$repos"
+}
+
 handle_repos() {
   init_simverse_repos
 
@@ -1042,8 +1059,9 @@ handle_repos() {
     "update") update_repos "$@" ;;
     "clone") clone_repo "$@" ;;
     "list") list_repos "$@" ;;
-    "report") report_repos "$@" ;;
     "rm") rm_repos "$@" ;;
+    "report") report_repos "$@" ;;
+    "unshallow") unshallow_repos "$@" ;;
     *) echo_err "unsupported subcommand '$subcommand', use './sv help repos'"; exit ${ERR_INVALID_REPOS_COMMAND} ;;
   esac
 }
