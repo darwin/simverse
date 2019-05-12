@@ -17,7 +17,7 @@ check "open_channel alice bob 0.1"
 check "wait_for_route alice bob"
 check "is \"\$(ln_balance bob) == 0\""
 check "pay alice bob 0.01"
-check "is \"\$(ln_balance bob) == 0.01\""
+check "wait_is \"\$(ln_balance bob) == 0.01\""
 
 # ---------------------------------------------------------------------------------------------------------------------------
 

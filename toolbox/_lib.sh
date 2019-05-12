@@ -259,3 +259,8 @@ wait_sync() {
 wait_simnet_ready() {
   wait_for "simnet to get ready" "simnet_ready"
 }
+
+wait_is() {
+  local condition=${1:?required}
+  wait_for "condition '${condition}' to be met" "is \"$condition\""
+}
