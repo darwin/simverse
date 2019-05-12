@@ -381,6 +381,39 @@ echo_service_separator() {
   echo -e "\n  # -- ${counter}. $kind service -----------------------------------------------------------" >> ${COMPOSE_FILE}
 }
 
+# we have to create stub folders for volumes on host
+# if we let docker container create them instead under some systems we could end up with root permissions on them
+
+prepare_pre_volumes() {
+  mkdir _volumes/certs
+}
+
+prepare_btcd_volumes() {
+  local name=${1:?required}
+  mkdir _volumes/btcd-data-${name}
+  mkdir _volumes/btcwallet-data-${name}
+}
+
+prepare_lnd_volumes() {
+  local name=${1:?required}
+  mkdir _volumes/lnd-data-${name}
+}
+
+prepare_bitcoind_volumes() {
+  local name=${1:?required}
+  mkdir _volumes/bitcoind-data-${name}
+}
+
+prepare_lightning_volumes() {
+  local name=${1:?required}
+  mkdir _volumes/lightning-data-${name}
+}
+
+prepare_eclair_volumes() {
+  local name=${1:?required}
+  mkdir _volumes/eclair-data-${name}
+}
+
 ensure_bitcoin_service() {
   if [[ -z "$LAST_BITCOIN_SERVICE" ]]; then
     echo_err_with_stack_trace "'add lnd' called but no prior btcd or bitcoind was added, call 'add btcd' or 'add bitcoind' prior adding lnd nodes or set LND_BITCOIN_RPC_HOST explicitly"
@@ -434,6 +467,8 @@ add_lnd() {
     ln -s "$NAME" ${default_alias_file}
   fi
 
+  prepare_lnd_volumes "$NAME"
+
   advance_common_counters
   advance_lnd_counters
 
@@ -463,6 +498,8 @@ add_btcd() {
     ln -s "$NAME" ${default_alias_file}
   fi
 
+  prepare_btcd_volumes "$NAME"
+
   advance_common_counters
   advance_btcd_counters
 
@@ -491,6 +528,8 @@ add_bitcoind() {
   if [[ ! -f "$default_alias_file" ]]; then
     ln -s "$NAME" ${default_alias_file}
   fi
+
+  prepare_bitcoind_volumes "$NAME"
 
   advance_common_counters
   advance_bitcoind_counters
@@ -535,6 +574,8 @@ add_lightning() {
     ln -s "$NAME" ${default_alias_file}
   fi
 
+  prepare_lightning_volumes "$NAME"
+
   advance_common_counters
   advance_lightning_counters
 
@@ -578,6 +619,8 @@ add_eclair() {
     ln -s "$NAME" ${default_alias_file}
   fi
 
+  prepare_eclair_volumes "$NAME"
+
   advance_common_counters
   advance_eclair_counters
 
@@ -593,6 +636,7 @@ prelude() {
   create_aliases_dir
   prepare_repos
   init_states
+  prepare_pre_volumes
   prepare_tmux_script
   prepare_home_link
   eval_template "$TEMPLATES_DIR/prelude.yml" > ${COMPOSE_FILE}

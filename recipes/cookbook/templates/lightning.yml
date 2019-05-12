@@ -15,6 +15,7 @@
       - $SIMVERSE_HOST_BIND$LIGHTNING_SERVER_PORT_ON_HOST:${LIGHTNING_P2P_PORT} # lightning p2p port
       - $SIMVERSE_HOST_BIND$LIGHTNING_RPC_PORT_ON_HOST:${LIGHTNING_RPC_PORT} # lightning rpc port
     volumes:
+      # !DANGER! when touching this, review cookbook.sh > prepare_lightning_volumes
       - ./_volumes/lightning-data-${NAME}:/home/simnet/.lightning # lightning data dir
     labels:
       - "simverse.role=ln"

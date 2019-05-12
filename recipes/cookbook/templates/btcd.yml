@@ -18,6 +18,7 @@
       - $SIMVERSE_HOST_BIND$BTCWALLET_RPC_PORT_ON_HOST:${BTCWALLET_RPC_PORT} # btcwallet rpc port
       - $SIMVERSE_HOST_BIND$DLV_PORT_ON_HOST:$DLV_PORT # go-delve port
     volumes:
+      # !DANGER! when touching this, review cookbook.sh > prepare_btcd_volumes
       - ./_volumes/certs:/certs:ro # shared certificates
       - ./_volumes/btcd-data-${NAME}:/home/simnet/.btcd # btcd data dir
       - ./_volumes/btcwallet-data-${NAME}:/home/simnet/.btcwallet # btcwallet data dir
