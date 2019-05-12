@@ -1,7 +1,7 @@
 sudo: required
 dist: xenial
 env:
-  - DOCKER_COMPOSE_VERSION=1.23.2
+  - DOCKER_COMPOSE_VERSION=1.24.0
 services:
   - docker
 before_install:
