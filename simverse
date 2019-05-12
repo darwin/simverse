@@ -1024,7 +1024,7 @@ report_repos() {
     pushd "$SIMVERSE_REPOS_ABSOLUTE/$repo"
     local short_rev=`git rev-parse --short HEAD`
     local short_rev_indent=`printf "%${#short_rev}s"` # short rev can have different length depending on short sha collisions
-    echo "$repo"
+    present_cwd
     git log -1 --pretty=format:"%C(magenta)%h%C(reset) | %C(yellow)%s%C(reset)%n$short_rev_indent └ %C(blue)%an%C(reset) | %ad" --date=rfc --color=auto
     echo
     popd
