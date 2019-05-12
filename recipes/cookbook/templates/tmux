@@ -10,10 +10,8 @@ TMUX= tmux new-session -d -s "$$SIMNET_NAME" -n simnet
 
 tmux set-option history-limit 90000
 tmux set -g mouse on
-tmux set -g status off # it interferes with my prompt badly
 
 tmux splitw  -t $$SIMNET_NAME:0
-tmux select-layout -t $$SIMNET_NAME:0 main-horizontal
 tmux send-keys -t $$SIMNET_NAME:0.0 "./dc build && ./dc up" Enter
 tmux select-window -t $$SIMNET_NAME:0
 tmux select-pane -t $$SIMNET_NAME:0.1
