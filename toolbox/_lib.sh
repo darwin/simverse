@@ -168,8 +168,9 @@ wait_for() {
   local msg=${1:?required}
   local cmd=${2:?required}
   local cmd2=${3}
-  local interval=${4:-5}
-  local max=${5:-100}
+  local max=${4:-100}
+  local cmd2_interval=${5:-5}
+  local interval=${6:-1}
 
   local counter=1
   local status
@@ -189,10 +190,10 @@ wait_for() {
     if [[ "$counter" -eq 1 ]]; then
       echo -n "Waiting for $msg. Zzz.."
     fi
-    sleep 1
+    sleep ${interval}
     echo -n "."
     if  [[ -n "$cmd2" ]]; then
-      if ! (( "$counter" % "$interval" )); then
+      if ! (( "$counter" % "$cmd2_interval" )); then
         echo
         saved_opts="set -$-"
         set +e
@@ -204,7 +205,7 @@ wait_for() {
     ((++counter))
     if [[ ${counter} -gt ${max} ]]; then
       echo
-      echo_err "FATAL: wait_for stuck waiting for '$msg' (tried $max times)"
+      echo_err "FATAL: wait_for stuck waiting for '$msg' (tried $max times with interval of $interval sec)"
       exit 1
     fi
   done
