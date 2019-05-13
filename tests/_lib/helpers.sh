@@ -12,10 +12,13 @@ CHECK_COUNTER=1
 
 check() {
   local command=${1:?required}
+  local silent=${2}
   local status
 
-  travis_section start "test.$CHECK_COUNTER"
-  printf "\$ \e[33m%s\e[0m\n" "$command"
+  if [[ -z "$silent" ]]; then
+    travis_section start "test.$CHECK_COUNTER"
+    printf "\$ \e[33m%s\e[0m\n" "$command"
+  fi
   local saved_opts="set -$-"
   set +e
   # partially evaluate our command arguments
@@ -27,17 +30,23 @@ check() {
     "$@"
     status2=$?
   fi
-  travis_section end "test.$CHECK_COUNTER"
-  ((++CHECK_COUNTER))
   eval "${saved_opts}"
+  if [[ -z "$silent" ]]; then
+    travis_section end "test.$CHECK_COUNTER"
+    ((++CHECK_COUNTER))
+  fi
 
   # print evaluated args on failure
   if [[ "$status1" -ne 0 ]]; then
-    printf "!! \e[31m%s\e[0m\n" "$evaluated_arguments"
+    if [[ -z "$silent" ]]; then
+      printf "!! \e[31m%s\e[0m\n" "$evaluated_arguments"
+    fi
     return ${status1}
   fi
   if [[ "$status2" -ne 0 ]]; then
-    printf "! \e[31m%s\e[0m\n" "$evaluated_arguments"
+    if [[ -z "$silent" ]]; then
+      printf "! \e[31m%s\e[0m\n" "$evaluated_arguments"
+    fi
     return ${status2}
   fi
 }
