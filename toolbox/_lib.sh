@@ -173,11 +173,13 @@ wait_for() {
 
   local counter=1
   local status
+  local saved_opts
   while true; do
+    saved_opts="set -$-"
     set +e
     eval "${cmd}" > /dev/null 2>&1;
     status=$?
-    set -e
+    eval "${saved_opts}"
     if [[ "$status" -eq 0 ]]; then
       if [[ "$counter" -ne 1 ]]; then
         echo
@@ -192,9 +194,10 @@ wait_for() {
     if  [[ -n "$cmd2" ]]; then
       if ! (( "$counter" % "$interval" )); then
         echo
+        saved_opts="set -$-"
         set +e
         eval "${cmd2}"
-        set -e
+        eval "${saved_opts}"
         echo -n "Waiting for $msg. Zzz.."
       fi
     fi

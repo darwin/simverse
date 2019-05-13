@@ -507,10 +507,11 @@ make_sure_simnet_is_not_running() {
   fi
 
   local name
+  local saved_opts="set -$-"
   set +e
   name=$(nc "localhost" "$SERVICE_READY_PORT_ON_HOST")
   result=$?
-  set -e
+  eval "${saved_opts}"
   if [[ "$result" -eq 0 ]]; then
     # pre is running
     echo_err "simnet '$name' seems to be running, please shut it down first or force this with the -f flag"

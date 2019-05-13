@@ -16,6 +16,7 @@ check() {
 
   travis_section start "test.$CHECK_COUNTER"
   printf "\$ \e[33m%s\e[0m\n" "$command"
+  local saved_opts="set -$-"
   set +e
   # partially evaluate our command arguments
   eval set -- ${command}
@@ -26,9 +27,9 @@ check() {
     "$@"
     status2=$?
   fi
-  set -e
   travis_section end "test.$CHECK_COUNTER"
   ((++CHECK_COUNTER))
+  eval "${saved_opts}"
 
   # print evaluated args on failure
   if [[ "$status1" -ne 0 ]]; then
@@ -68,6 +69,7 @@ enter_simnet() {
 wait_for_bitcoin_ready() {
   local num_blocks=432
   announce1 "waiting for master bitcoin node to mine $num_blocks blocks "
+  local saved_opts="set -$-"
   set +e
   local probe_counter=1
   local delay=1
@@ -80,9 +82,10 @@ wait_for_bitcoin_ready() {
     if [[ ${probe_counter} -gt ${max_probes} ]]; then
       echo
       echo_err "master bitcoin node didn't reach expected $num_blocks blocks in time"
+      eval "${saved_opts}"
       return 1
     fi
   done
-  set -e
+  eval "${saved_opts}"
   echo
 }
