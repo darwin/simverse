@@ -51,6 +51,50 @@ check() {
   fi
 }
 
+check_retry() {
+  local command=${1:?required}
+  local max=${2:-60}
+  local interval=${3:-1}
+
+  travis_section start "test.$CHECK_COUNTER"
+  printf "\$ \e[33m%s\e[0m\n" "$command"
+
+  local counter=1
+  local status
+  local saved_opts
+  while true; do
+    saved_opts="set -$-"
+    set +e
+    check "$command" 1 # > /dev/null 2>&1;
+    status=$?
+    eval "${saved_opts}"
+    if [[ "$status" -eq 0 ]]; then
+      if [[ "$counter" -ne 1 ]]; then
+        echo
+      fi
+
+      travis_section end "test.$CHECK_COUNTER"
+      ((++CHECK_COUNTER))
+
+      return 0
+    fi
+    if [[ "$counter" -eq 1 ]]; then
+      echo -n "Waiting for satisfaction of condition '$command'. Zzz.."
+    fi
+    sleep ${interval}
+    echo -n "."
+    ((++counter))
+    if [[ ${counter} -gt ${max} ]]; then
+      echo
+      echo_err "FATAL: check_retry didn't satisfy '$command' (tried $max times with interval of $interval sec)"
+      travis_section end "test.$CHECK_COUNTER"
+      ((++CHECK_COUNTER))
+      exit 1
+    fi
+  done
+
+}
+
 announce1() {
   printf "\e[35m%s\e[0m" "$1"
 }
