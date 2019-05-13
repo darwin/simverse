@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DOCKER_COMPOSE_VERSION=1.23.2
+DOCKER_COMPOSE_VERSION=1.24.0
 
 install_linux() {
   # https://docs.docker.com/compose/install/#prerequisites
