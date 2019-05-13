@@ -20,7 +20,12 @@ cd ..
 
 export SIMVERSE_HOME="$(pwd -P)"
 
-SIMVERSE_TEST_TMP=${SIMVERSE_TEST_TMP}
+# instead of generating TMP_DIR using mktemp, default SIMVERSE_TEST_TMP to /tmp to prevent error:
+# "lightningd: Binding rpc socket to 'lightning-rpc': Filename too long"
+# this has something to do with docker bug under macOS: https://github.com/moby/moby/issues/23545
+# having long TMP_DIR will cause failures inside docker container, when process tries work with files
+# in that mapped volume folder (bind call in case of c-lightning)
+SIMVERSE_TEST_TMP=${SIMVERSE_TEST_TMP:-/tmp}
 if [[ -n "$SIMVERSE_TEST_TMP" ]]; then
   TMP_DIR="$SIMVERSE_TEST_TMP/simverse-tests"
   rm -rf "$TMP_DIR"
