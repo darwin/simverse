@@ -7,10 +7,12 @@
       <w>apfs</w>
       <w>appdata</w>
       <w>backends</w>
+      <w>binaryage</w>
       <w>bitcoin</w>
       <w>bitcoincli</w>
       <w>bitcoind</w>
       <w>blockchain</w>
+      <w>blockheight</w>
       <w>btcctl</w>
       <w>btcd</w>
       <w>btcddatadir</w>
@@ -47,6 +49,7 @@
       <w>getbalance</w>
       <w>getinfo</w>
       <w>grpc</w>
+      <w>launchd</w>
       <w>lightningd</w>
       <w>lightningnetwork</w>
       <w>litecoin</w>
@@ -59,16 +62,19 @@
       <w>mainnet</w>
       <w>maxdepth</w>
       <w>miningaddr</w>
+      <w>mktemp</w>
       <w>msat</w>
       <w>mysn</w>
       <w>newaddr</w>
       <w>noansi</w>
       <w>noclienttls</w>
+      <w>noout</w>
       <w>noseedbackup</w>
       <w>noservertls</w>
       <w>notls</w>
       <w>onchain</w>
       <w>pipefail</w>
+      <w>plists</w>
       <w>popd</w>
       <w>printtoconsole</w>
       <w>pubkey</w>
