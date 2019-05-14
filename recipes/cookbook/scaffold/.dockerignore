@@ -1,4 +1,4 @@
-repos/lnd/.git
-repos/btcd/.git
-repos/btcwallet/.git
-repos/bitcoin/.git
+repos/.idea
+repos/*/.idea
+repos/*/.git
+repos/lightning/external/*/.git
