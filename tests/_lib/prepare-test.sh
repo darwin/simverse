@@ -12,8 +12,6 @@ SIMVERSE_SHELL=${SIMVERSE_SHELL:-$SHELL}
 
 if [[ -n "$TRAVIS" ]]; then
   SIMVERSE_NOANSI=1
-else
-  DOCKER_COMPOSE_PARALLEL="--parallel"
 fi
 
 DOCKER_COMPOSE_OPTS=
@@ -39,7 +37,7 @@ travis_section end "prepare_simnet"
 
 travis_section start "build_docker_containers"
   announce "building docker containers..."
-  ./dc ${DOCKER_COMPOSE_OPTS} build ${DOCKER_COMPOSE_PARALLEL}
+  ./dc ${DOCKER_COMPOSE_OPTS} build
 travis_section end "build_docker_containers"
 
 travis_section start "start_docker_containers"
