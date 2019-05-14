@@ -15,7 +15,7 @@ if [[ "$NUM_BLOCKS" = 1 ]]; then
   BLOCKS="block"
 fi
 
-echo "generating $NUM_BLOCKS $BLOCKS via '$WHERE' ..."
+echo "generating $NUM_BLOCKS $BLOCKS via $WHERE ..."
 FLAVOR=$(get_flavor "$WHERE")
 case "$FLAVOR" in
   bitcoind)
