@@ -74,7 +74,7 @@ If you don't want to risk putting your machine on fire, here is a recording:
 
 * note that we used pre-generated `./tmux` script to launch everything in one terminal window
 
-[![asciicast](https://asciinema.org/a/238727.svg)](https://asciinema.org/a/238727)
+[![asciicast](https://asciinema.org/a/246214.svg)](https://asciinema.org/a/246214)
 
 ## Generated simnet folder
 
