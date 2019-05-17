@@ -231,6 +231,17 @@ Generally, it contains only one flavor of bitcoin and one flavor of lightning no
 > A hybrid simnet is a simnet with cooperating nodes running in docker and also on the host machine. This is more advanced 
 developer setup where you want to develop/debug one specific node and have rest of the simnet running "in the background" in docker.
 
+#### Cool work! How can I send some sats your way?
+
+<p align="center">
+ <a target="_blank" rel="noopener noreferrer" href="https://tiphub.io/user/651358055/tip?site=github">
+   <img src="https://tiphub.io/static/images/tip-button-light.png" alt="Tip darwin on TipHub" height="60">
+   <br />
+   My pubkey starts with <code>03e24db0</code>
+ </a>
+</p>
+
+---
 
 ## simverse utility reference
 
