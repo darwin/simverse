@@ -57,7 +57,7 @@ _workspace/default > open_channel alice bob 0.1  # open a LN channel
 _workspace/default > pay alice bob 0.01          # pay via LN
 ```
 
-Here is the default recipe which was used for simnet generation (see `recipes/default.sh`):
+Here is the default recipe which was used for simnet generation (see [`recipes/default.sh`](recipes/default.sh)):
 
 ```bash
 . cookbook/cookbook.sh
@@ -109,7 +109,7 @@ When you hit CTRL+C, docker will shutdown your simnet and you can rinse, repeat.
 3. you can control individual services via their names e.g. `alice getinfo` or 
    `btcd1 getnetworkinfo` (see `aliases` dir). Also note that first lnd node has alias `lncli` and first btcd node 
    has alias `btcctl`.
-4. you can also use convenience commands from `toolbox`, for example:
+4. you can also use convenience commands from [`toolbox`](toolbox), for example:
 
 ```bash
 # assuming you have at least one btcd node and lnd nodes alice, bob and charlie (see the recipe 'b1l3.sh')
@@ -171,7 +171,7 @@ config for following lnd nodes. Read the [`cookbook.sh`](recipes/cookbook/cookbo
 
 #### I'd like to know IP addresses of individual machines in the simnet cluster. How?
 
-> `list_docker_ips` please note that you should not use hard-coded IPs, instead use service names docker assigned to 
+> [`list_docker_ips`](toolbox/list_docker_ips) please note that you should not use hard-coded IPs, instead use service names docker assigned to 
 individual machines
 
 #### Is it possible to launch multiple simnets in parallel?
@@ -209,8 +209,8 @@ it this way I guess.
 > In a cluster of bitcoin nodes we need one which will be special. It will do some privileged tasks like mining or holding
 mined coins in its associated wallet. By convention, master bitcoin node is always first bitcoin node created. You can get its hostname
 by running `lookup_host 1 role bitcoin`. Simverse supports multiple bitcoin node implementations and master node might be either 
-btcd or bitcoind "flavor". Raw cli interface might be slightly different, so we try to hide this in our commands like `balance`, 
-`chain_height` or `earn`. If you looked at their implementation you would spot code branches for different bitcoin node flavors. 
+btcd or bitcoind "flavor". Raw cli interface might be slightly different, so we try to hide this in our commands like [`onchain_balance`](toolbox/onchain_balance), 
+[`chain_height`](toolbox/chain_height) or [`earn`](toolbox/earn). If you looked at their implementation you would spot code branches for different bitcoin node flavors. 
 
 #### Where is a faucet?
 
@@ -229,10 +229,12 @@ btcd or bitcoind "flavor". Raw cli interface might be slightly different, so we 
 > A homogeneous simnet contains only `btcd` + `lnd` nodes or only `bitcoind` + `c-lightning` nodes. 
 Generally, it contains only one flavor of bitcoin and one flavor of lightning nodes. Heterogeneous simnet can mix them. 
 > A hybrid simnet is a simnet with cooperating nodes running in docker and also on the host machine. This is more advanced 
-developer setup where you want to develop/debug one specific node and have rest of the simnet running "in the background" in docker. 
+developer setup where you want to develop/debug one specific node and have rest of the simnet running "in the background" in docker.
 
-## sv utility reference
 
+## simverse utility reference
+
+Note that [`sv`](sv) is a convenience symlink to [`simverese`](simverse).
 
 ##### `> ./sv help`
 ```
