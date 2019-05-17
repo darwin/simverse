@@ -226,7 +226,8 @@ btcd or bitcoind "flavor". Raw cli interface might be slightly different, so we 
 
 #### What is the difference between heterogeneous and hybrid simnets?
 
-> A heterogeneous simnet is contains only `btcd` + `lnd` nodes or only `bitcoind` + `c-lightning` nodes. Does not mix them. 
+> A homogeneous simnet contains only `btcd` + `lnd` nodes or only `bitcoind` + `c-lightning` nodes. 
+Generally, it contains only one flavor of bitcoin and one flavor of lightning nodes. Heterogeneous simnet can mix them. 
 > A hybrid simnet is a simnet with cooperating nodes running in docker and also on the host machine. This is more advanced 
 developer setup where you want to develop/debug one specific node and have rest of the simnet running "in the background" in docker. 
 
