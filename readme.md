@@ -411,6 +411,7 @@ When you enter a simnet via `./sv enter [name]`, toolbox folder is added to your
 Explore `toolbox` folder for the details:
 
   attach_dlv
+  brief
   chain_height
   connect
   earn
@@ -445,8 +446,8 @@ For example default simnet will generate following aliases for you:
 
   alice
   bob
-  btcd
-  btcctl -> btcd
+  btcd1
+  btcctl -> btcd1
   lncli -> alice
 
 Aliases are convenience shortcuts to control tools for individual nodes (named by simnet recipe).

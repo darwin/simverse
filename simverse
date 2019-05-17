@@ -370,8 +370,8 @@ For example default simnet will generate following aliases for you:
 
   alice
   bob
-  btcd
-  btcctl -> btcd
+  btcd1
+  btcctl -> btcd1
   lncli -> alice
 
 Aliases are convenience shortcuts to control tools for individual nodes (named by simnet recipe).
