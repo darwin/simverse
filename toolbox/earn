@@ -2,10 +2,11 @@
 
 source _lib.sh
 
-AMOUNT=${1:-100} # minimal amount
+AMOUNT_BTC=${1:-100} # minimal amount
 FAUCET_ADDR=${FAUCET_ADDR:?required}
 
-BLOCKS_NEEDED=$(compute "floor(${AMOUNT} / 50) + 1")
+BLOCK_SUBSIDY=50 # we assume a young blockchain with 50 BTC per block
+BLOCKS_NEEDED=$(compute "floor(${AMOUNT_BTC} / ${BLOCK_SUBSIDY}) + 1")
 echo "mining ${BLOCKS_NEEDED} blocks on master bitcoin node"
 
 # generate blocks on master node
