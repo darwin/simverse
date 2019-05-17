@@ -98,6 +98,7 @@
       <w>rpcport</w>
       <w>rpcserver</w>
       <w>rpcuser</w>
+      <w>sats</w>
       <w>segwit</w>
       <w>sendfrom</w>
       <w>simnet</w>
