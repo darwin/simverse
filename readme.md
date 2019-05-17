@@ -245,7 +245,7 @@ developer setup where you want to develop/debug one specific node and have rest 
 
 ## simverse utility reference
 
-Note that [`sv`](sv) is a convenience symlink to [`simverese`](simverse).
+Note that [`sv`](sv) is a convenience symlink to [`simverse`](simverse).
 
 ##### `> ./sv help`
 ```
