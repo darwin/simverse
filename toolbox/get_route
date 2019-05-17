@@ -20,9 +20,10 @@ case "$FLAVOR" in
     exec "$FROM_PERSON" getroute "$TO_PERSON_ID" "$AMOUNT_MSAT" "$RISK_FACTOR"
     ;;
   eclair)
-    AMOUNT_SAT=$(btc2sat "$AMOUNT_BTC")
-    ROUTE=$("$FROM_PERSON" findroutetonode --nodeId="$TO_PERSON_ID" --amountMsat="$AMOUNT_SAT")
+    AMOUNT_MSAT=$(btc2msat "$AMOUNT_BTC")
+    ROUTE=$("$FROM_PERSON" findroutetonode --nodeId="$TO_PERSON_ID" --amountMsat="$AMOUNT_MSAT")
     echo "$ROUTE"
+    # see https://github.com/ACINQ/eclair/issues/998
     if [[ "$ROUTE" == "route not found"* ]]; then
       exit 1
     else
