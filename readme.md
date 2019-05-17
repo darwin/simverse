@@ -26,7 +26,7 @@ Tested on macOS and Ubuntu 18.10.
 ## Quick start
 
 In a terminal session:
-```
+```bash
 > git clone --recursive https://github.com/darwin/simverse.git
 > cd simverse
 > ./sv create                                 # first time, it will ask to clone repos, answer yes
@@ -41,7 +41,7 @@ _workspace/default > ./dc up                  # this gives you a nice log for wh
 
 In a second terminal session:
 
-```
+```bash
 > cd simverse
 > ./sv enter
 _workspace/default > btcd1 getinfo
@@ -59,7 +59,7 @@ _workspace/default > pay alice bob 0.01          # pay via LN
 
 Here is the default recipe which was used for simnet generation (see `recipes/default.sh`):
 
-```
+```bash
 . cookbook/cookbook.sh
 
 prelude
@@ -111,7 +111,7 @@ When you hit CTRL+C, docker will shutdown your simnet and you can rinse, repeat.
    has alias `btcctl`.
 4. you can also use convenience commands from `toolbox`, for example:
 
-```
+```bash
 # assuming you have at least one btcd node and lnd nodes alice, bob and charlie (see the recipe 'b1l3.sh')
 #
 # let's follow the tutorial https://dev.lightning.community/tutorial/01-lncli
