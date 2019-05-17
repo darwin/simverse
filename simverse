@@ -1080,7 +1080,7 @@ end_pre_block() {
 emit_help_markdown() {
   local line="$(join_by " " ${@/eval/})"
   echo ""
-  echo "\`> $line\`"
+  echo "##### \`> $line\`"
   start_pre_block
   "$@"
   end_pre_block

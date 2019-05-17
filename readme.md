@@ -234,7 +234,7 @@ developer setup where you want to develop/debug one specific node and have rest 
 ## sv utility reference
 
 
-`> ./sv help`
+##### `> ./sv help`
 ```
 Simverse v0.4.
 
@@ -261,7 +261,7 @@ Topics: simnet, recipes, workspace, toolbox, aliases.
 Please visit 'https://github.com/darwin/simverse' for further info.
 ```
 
-`> ./sv help simnet`
+##### `> ./sv help simnet`
 ```
 About simnets
 
@@ -336,7 +336,7 @@ prepared to be attached to go processes inside container and offer port mappings
 to be controlled from host machine. Please see `attach_dlv` command inside the toolbox.
 ```
 
-`> ./sv help workspace`
+##### `> ./sv help workspace`
 ```
 About workspace
 
@@ -350,7 +350,7 @@ Workspace contains a folder for each simnet named after it.
 You can enter your simnet via `./sv enter [name]`.
 ```
 
-`> ./sv help create`
+##### `> ./sv help create`
 ```
 Usage: ./sv create [-f] [recipe] [name]
 
@@ -366,7 +366,7 @@ parameters and drives the generator.
 Read more about recipes via `./sv help recipes`
 ```
 
-`> ./sv help recipe`
+##### `> ./sv help recipe`
 ```
 About recipes
 
@@ -400,7 +400,7 @@ We are not going to document the cookbook here. Please refer to its sources.
 Please look around in `recipes` folder and see how existing recipes are done.
 ```
 
-`> ./sv help toolbox`
+##### `> ./sv help toolbox`
 ```
 About toolbox
 
@@ -434,7 +434,7 @@ Explore `toolbox` folder for the details:
 
 ```
 
-`> ./sv help aliases`
+##### `> ./sv help aliases`
 ```
 About aliases
 
@@ -457,14 +457,14 @@ symlink pointing to the first lnd node. This comes handy for asking general ques
 not specific to exact node.
 ```
 
-`> ./sv help destroy`
+##### `> ./sv help destroy`
 ```
 Usage: ./sv destroy [name]
 
 Deletes a simnet with `name` (default).
 ```
 
-`> ./sv help enter`
+##### `> ./sv help enter`
 ```
 Usage: ./sv enter [name]
 
@@ -476,7 +476,7 @@ You typically use this command to start working with a given simnet. In the sub-
   * set PATH to additionally contain toolbox and aliases
 ```
 
-`> ./sv help list`
+##### `> ./sv help list`
 ```
 Usage: ./sv list [filter]
 
@@ -485,7 +485,7 @@ Lists all available simnets by name. Optionally you can filter the list using a 
 Run `./sv help simnet` to learn what is a simnet.
 ```
 
-`> ./sv help state`
+##### `> ./sv help state`
 ```
 Usage: ./sv state [sub-command] ...
 
@@ -508,7 +508,7 @@ Sub-commands:
 Run `./sv help simnet` to learn about simnet states.
 ```
 
-`> ./sv help repos`
+##### `> ./sv help repos`
 ```
 Usage: ./sv repos [sub-command] ...
 
