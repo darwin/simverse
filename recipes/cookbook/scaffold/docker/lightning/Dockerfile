@@ -41,10 +41,10 @@ ENV MAKEFLAGS="$MAKEFLAGS"
 COPY "docker/lightning/patches/unknown-version-fallback.patch" .
 RUN git apply unknown-version-fallback.patch
 
-ARG DEVELOPER=0
+ARG LIGHTNING_DEVELOPER_FLAG=0
 RUN ./configure --prefix=/tmp/lightning_install
 
-RUN make DEVELOPER=${DEVELOPER}
+RUN make DEVELOPER=${LIGHTNING_DEVELOPER_FLAG}
 
 RUN make install
 
