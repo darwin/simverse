@@ -3,7 +3,9 @@
 set -e -o pipefail
 
 # make sure we use neutral locale, for example printf %f could produce different results based on custom locales
-export LC_ALL=C.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 
 echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
