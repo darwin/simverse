@@ -15,6 +15,7 @@ TESTS_DIR="$(pwd -P)"
 
 source ../toolbox/_lib.sh
 source _lib/helpers.sh
+source _lib/travis.sh
 
 cd ..
 
@@ -54,6 +55,12 @@ else
   export SIMVERSE_REPOS=${SIMVERSE_REPOS:-$TMP_DIR/_repos}
   export SIMVERSE_GIT_REFERENCE_PREFIX=${SIMVERSE_GIT_REFERENCE_PREFIX:-$SIMVERSE_HOME/_repos} # use git references to limit network I/O
 fi
+
+travis_section start "repos_report"
+  announce "repos report"
+  cd "${SIMVERSE_HOME}"
+  ./sv repos report
+travis_section end "repos_report"
 
 cd "$TESTS_DIR"
 
