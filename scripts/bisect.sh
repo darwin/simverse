@@ -15,7 +15,7 @@ cd ..
 ROOT_DIR=$(pwd -P)
 
 export SIMVERSE_TEST_REPOS=_repos
-exoort SIMVERSE_DEBUG_TEST=
+export SIMVERSE_DEBUG_TEST=
 
 cd "_repos/$REPO"
 
