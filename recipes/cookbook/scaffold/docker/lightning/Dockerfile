@@ -43,8 +43,9 @@ RUN git apply unknown-version-fallback.patch
 
 ARG LIGHTNING_DEVELOPER_FLAG=0
 RUN ./configure --prefix=/tmp/lightning_install
+ARG LIGHTNING_VALGRIND_FLAG=0
 
-RUN make DEVELOPER=${LIGHTNING_DEVELOPER_FLAG}
+RUN make DEVELOPER=${LIGHTNING_DEVELOPER_FLAG} VALGRIND=${LIGHTNING_VALGRIND_FLAG}
 
 RUN make install
 
