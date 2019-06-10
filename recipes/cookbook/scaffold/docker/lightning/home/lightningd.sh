@@ -4,10 +4,6 @@ source lib/init.sh
 
 cp "seed-config" ".lightning/config"
 
-# TODO: remove me, this is just a temporary hack to work around
-# https://github.com/ElementsProject/lightning/pull/2647#issuecomment-495144220
-mkdir ".lightning/plugins"
-
 # optional parameters
 RPC_USER=${RPC_USER}
 RPC_PASS=${RPC_PASS}
