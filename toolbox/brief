@@ -9,6 +9,6 @@ while read CONTAINER_ID; do
   CONTAINER_NAME=$(docker inspect --format="{{.Name}}" "$CONTAINER_ID")
   echo
   echo "$CONTAINER_NAME"
-  echo "> docker logs --tail 10 \"$CONTAINER_ID\""
-  docker logs --tail 10 "$CONTAINER_ID"
+  echo "> docker logs --tail ${DOCKER_LOGS_TAIL_COUNT} \"$CONTAINER_ID\""
+  docker logs --tail ${DOCKER_LOGS_TAIL_COUNT} "$CONTAINER_ID"
 done <<< "$SERVICES"
