@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source _lib.sh
 
 FROM_PERSON=${1:-alice}
 TO_PERSON=${2:-bob}
 
 connect_bitcoin_nodes() {
-  local role=$(get_role "$TO_PERSON")
+  local role
+  role=$(get_role "$TO_PERSON")
   if [[ "$role" != "bitcoin" ]]; then
     echo_err "both nodes to have the same role, '$TO_PERSON' has role '$role' but 'bitcoin' was expected"
     exit 2
@@ -20,7 +23,8 @@ connect_bitcoin_nodes() {
 }
 
 connect_ln_nodes() {
-  local role=$(get_role "$TO_PERSON")
+  local role
+  role=$(get_role "$TO_PERSON")
   if [[ "$role" != "ln" ]]; then
     echo_err "both nodes to have the same role, '$TO_PERSON' has role '$role' but 'ln' was expected"
     exit 2
@@ -32,7 +36,8 @@ connect_ln_nodes() {
     exit 1
   fi
 
-  local flavor=$(get_flavor "$FROM_PERSON")
+  local flavor
+  flavor=$(get_flavor "$FROM_PERSON")
   case "$flavor" in
     lnd|lightning) "$FROM_PERSON" connect "$TO_PERSON_CONNECTION" ;;
     eclair) "$FROM_PERSON" connect --uri="$TO_PERSON_CONNECTION" ;;
@@ -46,4 +51,3 @@ case "$ROLE" in
   ln) connect_ln_nodes ;;
   *) echo_err "unsupported role type '$ROLE' for '$FROM_PERSON'"; exit 1; ;;
 esac
-

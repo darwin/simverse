@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+# shellcheck shell=bash
+
+# this is a shell library, it should be sourced by scripts in toolbox
 
 set -e -o pipefail
 
@@ -6,6 +8,13 @@ set -e -o pipefail
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
+
+export REAL_TOOLBOX_DIR
+REAL_TOOLBOX_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
+
+pushd "$REAL_TOOLBOX_DIR" > /dev/null
+source _toolbox_config.sh
+popd > /dev/null
 
 echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
@@ -36,25 +45,13 @@ realpath() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
-TX_CONF_COUNT=6
-CHANNEL_CONF_COUNT=10
-COINBASE_MATURITY=100
-DOCKER_LOGS_TAIL_COUNT=300
-
-ROOT_DIR="../.."
-DOCKER_DIR="$ROOT_DIR/docker"
-DOCKER_LNCLI="$DOCKER_DIR/lncli"
-BTCCTL="$DOCKER_DIR/btcctl.sh"
-
-BIN_DIR="$(realpath $(dirname "${BASH_SOURCE[0]}"))"
-
-BC_ARGS=(-l "$BIN_DIR/_lib.bc")
+BC_ARGS=(-l "$REAL_TOOLBOX_DIR/_lib.bc")
 
 trim() {
   local str
   str=$(cat)
   if [[ "$str" =~ [^[:space:]](.*[^[:space:]])? ]]; then
-    printf "%s" "$BASH_REMATCH"
+    printf "%s" "${BASH_REMATCH[0]}"
   else
     echo -n "$str"
   fi
@@ -63,7 +60,7 @@ trim() {
 sat2btc() {
   local number=${1}
   if [[ -z "$number" ]]; then
-    read number
+    read -r number
   fi
   echo "${number} / 100000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 8
 }
@@ -71,7 +68,7 @@ sat2btc() {
 btc2sat() {
   local number=${1}
   if [[ -z "$number" ]]; then
-    read number
+    read -r number
   fi
   echo "${number} * 100000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 0
 }
@@ -79,7 +76,7 @@ btc2sat() {
 btc2msat() {
   local number=${1}
   if [[ -z "$number" ]]; then
-    read number
+    read -r number
   fi
   echo "${number} * 100000000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 0
 }
@@ -87,7 +84,7 @@ btc2msat() {
 msat2btc() {
   local number=${1}
   if [[ -z "$number" ]]; then
-    read number
+    read -r number
   fi
   echo "${number} / 100000000000" | bc "${BC_ARGS[@]}" | xargs printf "%.*f\n" 8
 }
@@ -97,7 +94,7 @@ unquote() {
 }
 
 is() {
-  test $(echo "$1" | bc "${BC_ARGS[@]}") -eq 1
+  test "$(echo "$1" | bc "${BC_ARGS[@]}")" -eq 1
 }
 
 compute() {
@@ -105,14 +102,13 @@ compute() {
 }
 
 uppercase() {
-  tr a-z A-Z
+  tr '[:lower:]' '[:upper:]'
 }
 
 ln_connect_string() {
   local person=${1:-alice}
   local pubkey
-  pubkey=$(pubkey "$person")
-  if [[ $? -ne 0 ]]; then
+  if ! pubkey=$(pubkey "$person"); then
     return 1
   fi
   echo "$pubkey@$person"
@@ -121,14 +117,16 @@ ln_connect_string() {
 # checks whether btcd is our master bitcoin node
 # we branch some code based on this info
 is_btcd_master() {
-  local container=$(lookup_container 1 role bitcoin)
+  local container
+  container=$(lookup_container 1 role bitcoin)
   if [[ -z "$container" ]]; then
     echo_err "unable to lookup first container with role bitcoin"
     exit 1
   fi
 
-  local flavor=$(inspect_container ${container} flavor)
-  if [[ -z "flavor" ]]; then
+  local flavor
+  flavor=$(inspect_container "${container}" flavor)
+  if [[ -z "$flavor" ]]; then
     echo_err "unable to determine flavor of service in container '$container'"
     exit 1
   fi
@@ -138,14 +136,16 @@ is_btcd_master() {
 
 get_flavor() {
   local person=${1:?required}
-  local container=$(docker-compose ps -q "$person")
+  local container
+  container=$(docker-compose ps -q "$person")
   if [[ -z "$container" ]]; then
     echo_err "unable to lookup container for for '$person'"
     exit 1
   fi
 
-  local flavor=$(inspect_container ${container} flavor)
-  if [[ -z "flavor" ]]; then
+  local flavor
+  flavor=$(inspect_container "${container}" flavor)
+  if [[ -z "$flavor" ]]; then
     echo_err "unable to determine flavor of service for '$person'"
     exit 1
   fi
@@ -155,14 +155,16 @@ get_flavor() {
 
 get_role() {
   local person=${1:?required}
-  local container=$(docker-compose ps -q "$person")
+  local container
+  container=$(docker-compose ps -q "$person")
   if [[ -z "$container" ]]; then
     echo_err "unable to lookup container for for '$person'"
     exit 1
   fi
 
-  local role=$(inspect_container ${container} role)
-  if [[ -z "role" ]]; then
+  local role
+  role=$(inspect_container "${container}" role)
+  if [[ -z "$role" ]]; then
     echo_err "unable to determine role of service for '$person'"
     exit 1
   fi
@@ -196,7 +198,7 @@ wait_for() {
     if [[ "$counter" -eq 1 ]]; then
       echo -n "Waiting for $msg. Zzz.."
     fi
-    sleep ${interval}
+    sleep "${interval}"
     echo -n "."
     if  [[ -n "$cmd2" ]]; then
       if ! (( "$counter" % "$cmd2_interval" )); then

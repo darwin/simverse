@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source _lib.sh
 
 FROM_PERSON=${1:-alice}
@@ -11,7 +13,7 @@ PAY_REQUEST=$(req_pay "$TO_PERSON" ${AMOUNT_BTC})
 FLAVOR=$(get_flavor "$FROM_PERSON")
 case "$FLAVOR" in
   lnd) "$FROM_PERSON" sendpayment --force --pay_req="${PAY_REQUEST}" ;;
-  lightning) "$FROM_PERSON" pay ${PAY_REQUEST} ;;
+  lightning) "$FROM_PERSON" pay "${PAY_REQUEST}" ;;
   eclair) "$FROM_PERSON" payinvoice --invoice="${PAY_REQUEST}" ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$FROM_PERSON'"; exit 1; ;;
 esac

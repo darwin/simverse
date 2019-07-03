@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source _lib.sh
 
 PERSON=${1:-alice}
@@ -14,7 +16,7 @@ AVAILABLE_BALANCE_BTC=$(faucet_balance)
 
 if is "${AVAILABLE_BALANCE_BTC} < ${AMOUNT_BTC}"; then
   echo "insufficient balance $AVAILABLE_BALANCE_BTC BTC, earning more..."
-  earn ${AMOUNT_BTC}
+  earn "${AMOUNT_BTC}"
 fi
 
 echo "sending $AMOUNT_BTC BTC to $PERSON"
@@ -29,10 +31,10 @@ if is_btcd_master; then
   SEND_CMD="btcctl --wallet sendfrom imported ${ADDRESS} ${AMOUNT_BTC}"
   wait_for "sending funds to $PERSON" "$SEND_CMD" "generate 1"
 else
-  bitcoin-cli sendtoaddress ${ADDRESS} ${AMOUNT_BTC}
+  bitcoin-cli sendtoaddress "${ADDRESS}" "${AMOUNT_BTC}"
 fi
 
-generate ${TX_CONF_COUNT}
+generate "${TX_CONF_COUNT}"
 
 # c-lightning is pretty lazy in updating its state
 # we have to resort to polling...

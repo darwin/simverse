@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source _lib.sh
 
 HOST_NAME=${1:?required}
 KEY=${2} # service, role, flavor
 
 if [[ -z "$KEY" ]]; then
-  docker inspect --format "{{json .Config.Labels}}" ${HOST_NAME}
+  docker inspect --format "{{json .Config.Labels}}" "${HOST_NAME}"
 else
   if [[ "$KEY" != "com.docker"* ]]; then
     KEY="simverse.$KEY"
   fi
-  docker inspect --format "{{index .Config.Labels \"$KEY\" }}" ${HOST_NAME}
+  docker inspect --format "{{index .Config.Labels \"$KEY\" }}" "${HOST_NAME}"
 fi

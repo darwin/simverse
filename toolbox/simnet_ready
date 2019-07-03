@@ -1,23 +1,27 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source _lib.sh
 
 SERVICES=$(docker-compose ps -q)
 COUNT=$(echo "$SERVICES" | wc -l | trim)
-if [[ "$COUNT" < 1 ]]; then
+if [[ "$COUNT" -lt 1 ]]; then
   echo "reporting failure, because we expected some running services"
   exit 2
 fi
 
+# shellcheck disable=SC2086
 STATUS_LIST=$(docker inspect --format "{{json .State.Health.Status }} {{json .Name }} {{json .ID }}" ${SERVICES})
 
 echo "$STATUS_LIST" | tr -d "\"/"
 
 IFS=$'\n'
-while read LINE; do
+while read -r LINE; do
+  # shellcheck disable=SC2207
   ITEMS=( $(xargs -n1 <<<"$LINE") )
   if [[ "${ITEMS[0]}" != "healthy" ]]; then
-    echo "reporting failure because container '$(echo -n ${ITEMS[1]} | tr -d "/")' is not healthy [${ITEMS[2]}]"
+    echo "reporting failure because container '$(echo -n "${ITEMS[1]}" | tr -d "/")' is not healthy [${ITEMS[2]}]"
     exit 1
   fi
 done <<< "$STATUS_LIST"

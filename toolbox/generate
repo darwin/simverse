@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source _lib.sh
 
 NUM_BLOCKS=${1:-1} # number of blocks
@@ -19,11 +21,11 @@ echo "generating $NUM_BLOCKS $BLOCKS via $WHERE ..."
 FLAVOR=$(get_flavor "$WHERE")
 case "$FLAVOR" in
   bitcoind)
-    "$WHERE" generatetoaddress ${NUM_BLOCKS} ${FAUCET_ADDR} > /dev/null
+    "$WHERE" generatetoaddress "${NUM_BLOCKS}" "${FAUCET_ADDR}" > /dev/null
     ;;
   btcd)
     # note: faucet addr was passed to btcd daemon as config
-    "$WHERE" generate ${NUM_BLOCKS} > /dev/null
+    "$WHERE" generate "${NUM_BLOCKS}" > /dev/null
     ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$WHERE'"; exit 1; ;;
 esac

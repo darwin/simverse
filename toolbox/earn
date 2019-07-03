@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e -o pipefail
+
 source _lib.sh
 
 AMOUNT_BTC=${1:-100} # minimal amount
@@ -10,7 +12,7 @@ BLOCKS_NEEDED=$(compute "floor(${AMOUNT_BTC} / ${BLOCK_SUBSIDY}) + 1")
 echo "mining ${BLOCKS_NEEDED} blocks on master bitcoin node"
 
 # generate blocks on master node
-generate ${BLOCKS_NEEDED}
+generate "${BLOCKS_NEEDED}"
 
 # mine blocks to mature coinbase transactions
-generate ${COINBASE_MATURITY}
+generate "${COINBASE_MATURITY}"
