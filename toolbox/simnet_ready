@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-source _lib.sh
+source _toolbox_lib.sh
 
 SERVICES=$(docker-compose ps -q)
 COUNT=$(echo "$SERVICES" | wc -l | trim)

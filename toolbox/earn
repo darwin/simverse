@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-source _lib.sh
+source _toolbox_lib.sh
 
 AMOUNT_BTC=${1:-100} # minimal amount
 FAUCET_ADDR=${FAUCET_ADDR:?required}

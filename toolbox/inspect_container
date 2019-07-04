@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-source _lib.sh
+source _toolbox_lib.sh
 
 HOST_NAME=${1:?required}
 KEY=${2} # service, role, flavor

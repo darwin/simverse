@@ -2,5 +2,7 @@
 
 set -e -o pipefail
 
+source _toolbox_lib.sh
+
 # see https://stackoverflow.com/a/55155992/84283
 docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} {{ .Name }}' | sed 's/ \// /'

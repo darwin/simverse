@@ -21,7 +21,7 @@ fi
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-source ../../toolbox/_lib.sh
+source ../../toolbox/_toolbox_lib.sh
 source helpers.sh
 source travis.sh
 

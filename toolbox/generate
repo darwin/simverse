@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-source _lib.sh
+source _toolbox_lib.sh
 
 NUM_BLOCKS=${1:-1} # number of blocks
 WHERE=${2} # (optional) bitcoin node which should mine it, defaults to master bitcoin node

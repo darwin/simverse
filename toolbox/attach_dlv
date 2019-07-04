@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-source _lib.sh
+source _toolbox_lib.sh
 
 CONTAINER=${1:-alice}
 PROCESS=${2:-lnd}

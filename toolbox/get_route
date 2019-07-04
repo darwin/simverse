@@ -2,7 +2,7 @@
 
 set -e -o pipefail
 
-source _lib.sh
+source _toolbox_lib.sh
 
 FROM_PERSON=${1:-alice}
 TO_PERSON=${2:-bob}

@@ -13,7 +13,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 TESTS_DIR="$(pwd -P)"
 
-source ../toolbox/_lib.sh
+source ../toolbox/_toolbox_lib.sh
 source _lib/helpers.sh
 source _lib/travis.sh
 
