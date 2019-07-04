@@ -1,4 +1,10 @@
-FROM simverse/buildtime:local as simverse_buildtime_lnd
+ARG LND_DOCKER_BUILDTIME_IMAGE
+ARG LND_DOCKER_RUNTIME_IMAGE
+
+FROM ${LND_DOCKER_BUILDTIME_IMAGE} as simverse_buildtime_lnd
+
+#include BASE_DOCKERFILE_SNIPPET
+#include BUILDTIME_DOCKERFILE_SNIPPET
 
 ARG LND_REPO_PATH
 
@@ -26,7 +32,10 @@ RUN make && make install
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse/runtime:local as simverse_runtime_lnd
+FROM ${LND_DOCKER_RUNTIME_IMAGE} as simverse_runtime_lnd
+
+#include BASE_DOCKERFILE_SNIPPET
+#include RUNTIME_DOCKERFILE_SNIPPET
 
 ARG LND_CONF_PATH
 

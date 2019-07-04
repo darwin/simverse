@@ -1,4 +1,10 @@
-FROM simverse/buildtime:local as simverse_buildtime_bitcoind
+ARG BITCOIND_DOCKER_BUILDTIME_IMAGE
+ARG BITCOIND_DOCKER_RUNTIME_IMAGE
+
+FROM ${BITCOIND_DOCKER_BUILDTIME_IMAGE} as simverse_buildtime_bitcoind
+
+#include BASE_DOCKERFILE_SNIPPET
+#include BUILDTIME_DOCKERFILE_SNIPPET
 
 ARG BITCOIND_REPO_PATH
 
@@ -29,7 +35,10 @@ RUN make install
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse/runtime:local as simverse_runtime_bitcoind
+FROM ${BITCOIND_DOCKER_RUNTIME_IMAGE} as simverse_runtime_bitcoind
+
+#include BASE_DOCKERFILE_SNIPPET
+#include RUNTIME_DOCKERFILE_SNIPPET
 
 ARG BITCOIND_CONF_PATH
 

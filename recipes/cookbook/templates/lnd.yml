@@ -7,6 +7,8 @@
       context: .
       dockerfile: docker/lnd/Dockerfile
       args:
+        - LND_DOCKER_BUILDTIME_IMAGE=$LND_DOCKER_BUILDTIME_IMAGE
+        - LND_DOCKER_RUNTIME_IMAGE=$LND_DOCKER_RUNTIME_IMAGE
         - LND_REPO_PATH=$LND_REPO_PATH
         - LND_CONF_PATH=$LND_CONF_PATH
     ports:

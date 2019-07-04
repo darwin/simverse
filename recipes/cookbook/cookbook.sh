@@ -321,6 +321,24 @@ TEMPLATE_EOF_MARKER
 " | dedolarize 2> /dev/null
 }
 
+into_dockerfile_snippet() {
+  # in dockerfile template scripts we use '#include ' convention for template parameters
+  sed 's/\$/>#</g' | sed 's/#include /$/g' | sed 's/`/>##</g' | sed 's/\\/>BACKSLASH</g'
+}
+
+from_dockerfile_snippet() {
+  # inverse of into_dockerfile_snippet
+  sed 's/>#</$/g' | sed 's/>##</`/g' | sed 's/>BACKSLASH</\\/g'
+}
+
+eval_dockerfile_template() {
+  local template_file=$1
+  eval "cat <<TEMPLATE_EOF_MARKER
+$(into_dockerfile_snippet<"${template_file}")
+TEMPLATE_EOF_MARKER
+" | from_dockerfile_snippet 2> /dev/null
+}
+
 create_aliases_dir() {
   mkdir "$ALIASES_DIR_NAME"
   cp "$TEMPLATES_DIR/_alias_utils.sh" "$ALIASES_DIR_NAME"
@@ -351,11 +369,31 @@ prepare_repos() {
   esac
 }
 
+interpolate_dockerfile() {
+  local path=$1
+  eval_dockerfile_template "$SCAFFOLD_DIR/docker/$path" > "docker/$path"
+}
+
+# shellcheck disable=SC2034
+generate_dockerfiles() {
+  BASE_DOCKERFILE_SNIPPET=$(eval_dockerfile_template "$TEMPLATES_DIR/docker/base/Dockerfile")
+  BUILDTIME_DOCKERFILE_SNIPPET=$(eval_dockerfile_template "$TEMPLATES_DIR/docker/buildtime/Dockerfile")
+  RUNTIME_DOCKERFILE_SNIPPET=$(eval_dockerfile_template "$TEMPLATES_DIR/docker/runtime/Dockerfile")
+
+  interpolate_dockerfile "bitcoind/Dockerfile"
+  interpolate_dockerfile "btcd/Dockerfile"
+  interpolate_dockerfile "eclair/Dockerfile"
+  interpolate_dockerfile "lightning/Dockerfile"
+  interpolate_dockerfile "lnd/Dockerfile"
+  interpolate_dockerfile "pre/Dockerfile"
+}
+
 scaffold_simnet() {
   # copy including dot files
   shopt -s dotglob
   cp -a "$SCAFFOLD_DIR"/* .
   shopt -u dotglob
+  generate_dockerfiles
 }
 
 add_toolbox() {

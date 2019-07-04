@@ -31,6 +31,9 @@ services:
     build:
       context: .
       dockerfile: docker/pre/Dockerfile
+      args:
+        - PRE_DOCKER_BUILDTIME_IMAGE=$PRE_DOCKER_BUILDTIME_IMAGE
+        - PRE_DOCKER_RUNTIME_IMAGE=$PRE_DOCKER_RUNTIME_IMAGE
     ports:
       - $SIMVERSE_HOST_BIND$SERVICE_READY_PORT_ON_HOST:$SERVICE_READY_PORT # readiness signal port
     volumes:

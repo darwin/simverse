@@ -1,4 +1,10 @@
-FROM simverse/buildtime:local as simverse_buildtime_btcwallet
+ARG BTCD_DOCKER_BUILDTIME_IMAGE
+ARG BTCD_DOCKER_RUNTIME_IMAGE
+
+FROM ${BTCD_DOCKER_BUILDTIME_IMAGE} as simverse_buildtime_btcwallet
+
+#include BASE_DOCKERFILE_SNIPPET
+#include BUILDTIME_DOCKERFILE_SNIPPET
 
 ARG BTCWALLET_REPO_PATH
 
@@ -46,7 +52,10 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse/runtime:local as simverse_runtime_btcd
+FROM ${BTCD_DOCKER_RUNTIME_IMAGE} as simverse_runtime_btcd
+
+#include BASE_DOCKERFILE_SNIPPET
+#include RUNTIME_DOCKERFILE_SNIPPET
 
 ARG BTCD_CONF_PATH
 ARG BTCWALLET_CONF_PATH
