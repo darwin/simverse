@@ -4,11 +4,6 @@
 
 set -e -o pipefail
 
-# make sure we use neutral locale, for example printf %f could produce different results based on custom locales
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
 export REAL_TOOLBOX_DIR
 REAL_TOOLBOX_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 
