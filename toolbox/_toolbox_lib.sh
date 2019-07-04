@@ -40,7 +40,7 @@ realpath() {
   [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
-BC_ARGS=(-l "$REAL_TOOLBOX_DIR/_lib.bc")
+BC_ARGS=(-l "$REAL_TOOLBOX_DIR/_toolbox.bc")
 
 trim() {
   local str
