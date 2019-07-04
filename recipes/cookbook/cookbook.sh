@@ -391,7 +391,7 @@ generate_dockerfiles() {
 scaffold_simnet() {
   # copy including dot files
   shopt -s dotglob
-  cp -a "$SCAFFOLD_DIR"/* .
+  cp -aL "$SCAFFOLD_DIR"/* .
   shopt -u dotglob
   generate_dockerfiles
 }

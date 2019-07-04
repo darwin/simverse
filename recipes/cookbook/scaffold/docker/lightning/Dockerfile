@@ -108,11 +108,6 @@ WORKDIR /home/simnet
 ENV LIGHTNINGD_DATA=/home/simnet/.lightning
 
 COPY "docker/lightning/home" "/home/simnet/"
-
-# replace symlink with actual target lib files
-RUN rm lib
-COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
-
 COPY "$LIGHTNING_CONF_PATH" "/home/simnet/seed-config"
 
 RUN mkdir .lightning

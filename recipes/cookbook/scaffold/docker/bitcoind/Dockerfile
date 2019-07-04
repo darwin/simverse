@@ -54,11 +54,6 @@ USER simnet
 WORKDIR /home/simnet
 
 COPY "docker/bitcoind/home" "/home/simnet/"
-
-# replace symlink with actual target lib files
-RUN rm lib
-COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
-
 COPY "$BITCOIND_CONF_PATH" "/home/simnet/seed-bitcoin.conf"
 
 RUN mkdir .bitcoin

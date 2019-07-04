@@ -74,11 +74,6 @@ USER simnet
 WORKDIR /home/simnet
 
 COPY "docker/btcd/home" "/home/simnet/"
-
-# replace symlink with actual target lib files
-RUN rm lib
-COPY "docker/_aux/runtime/lib" "/home/simnet/lib"
-
 COPY "$BTCD_CONF_PATH" "/home/simnet/seed-btcd.conf"
 COPY "$BTCWALLET_CONF_PATH" "/home/simnet/seed-btcwallet.conf"
 
