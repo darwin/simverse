@@ -136,7 +136,7 @@ Alternatively you can use our pre-generated `./tmux` script.
 ### Gotchas
 
   * If in troubles, please make sure you have the latest versions tools above, especially docker and docker-compose.
-  * Simverse [tries to enforce](https://github.com/darwin/simverse/blob/master/recipes/cookbook/scaffold/docker/_aux/base/Dockerfile) 
+  * Simverse [tries to enforce](https://github.com/darwin/simverse/blob/master/recipes/cookbook/templates/docker/runtime/Dockerfile) 
     host's UID and GID as permissions for simnet user running the services like `lnd` or `btcd`.
     This is quite important for [comfortable access](https://dille.name/blog/2018/07/16/handling-file-permissions-when-writing-to-volumes-from-docker-containers/) 
     to simnet state folders from host machine under some systems. This can fail in case when your current UID(GID) on host is 
