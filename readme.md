@@ -249,7 +249,7 @@ Note that [`sv`](sv) is a convenience symlink to [`simverse`](simverse).
 
 ##### `> ./sv help`
 ```
-Simverse v0.4.
+Simverse v0.5.
 
 A generator of simnet clusters for lnd and friends.
 
