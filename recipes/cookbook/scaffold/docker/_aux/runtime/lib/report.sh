@@ -12,6 +12,7 @@ if [[ -n "$REPORT_ENV" ]]; then
   echo "Environment report:"
   report uname -a
   report whoami
+  report id
   report env
   report tree -apug /home
   echo
