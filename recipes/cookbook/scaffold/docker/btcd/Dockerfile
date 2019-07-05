@@ -28,7 +28,7 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
-FROM simverse/buildtime:local as simverse_buildtime_btcd
+FROM ${BTCD_DOCKER_BUILDTIME_IMAGE} as simverse_buildtime_btcd
 
 ARG BTCD_REPO_PATH
 
