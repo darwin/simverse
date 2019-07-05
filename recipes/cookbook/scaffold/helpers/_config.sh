@@ -9,14 +9,10 @@ pushd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null
 
 cd ..
 
-THIS_DIR=`pwd`
+THIS_DIR=$(pwd -P)
 
 HELPERS_DIR="$THIS_DIR/helpers"
 DOCKER_DIR="$THIS_DIR/docker"
 VOLUMES_DIR="$THIS_DIR/_volumes"
-
-BASE_DOCKER_IMAGE_NAME="simverse/base:local"
-RUNTIME_DOCKER_IMAGE_NAME="simverse/runtime:local"
-BUILDTIME_DOCKER_IMAGE_NAME="simverse/buildtime:local"
 
 popd
