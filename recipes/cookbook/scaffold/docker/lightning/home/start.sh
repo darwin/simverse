@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source lib/init.sh
+source lib/report.sh
 source lib/utils.sh
 
 # wait for bitcoin node to open its RPC interface

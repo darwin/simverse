@@ -41,6 +41,7 @@ services:
       - ./_volumes/certs:/home/simnet/certs # shared certificates
     environment:
       - CONTAINER_NAME=pre
+      - REPORT_ENV=${SIMVERSE_REPORT_ENV}
       - SERVICE_READY_PORT=${SERVICE_READY_PORT}
       - CONTAINER_SERVICE_PORT=${CONTAINER_SERVICE_PORT}
       - SIMNET_NAME=${SIMNET_NAME}

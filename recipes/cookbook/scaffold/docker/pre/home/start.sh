@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source lib/init.sh
+source lib/report.sh
 source lib/utils.sh
 
 SIMNET_NAME=${SIMNET_NAME:?required}
