@@ -13,6 +13,6 @@ if [[ -n "$REPORT_ENV" ]]; then
   report uname -a
   report whoami
   report env
-  report tree -pug /home
+  report tree -apug /home
   echo
 fi
