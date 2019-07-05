@@ -30,6 +30,9 @@ RUN GO111MODULE=on go install -v . ./cmd/...
 
 FROM ${BTCD_DOCKER_BUILDTIME_IMAGE} as simverse_buildtime_btcd
 
+#include BASE_DOCKERFILE_SNIPPET
+#include BUILDTIME_DOCKERFILE_SNIPPET
+
 ARG BTCD_REPO_PATH
 
 WORKDIR /root/build
