@@ -10,6 +10,7 @@ export SIMVERSE_SHELL=${SIMVERSE_SHELL:-$SHELL}
 export SIMVERSE_VERBOSE=${SIMVERSE_VERBOSE}
 export SIMVERSE_VERBOSE_ALIASES=${SIMVERSE_VERBOSE_ALIASES}
 export SIMVERSE_DONT_BEAUTIFY_ALIASES=${SIMVERSE_DONT_BEAUTIFY_ALIASES}
+export SIMVERSE_DONT_CHECK_PREREQS=${SIMVERSE_DONT_CHECK_PREREQS}
 
 #############################################################################################################################
 # simnet create-time defaults, effective during ./sv create (or other ./sv commands)

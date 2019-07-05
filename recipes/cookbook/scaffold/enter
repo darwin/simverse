@@ -10,4 +10,10 @@ TOOLBOX_DIR_ABSOLUTE="$SIMNET_DIR_ABSOLUTE/toolbox"
 
 export PATH=${ALIASES_DIR_ABSOLUTE}:${TOOLBOX_DIR_ABSOLUTE}:$PATH
 
+. helpers/_config.sh
+
+if [[ -z "$SIMVERSE_DONT_CHECK_PREREQS" ]]; then
+  check_prereqs
+fi
+
 exec "$SIMVERSE_SHELL" "$@"
