@@ -47,7 +47,7 @@ USER simnet
 
 WORKDIR /home/simnet
 
-COPY "docker/lnd/home" "/home/simnet/"
-COPY "$LND_CONF_PATH" "/home/simnet/seed-lnd.conf"
+COPY --chown=simnet "docker/lnd/home" "/home/simnet/"
+COPY --chown=simnet "$LND_CONF_PATH" "/home/simnet/seed-lnd.conf"
 
 RUN mkdir .lnd
