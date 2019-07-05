@@ -73,9 +73,9 @@ USER simnet
 
 WORKDIR /home/simnet
 
-COPY --chown=simnet "docker/btcd/home" "/home/simnet/"
-COPY --chown=simnet "$BTCD_CONF_PATH" "/home/simnet/seed-btcd.conf"
-COPY --chown=simnet "$BTCWALLET_CONF_PATH" "/home/simnet/seed-btcwallet.conf"
+COPY --chown=simnet "docker/btcd/home" "."
+COPY --chown=simnet "$BTCD_CONF_PATH" "seed-btcd.conf"
+COPY --chown=simnet "$BTCWALLET_CONF_PATH" "seed-btcwallet.conf"
 
 RUN mkdir .btcd
 RUN mkdir .btcwallet

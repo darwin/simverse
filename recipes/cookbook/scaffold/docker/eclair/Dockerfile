@@ -74,7 +74,7 @@ USER simnet
 
 WORKDIR /home/simnet
 
-COPY --chown=simnet "docker/eclair/home" "/home/simnet/"
-COPY --chown=simnet "$ECLAIR_CONF_PATH" "/home/simnet/seed-eclair.conf"
+COPY --chown=simnet "docker/eclair/home" "."
+COPY --chown=simnet "$ECLAIR_CONF_PATH" "seed-eclair.conf"
 
 RUN mkdir .eclair

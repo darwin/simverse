@@ -107,7 +107,7 @@ WORKDIR /home/simnet
 
 ENV LIGHTNINGD_DATA=/home/simnet/.lightning
 
-COPY --chown=simnet "docker/lightning/home" "/home/simnet/"
-COPY --chown=simnet "$LIGHTNING_CONF_PATH" "/home/simnet/seed-config"
+COPY --chown=simnet "docker/lightning/home" "."
+COPY --chown=simnet "$LIGHTNING_CONF_PATH" "seed-config"
 
 RUN mkdir .lightning

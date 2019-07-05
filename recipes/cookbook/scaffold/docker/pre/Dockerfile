@@ -10,6 +10,6 @@ USER simnet
 
 WORKDIR /home/simnet
 
-COPY --chown=simnet "docker/pre/home" "/home/simnet/"
+COPY --chown=simnet "docker/pre/home" "."
 
 RUN mkdir certs

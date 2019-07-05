@@ -53,7 +53,7 @@ USER simnet
 
 WORKDIR /home/simnet
 
-COPY --chown=simnet "docker/bitcoind/home" "/home/simnet/"
-COPY --chown=simnet "$BITCOIND_CONF_PATH" "/home/simnet/seed-bitcoin.conf"
+COPY --chown=simnet "docker/bitcoind/home" "."
+COPY --chown=simnet "$BITCOIND_CONF_PATH" "seed-bitcoin.conf"
 
 RUN mkdir .bitcoin
