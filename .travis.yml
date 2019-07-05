@@ -1,8 +1,9 @@
 sudo: required
 dist: xenial
 env:
-  - DOCKER_COMPOSE_VERSION=1.24.0
-  - SIMVERSE_REPORT_ENV=1
+  global:
+    - DOCKER_COMPOSE_VERSION=1.24.0
+    - SIMVERSE_REPORT_ENV=1
 services:
   - docker
 before_install:
