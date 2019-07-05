@@ -1,4 +1,3 @@
-
 # >>> runtime snippet >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # this is a Dockerfile snippet used in docker containers for runtime
 
