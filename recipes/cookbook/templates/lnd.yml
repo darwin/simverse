@@ -7,6 +7,9 @@
       context: .
       dockerfile: docker/lnd/Dockerfile
       args:
+        - GCFLAGS=$GCFLAGS
+        - SIMVERSE_HOST_UID=$SIMVERSE_HOST_UID
+        - SIMVERSE_HOST_GID=$SIMVERSE_HOST_GID
         - LND_DOCKER_BUILDTIME_IMAGE=$LND_DOCKER_BUILDTIME_IMAGE
         - LND_DOCKER_RUNTIME_IMAGE=$LND_DOCKER_RUNTIME_IMAGE
         - LND_REPO_PATH=$LND_REPO_PATH
