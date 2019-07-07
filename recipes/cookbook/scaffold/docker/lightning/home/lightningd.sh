@@ -2,7 +2,7 @@
 
 source lib/init.sh
 
-cp "seed-config" ".lightning/config"
+cp "seed-config" "$LIGHTNINGD_DATA/config"
 
 # optional parameters
 RPC_USER=${RPC_USER}
