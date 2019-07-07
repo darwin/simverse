@@ -27,7 +27,6 @@ services:
     image: ${SIMVERSE_DOCKER_IMAGE_PREFIX}${SIMNET_NAME}_pre
     container_name: ${SIMVERSE_DOCKER_CONTAINER_PREFIX}${SIMNET_NAME}_pre
     command: ["run"]
-    stop_signal: SIGINT # needed for python server
     build:
       context: .
       dockerfile: docker/pre/Dockerfile
