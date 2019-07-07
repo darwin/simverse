@@ -55,4 +55,4 @@ fi
 PARAMS+=" --disable-dns"
 
 set -x
-exec lightningd ${PARAMS} ${LIGHTNINGD_EXTRA_PARAMS} "$@"
+exec lightning-docker-entrypoint.sh ${PARAMS} ${LIGHTNINGD_EXTRA_PARAMS} "$@"
