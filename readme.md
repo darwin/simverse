@@ -70,6 +70,16 @@ add lnd alice
 add lnd bob
 ```
 
+If you want different configuration, see [`recipes/readme.md`](recipes/readme.md) to understand
+the naming convention of recipes. Then you can create the simverse by adding a parameter to the
+create script:
+
+```bash
+./sv create a1k2
+```
+
+This will create a bitcoind and two lightningd configuration simverse.
+
 If you don't want to risk putting your machine on fire, here is a recording:
 
 * note that we used pre-generated `./tmux` script to launch everything in one terminal window
