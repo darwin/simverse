@@ -20,6 +20,7 @@ gmp-dev \
 python \
 python-dev \
 python3 \
+py3-mako \
 sqlite-dev \
 wget \
 git \
