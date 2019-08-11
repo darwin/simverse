@@ -19,7 +19,7 @@ case "$FLAVOR" in
     "$PERSON" listfunds | jq '[.channels[].channel_sat] | add' | sat2btc
     ;;
   eclair)
-    "$PERSON" channels | jq '[.[].data.commitments.localCommit.spec.toLocalMsat] | add' | msat2btc
+    "$PERSON" channels | jq '[.[].data.commitments.localCommit.spec.toLocal] | add' | msat2btc
     ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac
