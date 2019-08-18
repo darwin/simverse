@@ -44,4 +44,6 @@ EOF
 
 if [[ -z "$HEALTH_CHECK_DRY_RUN" ]]; then
   git push --force origin health-check
+else
+  echo "not pushing because HEALTH_CHECK_DRY_RUN is set"
 fi
