@@ -32,7 +32,11 @@ git config user.name "BinaryAge Bot"
 git fetch origin
 
 # checkout or create health-check branch
-git checkout -B health-check origin/master
+if git rev-parse --verify health-check; then
+  git checkout health-check
+else
+  git checkout -b health-check origin/master
+fi
 
 # merge all changes from origin/master to health-check
 git merge --no-edit --no-verify-signatures -Xtheirs -m "merge new work" origin/master
