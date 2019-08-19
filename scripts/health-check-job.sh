@@ -26,8 +26,12 @@ trap finish EXIT
 set -x
 
 # configure repo
-git config user.email "bot@binaryage.com"
-git config user.name "BinaryAge Bot"
+if [[ -z "$HEALTH_CHECK_DRY_RUN" ]]; then
+  git config user.email "bot@binaryage.com"
+  git config user.name "BinaryAge Bot"
+else
+  echo "not configuring git user because HEALTH_CHECK_DRY_RUN is set"
+fi
 
 git fetch origin
 
