@@ -16,9 +16,9 @@ ARG ECLAIR_REPO_PATH
 
 RUN apk add --no-cache curl tar bash
 
-ARG MAVEN_VERSION=3.6.0
+ARG MAVEN_VERSION=3.6.2
 ARG USER_HOME_DIR="/root"
-ARG SHA=6a1b346af36a1f1a491c1c1a141667c5de69b42e6611d3687df26868bc0f4637
+ARG SHA=3fbc92d1961482d6fbd57fbf3dd6d27a4de70778528ee3fb44aa7d27eb32dfdc
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
 RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
@@ -60,7 +60,7 @@ FROM ${ECLAIR_DOCKER_RUNTIME_IMAGE} as simverse_runtime_eclair
 
 RUN apk add --no-cache --update \
 gmp-dev \
-openjdk8-jre
+openjdk11-jre
 
 ARG ECLAIR_CONF_PATH
 
