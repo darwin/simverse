@@ -10,14 +10,6 @@ ARG BTCWALLET_REPO_PATH
 
 WORKDIR /root/build
 
-# we want to populate the module cache based on the go.{mod,sum} files.
-COPY "$BTCWALLET_REPO_PATH/go.mod" .
-COPY "$BTCWALLET_REPO_PATH/go.sum" .
-
-# pre-cache deps
-# see https://container-solutions.com/faster-builds-in-docker-with-go-1-11/
-RUN go mod download
-
 # https://github.com/btcsuite/btcwallet#installation-and-updating
 WORKDIR $GOPATH/src/github.com/btcsuite/btcwallet
 
