@@ -27,7 +27,8 @@ git \
 file \
 gnupg \
 swig \
-zlib-dev
+zlib-dev \
+gettext
 
 ARG LIGHTNING_REPO_PATH
 
