@@ -31,7 +31,6 @@ services:
       context: .
       dockerfile: docker/pre/Dockerfile
       args:
-        - GCFLAGS=$GCFLAGS
         - SIMVERSE_HOST_UID=$SIMVERSE_HOST_UID
         - SIMVERSE_HOST_GID=$SIMVERSE_HOST_GID
         - PRE_DOCKER_BUILDTIME_IMAGE=$PRE_DOCKER_BUILDTIME_IMAGE
