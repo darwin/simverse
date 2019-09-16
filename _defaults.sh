@@ -69,8 +69,8 @@ export ECLAIR_AUTO_NAME_PREFIX=${ECLAIR_AUTO_NAME_PREFIX:-eclair}
 # you can tweak these on per-node basis in your recipes
 
 # here we define base docker images for individual containers, they should be based on alpine
-export DEFAULT_DOCKER_IMAGE=${DEFAULT_DOCKER_IMAGE:-alpine:3.9}
-export DEFAULT_DOCKER_BUILDTIME_GO_IMAGE=${DEFAULT_DOCKER_BUILDTIME_GO_IMAGE:-golang:1.12-alpine3.9}
+export DEFAULT_DOCKER_IMAGE=${DEFAULT_DOCKER_IMAGE:-alpine:3.10}
+export DEFAULT_DOCKER_BUILDTIME_GO_IMAGE=${DEFAULT_DOCKER_BUILDTIME_GO_IMAGE:-golang:1.13-alpine3.10}
 export DEFAULT_DOCKER_BUILDTIME_JAVA_IMAGE=${DEFAULT_DOCKER_BUILDTIME_JAVA_IMAGE:-adoptopenjdk/openjdk11:jdk-11.0.3_7-alpine} # see https://github.com/ACINQ/eclair/blob/master/Dockerfile#L1
 export DEFAULT_DOCKER_BUILDTIME_IMAGE=${DEFAULT_DOCKER_BUILDTIME_IMAGE:-$DEFAULT_DOCKER_IMAGE}
 export DEFAULT_DOCKER_RUNTIME_IMAGE=${DEFAULT_DOCKER_RUNTIME_IMAGE:-$DEFAULT_DOCKER_IMAGE}
