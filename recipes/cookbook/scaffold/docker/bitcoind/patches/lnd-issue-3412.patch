@@ -1,0 +1,72 @@
+diff --git a/src/rpc/blockchain.cpp b/src/rpc/blockchain.cpp
+index 9513c2b9a..5fdf80c15 100644
+--- a/src/rpc/blockchain.cpp
++++ b/src/rpc/blockchain.cpp
+@@ -1186,6 +1186,55 @@ static void BIP9SoftForkDescPushBack(UniValue& softforks, const std::string &nam
+     softforks.pushKV(name, rv);
+ }
+ 
++static void copyUniValueObject(UniValue& dest, const UniValue& source) {
++  const std::vector<std::string>& keys = source.getKeys();
++  const std::vector<UniValue>& values = source.getValues();
++  auto keyIt = keys.begin();
++  auto valuesIt = values.begin();
++  while (keyIt != keys.end()) {
++    const std::string& name = *keyIt;
++    UniValue val = *valuesIt;
++    dest.pushKV(name, val);
++    keyIt++;
++    valuesIt++;
++  }
++}
++
++static UniValue prepareOldSoftforks(UniValue& softforks) {
++  const std::vector<std::string>& keys = softforks.getKeys();
++  const std::vector<UniValue>& values = softforks.getValues();
++
++  UniValue res(UniValue::VARR);
++
++  auto keyIt = keys.begin();
++  auto valuesIt = values.begin();
++  while (keyIt != keys.end()) {
++    const std::string& name = *keyIt;
++    const UniValue& val = *valuesIt;
++
++    UniValue resVal(UniValue::VOBJ);
++
++    resVal.pushKV("id", name);
++    resVal.pushKV("height", val["height"]);
++    resVal.pushKV("active", val["active"]);
++
++    auto& type = val["type"];
++    if (type.get_str() == "bip9") {
++      copyUniValueObject(resVal, val["bip9"]);
++    } else if (type.get_str() == "buried") {
++      resVal.pushKV("status", "active");
++      // does LND need more?
++    } else {
++      throw JSONRPCError(RPC_MISC_ERROR, "Unexpected softfork type. Call @darwin.");
++    }
++
++    keyIt++;
++    valuesIt++;
++  }
++
++  return res;
++}
++
+ UniValue getblockchaininfo(const JSONRPCRequest& request)
+ {
+             RPCHelpMan{"getblockchaininfo",
+@@ -1277,7 +1326,10 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
+     BuriedForkDescPushBack(softforks, "csv", consensusParams.CSVHeight);
+     BuriedForkDescPushBack(softforks, "segwit", consensusParams.SegwitHeight);
+     BIP9SoftForkDescPushBack(softforks, "testdummy", consensusParams, Consensus::DEPLOYMENT_TESTDUMMY);
+-    obj.pushKV("softforks",             softforks);
++    // darwin: we have to bring 0.18-style RPC for LND compatibility
++    // see https://github.com/darwin/simverse/issues/7
++    obj.pushKV("softforks", prepareOldSoftforks(softforks));
++    obj.pushKV("softforks_pr16060", softforks);
+ 
+     obj.pushKV("warnings", GetWarnings("statusbar"));
+     return obj;

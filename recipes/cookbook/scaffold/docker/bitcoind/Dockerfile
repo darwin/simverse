@@ -14,6 +14,9 @@ COPY "$BITCOIND_REPO_PATH" .
 
 COPY "docker/bitcoind/patches/issue-611.patch" .
 RUN git apply issue-611.patch
+# see https://github.com/darwin/simverse/issues/7
+COPY "docker/bitcoind/patches/lnd-issue-3412.patch" .
+RUN git apply lnd-issue-3412.patch
 
 # lower optimizations for faster builds
 ARG CFLAGS=""
