@@ -346,17 +346,11 @@ A note on hybrid simnets
 By default, simnet is generated in a way that all nodes live inside docker containers
 managed by docker-compose. For convenience we map all relevant ports to host machine.
 This allows running another node directly on host machine and interact with nodes in
-the cluster inside docker.
+the cluster inside the docker.
 
-This is expected workflow for someone who want to develop particular feature and
+This is expected workflow for someone who wants to develop particular feature and
 needs supporting simnet "in the background".
 
-
-A note on debugging nodes inside docker
-
-Currently all nodes run go-based software. We support go-delve debugger which is
-prepared to be attached to go processes inside container and offer port mappings
-to be controlled from host machine. Please see `attach_dlv` command inside the toolbox.
 ```
 
 ##### `> ./sv help workspace`
