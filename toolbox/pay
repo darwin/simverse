@@ -17,7 +17,7 @@ case "$FLAVOR" in
   eclair)
     PAY_ATTEMPT_ID=$("$FROM_PERSON" payinvoice --maxAttempts=100 --invoice="${PAY_REQUEST}")
     # see https://acinq.github.io/eclair/#getsentinfo
-    cmd="jq -e '.[] | select(.id  == \"${PAY_ATTEMPT_ID}\").status==\"SUCCEEDED\"' <<<\$(alice getsentinfo --id=${PAY_ATTEMPT_ID})"
+    cmd="jq -e '.[] | select(.id  == \"${PAY_ATTEMPT_ID}\").status.paymentPreimage' <<<\$(alice getsentinfo --id=${PAY_ATTEMPT_ID})"
     cmd2="alice getsentinfo --id=${PAY_ATTEMPT_ID}"
     wait_for "payment success between $FROM_PERSON and $TO_PERSON" "$cmd" "$cmd2"
     ;;
