@@ -63,6 +63,12 @@ travis_section start "repos_init"
   ./sv repos init
 travis_section end "repos_init"
 
+# apply hacks on repos
+announce "pinning btcwallet to work around https://github.com/btcsuite/btcd/issues/1473"
+cd "${SIMVERSE_REPOS}/btcwallet"
+git checkout 95d7aa0b4953bd67cd265f4a378ea2cde52c54d1
+cd "${SIMVERSE_HOME}"
+
 travis_section start "repos_report"
   announce "report repos"
   ./sv repos report
