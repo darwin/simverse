@@ -48,6 +48,9 @@ ENV MAKEFLAGS="$MAKEFLAGS"
 COPY "docker/lightning/patches/unknown-version-fallback.patch" .
 RUN git apply unknown-version-fallback.patch
 
+COPY "docker/lightning/patches/disable-shadow-routing.patch" .
+RUN git apply disable-shadow-routing.patch
+
 ARG LIGHTNING_DEVELOPER_FLAG=0
 ARG LIGHTNING_VALGRIND_FLAG=0
 ARG LIGHTNING_CONFIGURE_OPTS=""

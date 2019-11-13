@@ -1,0 +1,14 @@
+diff --git a/plugins/pay.c b/plugins/pay.c
+index 3819fd52..272a973b 100644
+--- a/plugins/pay.c
++++ b/plugins/pay.c
+@@ -879,6 +879,9 @@ static struct command_result *shadow_route(struct command *cmd,
+ 					   struct pay_command *pc)
+ {
+ #if DEVELOPER
++    // SIMVERSE HACK: until this is exposed as a cli option we disable shadow routing for stable tests
++    pc->use_shadow = 0;
++
+ 	if (!pc->use_shadow)
+ 		return start_pay_attempt(cmd, pc, "Initial attempt");
+ #endif
