@@ -14,7 +14,7 @@ AMOUNT_SAT=$(echo "$AMOUNT_BTC" | btc2sat)
 FLAVOR=$(get_flavor "$FROM_PERSON")
 case "$FLAVOR" in
   lnd) ${FROM_PERSON} openchannel "--node_key=${TO_PERSON_PUBKEY}" "--local_amt=${AMOUNT_SAT}" ;;
-  lightning) ${FROM_PERSON} fundchannel "$TO_PERSON_PUBKEY" "$AMOUNT_SAT" ;;
+  lightning) ${FROM_PERSON} fundchannel "$TO_PERSON_PUBKEY" "$AMOUNT_SAT" 4000;;
   eclair) ${FROM_PERSON} open "--nodeId=${TO_PERSON_PUBKEY}" "--fundingSatoshis=${AMOUNT_SAT}" ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for host '$FROM_PERSON'"; exit 1; ;;
 esac
