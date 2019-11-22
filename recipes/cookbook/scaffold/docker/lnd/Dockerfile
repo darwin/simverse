@@ -8,18 +8,6 @@ FROM ${LND_DOCKER_BUILDTIME_IMAGE} as simverse_buildtime_lnd
 
 ARG LND_REPO_PATH
 
-WORKDIR /root/build
-
-# we want to populate the module cache based on the go.{mod,sum} files.
-COPY "$LND_REPO_PATH/go.mod" .
-COPY "$LND_REPO_PATH/go.sum" .
-COPY "$LND_REPO_PATH/ticker" ticker
-COPY "$LND_REPO_PATH/queue" queue
-
-# pre-cache deps
-# see https://container-solutions.com/faster-builds-in-docker-with-go-1-11/
-RUN go mod download
-
 WORKDIR $GOPATH/src/github.com/lightningnetwork/lnd
 COPY "$LND_REPO_PATH" .
 

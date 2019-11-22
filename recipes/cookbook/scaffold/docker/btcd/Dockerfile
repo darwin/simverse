@@ -8,8 +8,6 @@ FROM ${BTCD_DOCKER_BUILDTIME_IMAGE} as simverse_buildtime_btcwallet
 
 ARG BTCWALLET_REPO_PATH
 
-WORKDIR /root/build
-
 # https://github.com/btcsuite/btcwallet#installation-and-updating
 WORKDIR $GOPATH/src/github.com/btcsuite/btcwallet
 
