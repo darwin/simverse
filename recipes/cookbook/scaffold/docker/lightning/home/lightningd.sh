@@ -2,7 +2,8 @@
 
 source lib/init.sh
 
-cp "seed-config" "$LIGHTNINGD_DATA/config"
+mkdir -p "$LIGHTNINGD_DATA/regtest"
+cp "seed-config" "$LIGHTNINGD_DATA/regtest/config"
 
 # optional parameters
 RPC_USER=${RPC_USER}

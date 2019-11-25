@@ -99,5 +99,3 @@ ENV LIGHTNINGD_DATA=/home/simnet/.lightning
 COPY --chown=simnet "docker/lightning/home" "."
 COPY --chown=simnet --from=simverse_buildtime_lightning /root/build/tools/docker-entrypoint.sh lightning-docker-entrypoint.sh
 COPY --chown=simnet "$LIGHTNING_CONF_PATH" "seed-config"
-
-RUN mkdir .lightning
