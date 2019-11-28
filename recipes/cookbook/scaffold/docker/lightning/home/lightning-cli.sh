@@ -6,6 +6,8 @@ source lib/utils.sh
 LIGHTNING_CLI_EXTRA_PARAMS=${LIGHTNING_CLI_EXTRA_PARAMS}
 
 PARAMS=""
+PARAMS+=" --network regtest"
+PARAMS+=" --rpc-file=${LIGHTNINGD_RPC_DIR_SIMVERSE}/rpc-socket"
 
 #set -x
 exec lightning-cli ${PARAMS} ${LIGHTNING_CLI_EXTRA_PARAMS} "$@"

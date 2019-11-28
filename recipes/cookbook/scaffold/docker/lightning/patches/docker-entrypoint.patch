@@ -1,0 +1,12 @@
+diff --git a/tools/docker-entrypoint.sh b/tools/docker-entrypoint.sh
+index de274ae1..995f6934 100755
+--- a/tools/docker-entrypoint.sh
++++ b/tools/docker-entrypoint.sh
+@@ -1,5 +1,7 @@
+ #!/usr/bin/env bash
+ 
++LIGHTNINGD_DATA=${LIGHTNINGD_RPC_DIR_SIMVERSE:-$LIGHTNINGD_DATA}
++
+ : "${EXPOSE_TCP:=false}"
+ 
+ if [ "$EXPOSE_TCP" == "true" ]; then

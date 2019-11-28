@@ -51,6 +51,9 @@ RUN git apply unknown-version-fallback.patch
 COPY "docker/lightning/patches/disable-shadow-routing.patch" .
 RUN git apply disable-shadow-routing.patch
 
+COPY "docker/lightning/patches/docker-entrypoint.patch" .
+RUN git apply docker-entrypoint.patch
+
 ARG LIGHTNING_DEVELOPER_FLAG=0
 ARG LIGHTNING_VALGRIND_FLAG=0
 ARG LIGHTNING_CONFIGURE_OPTS=""
@@ -95,6 +98,10 @@ USER simnet
 WORKDIR /home/simnet
 
 ENV LIGHTNINGD_DATA=/home/simnet/.lightning
+# we need to place lightning-rpc outside volumes because of socket path limits (in docker)
+# see https://github.com/moby/moby/issues/23545
+ENV LIGHTNINGD_RPC_DIR_SIMVERSE=/tmp/lightningd-rpc
+RUN mkdir -p "$LIGHTNINGD_RPC_DIR_SIMVERSE"
 
 COPY --chown=simnet "docker/lightning/home" "."
 COPY --chown=simnet --from=simverse_buildtime_lightning /root/build/tools/docker-entrypoint.sh lightning-docker-entrypoint.sh
