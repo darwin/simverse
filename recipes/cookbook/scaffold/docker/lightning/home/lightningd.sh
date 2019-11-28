@@ -54,7 +54,7 @@ if [[ -n "$DEBUG" ]]; then
 fi
 
 PARAMS+=" --disable-dns"
-PARAMS+=" --rpc-file=${LIGHTNINGD_RPC_DIR_SIMVERSE}/rpc-socket"
+PARAMS+=" --rpc-file=${LIGHTNINGD_RPC_DIR_SIMVERSE}/lightning-rpc"
 
 set -x
 exec lightning-docker-entrypoint.sh ${PARAMS} ${LIGHTNINGD_EXTRA_PARAMS} "$@"
