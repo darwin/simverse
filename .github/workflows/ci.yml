@@ -1,0 +1,27 @@
+name: CI
+
+on: [push]
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.24.0
+  SIMVERSE_REPORT_ENV: 1
+
+jobs:
+  test_job:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+        chmod +x docker-compose
+        mv docker-compose /usr/local/bin
+        # we rely on jq 1.6, apt-get currently installs version 1.5
+        # - sudo apt-get install -y jq
+        curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 > jq
+        chmod +x jq
+        mv jq /usr/local/bin
+    - name: Run tests
+      run: ./tests/run.sh
