@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+pushd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null || exit 1
+source github.sh
+source travis.sh
+popd > /dev/null || exit 1
+
+log_section() {
+  if [[ -n "$TRAVIS" ]]; then
+    travis_section "$@"
+  fi
+
+  if [[ -n "$GITHUB_WORKFLOW" ]]; then
+    github_section "$@"
+  fi
+}
+
 echo_err() {
   printf "\e[31m%s\e[0m\n" "$*" >&2;
 }
@@ -16,7 +31,7 @@ check() {
   local status
 
   if [[ -z "$silent" ]]; then
-    travis_section start "test.$CHECK_COUNTER"
+    log_section start "test.$CHECK_COUNTER"
     printf "\$ \e[33m%s\e[0m\n" "$command"
   fi
   local saved_opts="set -$-"
@@ -32,7 +47,7 @@ check() {
   fi
   eval "${saved_opts}"
   if [[ -z "$silent" ]]; then
-    travis_section end "test.$CHECK_COUNTER"
+    log_section end "test.$CHECK_COUNTER"
     ((++CHECK_COUNTER))
   fi
 
@@ -56,7 +71,7 @@ check_retry() {
   local max=${2:-60}
   local interval=${3:-1}
 
-  travis_section start "test.$CHECK_COUNTER"
+  log_section start "test.$CHECK_COUNTER"
   printf "\$ \e[33m%s\e[0m\n" "$command"
 
   local counter=1
@@ -73,7 +88,7 @@ check_retry() {
         echo
       fi
 
-      travis_section end "test.$CHECK_COUNTER"
+      log_section end "test.$CHECK_COUNTER"
       ((++CHECK_COUNTER))
 
       return 0
@@ -87,7 +102,7 @@ check_retry() {
     if [[ ${counter} -gt ${max} ]]; then
       echo
       echo_err "FATAL: check_retry didn't satisfy '$command' (tried $max times with interval of $interval sec)"
-      travis_section end "test.$CHECK_COUNTER"
+      log_section end "test.$CHECK_COUNTER"
       ((++CHECK_COUNTER))
       exit 1
     fi

@@ -6,16 +6,16 @@ TRAVIS_ANSI_CLEAR="\033[0K"
 
 case $(uname | tr '[:upper:]' '[:lower:]') in
 linux*)
-  export TRAVIS_OS_NAME=linux
+  TRAVIS_OS_NAME=linux
   ;;
 darwin*)
-  export TRAVIS_OS_NAME=osx
+  TRAVIS_OS_NAME=osx
   ;;
 msys*)
-  export TRAVIS_OS_NAME=windows
+  TRAVIS_OS_NAME=windows
   ;;
 *)
-  export TRAVIS_OS_NAME=notset
+  TRAVIS_OS_NAME=notset
   ;;
 esac
 

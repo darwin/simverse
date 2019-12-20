@@ -15,7 +15,6 @@ TESTS_DIR="$(pwd -P)"
 
 source ../toolbox/_toolbox_lib.sh
 source _lib/helpers.sh
-source _lib/travis.sh
 
 cd ..
 
@@ -58,10 +57,10 @@ fi
 
 cd "${SIMVERSE_HOME}"
 
-travis_section start "repos_init"
+log_section start "repos_init"
   announce "init repos"
   ./sv repos init
-travis_section end "repos_init"
+log_section end "repos_init"
 
 # apply hacks on repos
 announce "pinning btcwallet to work around https://github.com/btcsuite/btcd/issues/1473"
@@ -70,10 +69,10 @@ git fetch --depth=100
 git checkout 95d7aa0b4953bd67cd265f4a378ea2cde52c54d1
 cd "${SIMVERSE_HOME}"
 
-travis_section start "repos_report"
+log_section start "repos_report"
   announce "report repos"
   ./sv repos report
-travis_section end "repos_report"
+log_section end "repos_report"
 
 cd "$TESTS_DIR"
 

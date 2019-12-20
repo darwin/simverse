@@ -23,27 +23,26 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 source ../../toolbox/_toolbox_lib.sh
 source helpers.sh
-source travis.sh
 
 # ---------------------------------------------------------------------------------------------------------------------------
 
 cd "${SIMVERSE_HOME}"
 
-travis_section start "prepare_simnet"
+log_section start "prepare_simnet"
   announce "creating simnet '$SIMNET_NAME'..."
   ./sv create ${RECIPE} ${SIMNET_NAME} --yes
   enter_simnet ${SIMNET_NAME}
-travis_section end "prepare_simnet"
+log_section end "prepare_simnet"
 
-travis_section start "build_docker_containers"
+log_section start "build_docker_containers"
   announce "building docker containers..."
   ./dc ${DOCKER_COMPOSE_OPTS} build
-travis_section end "build_docker_containers"
+log_section end "build_docker_containers"
 
-travis_section start "start_docker_containers"
+log_section start "start_docker_containers"
   announce "starting docker containers..."
   ./dc ${DOCKER_COMPOSE_OPTS} up -d
-travis_section end "start_docker_containers"
+log_section end "start_docker_containers"
 
 tear_down() {
   if [[ $? -ne 0 ]]; then
@@ -54,10 +53,10 @@ tear_down() {
     fi
   fi
 
-  travis_section start "stop_docker_containers"
+  log_section start "stop_docker_containers"
     announce "stopping docker containers..."
     ./dc ${DOCKER_COMPOSE_OPTS} down
-  travis_section end "stop_docker_containers"
+  log_section end "stop_docker_containers"
 }
 
 trap tear_down EXIT
