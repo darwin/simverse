@@ -5,7 +5,7 @@
 github_section() {
   local action=$1
   if [[ "$action" == "start" ]]; then
-    echo "::group::${*:3}"
+    echo -n "::group::"
   else
     echo "::endgroup::"
   fi
