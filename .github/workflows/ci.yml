@@ -17,11 +17,11 @@ jobs:
       run: |
         curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
         chmod +x docker-compose
-        mv docker-compose /usr/local/bin
+        sudo mv docker-compose /usr/local/bin
         # we rely on jq 1.6, apt-get currently installs version 1.5
         # - sudo apt-get install -y jq
         curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 > jq
         chmod +x jq
-        mv jq /usr/local/bin
+        sudo mv jq /usr/local/bin
     - name: Run tests
       run: ./tests/run.sh
