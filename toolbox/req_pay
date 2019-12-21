@@ -13,7 +13,7 @@ FLAVOR=$(get_flavor "$PERSON")
 case "$FLAVOR" in
   lnd)
     AMOUNT_SAT=$(echo "$AMOUNT_BTC" | btc2sat)
-    "$PERSON" addinvoice "--amt=${AMOUNT_SAT}" --memo="$LABEL" | jq -r ".pay_req"
+    "$PERSON" addinvoice "--amt=${AMOUNT_SAT}" --memo="$LABEL" | jq -r ".payment_request"
     ;;
   lightning)
     AMOUNT_MSAT=$(echo "$AMOUNT_BTC" | btc2msat)
