@@ -849,6 +849,17 @@ get_repo_url() {
   echo "$REPO_URL"
 }
 
+tweak_repos() {
+  # ad-hoc tweaks to repos, pinnng/patches etc.
+
+  # https://github.com/darwin/simverse/issues/8
+  cd "$SIMVERSE_REPOS_ABSOLUTE/btcwallet"
+  say "pinning btcwallet to work around https://github.com/btcsuite/btcd/issues/1473"
+  present_cwd
+  git fetch --depth=100
+  present git checkout 95d7aa0b4953bd67cd265f4a378ea2cde52c54d1
+}
+
 init_repo() {
   local repo=${1:?required}
 
@@ -898,6 +909,8 @@ init_repos() {
       init_repo "$repo"
     done
   fi
+
+  tweak_repos
 }
 
 update_repo() {
@@ -942,6 +955,8 @@ update_repos() {
       update_repo "$repo"
     done
   fi
+
+  tweak_repos
 }
 
 # repos clone [--force] <repo_name> <new_repo_name>
