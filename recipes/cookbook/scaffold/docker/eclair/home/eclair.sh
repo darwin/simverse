@@ -83,4 +83,4 @@ fi
 PARAMS+=" -Declair.printToConsole=true"
 
 set -x
-exec java ${PARAMS} ${ECLAIR_EXTRA_PARAMS} "$@" -jar eclair-node.jar
+exec $JAVA_OPTS eclair-node/bin/eclair-node.sh ${PARAMS} ${ECLAIR_EXTRA_PARAMS} "$@"

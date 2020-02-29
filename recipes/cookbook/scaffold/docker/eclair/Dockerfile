@@ -39,6 +39,8 @@ COPY "$ECLAIR_REPO_PATH/pom.xml" pom.xml
 COPY "$ECLAIR_REPO_PATH/eclair-core/pom.xml" eclair-core/pom.xml
 COPY "$ECLAIR_REPO_PATH/eclair-node/pom.xml" eclair-node/pom.xml
 COPY "$ECLAIR_REPO_PATH/eclair-node-gui/pom.xml" eclair-node-gui/pom.xml
+COPY "$ECLAIR_REPO_PATH/eclair-node/modules/assembly.xml" eclair-node/modules/assembly.xml
+COPY "$ECLAIR_REPO_PATH/eclair-node-gui/modules/assembly.xml" eclair-node-gui/modules/assembly.xml
 RUN mkdir -p eclair-core/src/main/scala && touch eclair-core/src/main/scala/empty.scala
 # Blank build. We only care about eclair-node, and we use install because eclair-node depends on eclair-core
 RUN mvn install -pl eclair-node -am
@@ -59,14 +61,15 @@ FROM ${ECLAIR_DOCKER_RUNTIME_IMAGE} as simverse_runtime_eclair
 #include RUNTIME_DOCKERFILE_SNIPPET
 
 RUN apk add --no-cache --update \
+unzip \
 gmp-dev \
 openjdk11-jre
 
 ARG ECLAIR_CONF_PATH
 
 # copy build artefacts...
-COPY --from=simverse_buildtime_eclair /root/build/eclair-node/target/eclair-node-*.jar .
-RUN mv eclair-node-*.jar eclair-node.jar
+COPY --from=simverse_buildtime_eclair /root/build/eclair-node/target/eclair-node-*.zip ./eclair-node.zip
+RUN unzip eclair-node.zip && mv eclair-node-* eclair-node
 COPY --from=simverse_buildtime_eclair /root/build/eclair-core/eclair-cli .
 RUN chmod +x eclair-cli
 
