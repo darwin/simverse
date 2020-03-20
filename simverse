@@ -863,7 +863,7 @@ tweak_repos() {
   cd "$SIMVERSE_REPOS_ABSOLUTE/btcd"
   say "pinning btcd to work around https://github.com/lightningnetwork/lnd/issues/4076"
   present_cwd
-  git fetch --depth=100
+  git fetch --depth=1000 --tags
   present git checkout v0.20.1-beta
 }
 
