@@ -11,10 +11,6 @@ ARG BITCOIND_REPO_PATH
 WORKDIR /root/build
 
 COPY "$BITCOIND_REPO_PATH" .
-
-COPY "docker/bitcoind/patches/issue-611.patch" .
-RUN git apply issue-611.patch
-
 # lower optimizations for faster builds
 ARG CFLAGS=""
 ARG CXXFLAGS="$CFLAGS"
