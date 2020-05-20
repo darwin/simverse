@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 7e23e8a2..a1c53b9d 100644
+index 1038e72..6740aa2 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -4,7 +4,7 @@
@@ -10,4 +10,4 @@ index 7e23e8a2..a1c53b9d 100644
 +VERSION="unknown"
  endif
  
- DISTRO=$(shell lsb_release -is 2>/dev/null || echo unknown)-$(shell lsb_release -rs 2>/dev/null || echo unknown)
+ # --quiet / -s means quiet, dammit!
