@@ -98,6 +98,7 @@ USER simnet
 WORKDIR /home/simnet
 
 ENV LIGHTNINGD_DATA=/home/simnet/.lightning
+ENV LIGHTNINGD_NETWORK=regtest
 # we need to place lightning-rpc outside volumes because of socket path limits (in docker)
 # see https://github.com/moby/moby/issues/23545
 ENV LIGHTNINGD_RPC_DIR_SIMVERSE=/tmp/lightningd-rpc
