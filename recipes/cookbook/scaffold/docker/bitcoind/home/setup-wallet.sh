@@ -20,4 +20,11 @@ while ! ${PROBE_CMD} > /dev/null 2>&1; do
 done
 
 set -x
-./bitcoin-cli.sh importprivkey ${FAUCET_ADDR_PRIVATE_KEY} imported
+
+WALLET_NAME="simverse-wallet"
+WALLET_DIR="$HOME/.bitcoin/regtest/wallets/$WALLET_NAME"
+if [[ -e "$WALLET_DIR" ]]; then
+  rm -rf "$WALLET_DIR"
+fi
+./bitcoin-cli.sh createwallet "$WALLET_NAME"
+./bitcoin-cli.sh importprivkey "${FAUCET_ADDR_PRIVATE_KEY}" imported
