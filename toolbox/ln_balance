@@ -19,9 +19,7 @@ case "$FLAVOR" in
     "$PERSON" listfunds | jq '[.channels[].channel_sat] | add' | sat2btc
     ;;
   eclair)
-    # for backward compatibility we add both toLocalMsat and toLocal
-    # see https://github.com/ACINQ/eclair/commit/4929febbd11ebad6ae20caed4b161db44dfd263d
-    "$PERSON" channels | jq '[.[].data.commitments.localCommit.spec.toLocal]+[.[].data.commitments.localCommit.spec.toLocalMsat] | add' | msat2btc
+    "$PERSON" usablebalances | jq '[.[].canSend] | add' | msat2btc
     ;;
   *) echo_err "unsupported flavor type '$FLAVOR' for '$PERSON'"; exit 1; ;;
 esac
