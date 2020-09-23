@@ -21,7 +21,14 @@ done
 
 set -x
 
-WALLET_NAME="simverse-wallet"
+# must be "" (empty name), this name is hard-coded in eclair:
+# https://github.com/ACINQ/eclair/blob/662e0c4bcc1dec24f9aad2bd526866a8a056153f/eclair-core/src/main/scala/fr/acinq/eclair/blockchain/bitcoind/rpc/BasicBitcoinJsonRPCClient.scala#L40
+# https://gitter.im/ACINQ/eclair?at=5e48f793c8da1343d4540a44
+# with a different name we would get "bitcoind must have wallet support enabled" from:
+# https://github.com/ACINQ/eclair/blob/daddfc007fe569c89bb854ef5d672614d397e91e/eclair-core/src/main/scala/fr/acinq/eclair/Setup.scala#L150
+# that error message is quite misleading in this particular situation, it should not swallow original error
+# and should communicate both, something like "unable to get balance, error: Requested wallet does not exist or is not loaded (code: -18)"
+WALLET_NAME=""
 WALLET_DIR="$HOME/.bitcoin/regtest/wallets/$WALLET_NAME"
 if [[ -e "$WALLET_DIR" ]]; then
   rm -rf "$WALLET_DIR"
