@@ -1,9 +1,9 @@
 diff --git a/Makefile b/Makefile
-index 1038e72..6740aa2 100644
+index f6c44e3..317841e 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -4,7 +4,7 @@
- VERSION=$(shell git describe --always --dirty=-modded --abbrev=7 2>/dev/null || pwd | sed -n 's|.*/c\{0,1\}lightning-v\{0,1\}\([0-9a-f.rc]*\)$$|\1|gp')
+ VERSION=$(shell git describe --always --dirty=-modded --abbrev=7 2>/dev/null || pwd | sed -n 's|.*/c\{0,1\}lightning-v\{0,1\}\([0-9a-f.rc\-]*\)$$|\1|gp')
  
  ifeq ($(VERSION),)
 -$(error "ERROR: git is required for generating version information")
