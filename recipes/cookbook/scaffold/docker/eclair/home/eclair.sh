@@ -82,5 +82,8 @@ fi
 
 PARAMS+=" -Declair.printToConsole=true"
 
+# https://github.com/ACINQ/eclair/wiki/Logging
+PARAMS+=" -Dakka.loglevel=DEBUG"
+
 set -x
 exec $JAVA_OPTS eclair-node/bin/eclair-node.sh ${PARAMS} ${ECLAIR_EXTRA_PARAMS} "$@"
