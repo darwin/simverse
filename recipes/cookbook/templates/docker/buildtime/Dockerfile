@@ -23,6 +23,7 @@ boost-filesystem \
 boost-dev \
 libressl-dev \
 libevent-dev \
-zeromq-dev
+zeromq-dev \
+sqlite-dev
 
 # <<< buildtime snippet <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
