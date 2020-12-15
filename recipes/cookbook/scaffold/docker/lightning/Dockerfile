@@ -81,7 +81,17 @@ inotify-tools \
 socat \
 bash \
 zlib-dev \
-tini
+tini 
+
+# ADDED FOR RUNNING PYTHON PLUGINS
+# BEGIN
+RUN apk add --no-cache --update \
+python3-dev \
+py3-numpy \
+lapack
+
+RUN pip3 install pyln-client==0.7.3
+# END
 
 ARG LIGHTNING_CONF_PATH
 

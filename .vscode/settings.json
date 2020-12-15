@@ -1,0 +1,6 @@
+{
+    "files.watcherExclude": {
+        "**/_workspace/**": true,
+        "**/_repos/**": true
+    }
+}
