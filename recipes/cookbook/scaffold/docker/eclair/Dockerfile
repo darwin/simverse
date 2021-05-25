@@ -37,6 +37,7 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 WORKDIR /root/build
 COPY "$ECLAIR_REPO_PATH/pom.xml" pom.xml
 COPY "$ECLAIR_REPO_PATH/eclair-core/pom.xml" eclair-core/pom.xml
+COPY "$ECLAIR_REPO_PATH/eclair-front/pom.xml" eclair-front/pom.xml
 COPY "$ECLAIR_REPO_PATH/eclair-node/pom.xml" eclair-node/pom.xml
 COPY "$ECLAIR_REPO_PATH/eclair-node-gui/pom.xml" eclair-node-gui/pom.xml
 COPY "$ECLAIR_REPO_PATH/eclair-node/modules/assembly.xml" eclair-node/modules/assembly.xml
