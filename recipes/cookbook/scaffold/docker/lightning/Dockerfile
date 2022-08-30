@@ -22,12 +22,14 @@ python-dev \
 python3 \
 py3-mako \
 sqlite-dev \
+net-tools \
 wget \
 git \
 file \
 gnupg \
 swig \
 zlib-dev \
+libsodium \
 gettext
 
 ARG LIGHTNING_REPO_PATH
@@ -57,6 +59,10 @@ RUN git apply docker-entrypoint.patch
 ARG LIGHTNING_DEVELOPER_FLAG=0
 ARG LIGHTNING_VALGRIND_FLAG=0
 ARG LIGHTNING_CONFIGURE_OPTS=""
+
+RUN pip3 install --upgrade pip
+RUN pip3 install mako mistune==0.8.4 mrkd
+
 RUN ./configure --prefix=/tmp/lightning_install ${LIGHTNING_CONFIGURE_OPTS}
 
 RUN make DEVELOPER=${LIGHTNING_DEVELOPER_FLAG} VALGRIND=${LIGHTNING_VALGRIND_FLAG}
@@ -89,8 +95,6 @@ RUN apk add --no-cache --update \
 python3-dev \
 py3-numpy \
 lapack
-
-RUN pip3 install pyln-client==0.7.3
 # END
 
 ARG LIGHTNING_CONF_PATH
