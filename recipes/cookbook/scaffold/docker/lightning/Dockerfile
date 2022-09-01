@@ -95,6 +95,8 @@ RUN apk add --no-cache --update \
 python3-dev \
 py3-numpy \
 lapack
+
+RUN pip3 install pyln-client==0.10.1
 # END
 
 ARG LIGHTNING_CONF_PATH
