@@ -7,6 +7,10 @@ source _toolbox_lib.sh
 FROM_PERSON=${1:-alice}
 TO_PERSON=${2:-bob}
 
+LND_P2P_PORT=${LND_P2P_PORT}
+LIGHTNING_P2P_PORT=${LIGHTNING_P2P_PORT}
+ECLAIR_P2P_PORT=${ECLAIR_P2P_PORT}
+
 connect_bitcoin_nodes() {
   local role
   role=$(get_role "$TO_PERSON")
