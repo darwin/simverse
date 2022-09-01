@@ -47,11 +47,11 @@ ARG MAKEFLAGS="-j4"
 #ENV CXXFLAGS="$CXXFLAGS"
 ENV MAKEFLAGS="$MAKEFLAGS"
 
-COPY "docker/lightning/patches/unknown-version-fallback.patch" .
-RUN git apply unknown-version-fallback.patch
+# COPY "docker/lightning/patches/unknown-version-fallback.patch" .
+# RUN git apply unknown-version-fallback.patch
 
-COPY "docker/lightning/patches/disable-shadow-routing.patch" .
-RUN git apply disable-shadow-routing.patch
+# COPY "docker/lightning/patches/disable-shadow-routing.patch" .
+# RUN git apply disable-shadow-routing.patch
 
 COPY "docker/lightning/patches/docker-entrypoint.patch" .
 RUN git apply docker-entrypoint.patch
