@@ -35,7 +35,7 @@ set -e -o pipefail
 connect alice bob
 connect bob dave
 connect charlie bob
-connect alice bob
+connect alice charlie
 connect mallory alice
 
 ALICE_PUBKEY=\$(pubkey alice)
@@ -46,7 +46,7 @@ DAVE_PUBKEY=\$(pubkey dave)
 fund alice 1
 fund bob 1
 fund bob 1
-fund charlie 1
+fund dave 1
 fund mallory 1
 
 dave fundchannel id=\${BOB_PUBKEY} amount=100000 push_msat=50000000
