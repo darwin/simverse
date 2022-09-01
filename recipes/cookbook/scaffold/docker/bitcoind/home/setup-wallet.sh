@@ -30,8 +30,9 @@ set -x
 # and should communicate both, something like "unable to get balance, error: Requested wallet does not exist or is not loaded (code: -18)"
 WALLET_NAME=""
 WALLET_DIR="$HOME/.bitcoin/regtest/wallets/$WALLET_NAME"
-if [[ -e "$WALLET_DIR" ]]; then
+if [[ -d "$WALLET_DIR" ]]; then
   rm -rf "$WALLET_DIR"
 fi
-./bitcoin-cli.sh createwallet "$WALLET_NAME"
+
+./bitcoin-cli.sh -named createwallet wallet_name="$WALLET_NAME" descriptors=false
 ./bitcoin-cli.sh importprivkey "${FAUCET_ADDR_PRIVATE_KEY}" imported
