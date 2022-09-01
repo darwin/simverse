@@ -34,5 +34,10 @@ if [[ -d "$WALLET_DIR" ]]; then
   rm -rf "$WALLET_DIR"
 fi
 
-./bitcoin-cli.sh -named createwallet wallet_name="$WALLET_NAME" descriptors=false
-./bitcoin-cli.sh importprivkey "${FAUCET_ADDR_PRIVATE_KEY}" imported
+# If a wallet is loaded we should unload it
+if ./bitcoin-cli.sh getwalletinfo; then                                               
+  ./bitcoin-cli.sh unloadwallet ""                                                    
+fi 
+
+./bitcoin-cli.sh -named createwallet wallet_name="$WALLET_DIR" descriptors=false
+./bitcoin-cli.sh -rpcwallet="$WALLET_DIR" importprivkey "${FAUCET_ADDR_PRIVATE_KEY}" imported
