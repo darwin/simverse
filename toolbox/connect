@@ -30,15 +30,25 @@ connect_ln_nodes() {
     exit 2
   fi
 
-  TO_PERSON_CONNECTION=$(ln_connect_string "$TO_PERSON")
+  local to_flavor
+  to_flavor=$(get_flavor "$TO_PERSON")
+  local port
+  case "$to_flavor" in
+    lnd) port="$LND_P2P_PORT";;
+    lightning) port="$LIGHTNING_P2P_PORT";;
+    eclair) port="$ECLAIR_P2P_PORT";;
+    *) echo_err "unsupported flavor type '$flavor' for '$TO_PERSON'"; exit 1; ;;
+  esac
+
+  TO_PERSON_CONNECTION=$(ln_connect_string "$TO_PERSON"):"$port"
   if [[ -z "$TO_PERSON_CONNECTION" ]]; then
     echo_err "failed to format connection string for '$TO_PERSON'"
     exit 1
   fi
 
-  local flavor
-  flavor=$(get_flavor "$FROM_PERSON")
-  case "$flavor" in
+  local from_flavor
+  from_flavor=$(get_flavor "$FROM_PERSON")
+  case "$from_flavor" in
     lnd|lightning) "$FROM_PERSON" connect "$TO_PERSON_CONNECTION" ;;
     eclair) "$FROM_PERSON" connect --uri="$TO_PERSON_CONNECTION" ;;
     *) echo_err "unsupported flavor type '$flavor' for '$FROM_PERSON'"; exit 1; ;;
