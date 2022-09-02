@@ -51,7 +51,7 @@ fund mallory 1
 
 dave fundchannel id=\${BOB_PUBKEY} amount=100000 push_msat=50000000
 bob fundchannel id=\${ALICE_PUBKEY} amount=100000 push_msat=1020000
-bob fundchannel id=\${CHARLIE_PUBKEY} amount=100000 push_msat=1030000
+bob fundchannel id=\${CHARLIE_PUBKEY} amount=100000 push_msat=1040000
 alice fundchannel id=\${CHARLIE_PUBKEY} amount=100000
 mallory fundchannel id=\${ALICE_PUBKEY} amount=100000
 
