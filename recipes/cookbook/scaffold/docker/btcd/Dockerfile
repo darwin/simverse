@@ -30,6 +30,7 @@ WORKDIR /root/build
 # we want to populate the module cache based on the go.{mod,sum} files.
 COPY "$BTCD_REPO_PATH/go.mod" .
 COPY "$BTCD_REPO_PATH/go.sum" .
+COPY "$BTCD_REPO_PATH/btcutil/go.mod" ./btcutil/
 
 # pre-cache deps
 # see https://container-solutions.com/faster-builds-in-docker-with-go-1-11/

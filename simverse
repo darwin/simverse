@@ -851,20 +851,7 @@ get_repo_url() {
 
 tweak_repos() {
   # ad-hoc tweaks to repos, pinning/patches etc.
-
-  # https://github.com/darwin/simverse/issues/8
-  cd "$SIMVERSE_REPOS_ABSOLUTE/btcwallet"
-  say "pinning btcwallet to work around https://github.com/btcsuite/btcd/issues/1473"
-  present_cwd
-  git fetch --depth=100
-  present git checkout 95d7aa0b4953bd67cd265f4a378ea2cde52c54d1
-
-  # https://github.com/lightningnetwork/lnd/issues/4076
-  cd "$SIMVERSE_REPOS_ABSOLUTE/btcd"
-  say "pinning btcd to work around https://github.com/lightningnetwork/lnd/issues/4076"
-  present_cwd
-  git fetch --depth=1000 --tags
-  present git checkout v0.20.1-beta
+  echo "No tweaks to apply ..."
 }
 
 init_repo() {
