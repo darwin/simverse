@@ -1,55 +1,15 @@
 diff --git a/cmd/btcctl/config.go b/cmd/btcctl/config.go
-index cd232a9e..03a17d73 100644
+index 3db735c..0710f20 100644
 --- a/cmd/btcctl/config.go
 +++ b/cmd/btcctl/config.go
-@@ -105,13 +105,14 @@ type config struct {
- 	ProxyPass     string `long:"proxypass" default-mask:"-" description:"Password for proxy server"`
- 	TestNet3      bool   `long:"testnet" description:"Connect to testnet"`
- 	SimNet        bool   `long:"simnet" description:"Connect to the simulation test network"`
-+	RegTest       bool   `long:"regtest" description:"Connect to the regtest test network"`
- 	TLSSkipVerify bool   `long:"skipverify" description:"Do not verify tls certificates (not recommended!)"`
- 	Wallet        bool   `long:"wallet" description:"Connect to wallet"`
- }
- 
- // normalizeAddress returns addr with the passed default port appended if
- // there is not already a port specified.
--func normalizeAddress(addr string, useTestNet3, useSimNet, useWallet bool) string {
-+func normalizeAddress(addr string, useTestNet3, useSimNet, useWallet, useRegTest bool) string {
- 	_, _, err := net.SplitHostPort(addr)
- 	if err != nil {
- 		var defaultPort string
-@@ -128,6 +129,12 @@ func normalizeAddress(addr string, useTestNet3, useSimNet, useWallet bool) strin
- 			} else {
- 				defaultPort = "18556"
+@@ -133,9 +133,7 @@ func normalizeAddress(addr string, chain *chaincfg.Params, useWallet bool) (stri
  			}
-+		case useRegTest:
-+			if useWallet {
-+				defaultPort = "18443"
-+			} else {
-+				defaultPort = "18334"
-+			}
- 		default:
+ 		case &chaincfg.RegressionNetParams:
  			if useWallet {
- 				defaultPort = "8332"
-@@ -254,8 +261,11 @@ func loadConfig() (*config, []string, error) {
- 	if cfg.SimNet {
- 		numNets++
- 	}
-+	if cfg.RegTest {
-+		numNets++
-+	}
- 	if numNets > 1 {
--		str := "%s: The testnet and simnet params can't be used " +
-+		str := "%s: The testnet, simnet, regtest params can't be used " +
- 			"together -- choose one of the two"
- 		err := fmt.Errorf(str, "loadConfig")
- 		fmt.Fprintln(os.Stderr, err)
-@@ -274,7 +284,7 @@ func loadConfig() (*config, []string, error) {
- 	// Add default port to RPC server based on --testnet and --wallet flags
- 	// if needed.
- 	cfg.RPCServer = normalizeAddress(cfg.RPCServer, cfg.TestNet3,
--		cfg.SimNet, cfg.Wallet)
-+		cfg.SimNet, cfg.Wallet, cfg.RegTest)
- 
- 	return &cfg, remainingArgs, nil
- }
+-				// TODO: add port once regtest is supported in btcwallet
+-				paramErr := fmt.Errorf("cannot use -wallet with -regtest, btcwallet not yet compatible with regtest")
+-				return "", paramErr
++				defaultPort = "18443"
+ 			} else {
+ 				defaultPort = "18334"
+ 			}
